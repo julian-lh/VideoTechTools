@@ -25,28 +25,28 @@ export default function Navigation() {
                 switch (route.name) {
                 case "Abbildung":
                     iconName = focused
-                    ? 'ios-information-circle'
-                    : 'ios-information-circle-outline';
+                    ? 'image'
+                    : 'image-outline';
                     break;
                 case "Abtastung":
                     iconName = focused
-                    ? 'ios-information-circle'
-                    : 'ios-information-circle-outline';
+                    ? 'analytics'
+                    : 'analytics-outline';
                     break;
                 case "Messung":
                     iconName = focused
-                    ? 'ios-information-circle'
-                    : 'ios-information-circle-outline';
+                    ? 'pulse'
+                    : 'pulse-outline';
                     break;
                 case "Signalpegel":
                     iconName = focused
-                    ? 'ios-information-circle'
-                    : 'ios-information-circle-outline';
+                    ? 'sunny'
+                    : 'sunny-outline';
                     break;
                 case "Farbsysteme":
                     iconName = focused
-                    ? 'ios-information-circle'
-                    : 'ios-information-circle-outline';
+                    ? 'color-palette'
+                    : 'color-palette-outline';
                     break;
                 default:
                 break;

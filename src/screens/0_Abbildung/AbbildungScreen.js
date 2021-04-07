@@ -19,18 +19,19 @@ export default function AbbildungScreen() {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <Header
-          centerComponent={{ text: 'ABBILDUNG', style: { color: '#fff' } }}
+          centerComponent={{ text: 'ABBILDUNG', style: { color: '#fff', fontWeight: 'bold', fontSize: 20 } }}
           />
         <ScrollView style={{width: '100%'}}>
           <View style={styles.placeholder}>
             <Text style={styles.placeholderText}>THREE.JS-View mit Simulation</Text>
           </View>
-          <Text style={{flex: 1}}>Rechenergebnisse</Text>
+          <Text style={{flex: 1}}>Rechenergebnisse hier hin</Text>
 
           <ParameterElemet label='Brennweite'/>
-          <ParameterElemet label='Brennweite'/>
-          <ParameterElemet label='Brennweite'/>
-          <ParameterElemet label='Brennweite'/>
+          <ParameterElemet label='Blende'/>
+          <ParameterElemet label='Speedbooster'/>
+          <ParameterElemet label='Sensorgröße'/>
+          <ParameterElemet label='Seitenverhältnis'/>
 
         </ScrollView>
       </View>
