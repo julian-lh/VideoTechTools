@@ -11,7 +11,7 @@
 */
 
 export class Camera {
-    constructor(fStop = 11, focalLength = 0.055, sensorID = 0) {
+    constructor(fStop = 11, focalLength = 0.055, sensorID = 0, booster = 1.0) {
         this.allSensorData = require('./cameraData.json');
 
         this.sensorID = sensorID;
@@ -29,6 +29,7 @@ export class Camera {
 
         this.fStop = fStop;
         this.focalLength = focalLength; //m
+        this.booster = booster
     }
     /*
     get sensorData(){
@@ -46,21 +47,21 @@ export class Camera {
         const cocVertical = this.sensor.height / this.sensor.resolution.v
         return Math.min(cocHorizontal, cocVertical);
     }
-    calcFStop(focalLength, aperture){
-        return focalLength/aperture;
+    calcFStop(focalLength, aperture, booster = 1.0){
+        return (focalLength * booster)/aperture;
     }
 
     // Formel oder Sensordaten überarbeiten
     farDoF(focusDistance){
         const rCoC = this.circleOfConfusion() / 2;
         const k = this.fStop;
-        const f = this.focalLength;
+        const f = this.focalLength * this.booster;
         return (2 * rCoC * k * focusDistance * (focusDistance - f)) / (f**2 - 2 * rCoC * k * (focusDistance - f));
     }
     nearDoF(focusDistance){
         const rCoC = this.circleOfConfusion() / 2;
         const k = this.fStop;
-        const f = this.focalLength;
+        const f = this.focalLength * this.booster;
         return (2 * rCoC * k * focusDistance * (focusDistance - f)) / (f**2 + 2 * rCoC * k * (focusDistance - f));
     }
     totalDoF(focusDistance){
@@ -69,13 +70,13 @@ export class Camera {
 
     horizontalAngleOfView(){
         const d = this.sensor.width;
-        const f = this.focalLength;
+        const f = this.focalLength * this.booster;
         const angleRad = 2 * Math.atan(d / (2 * f));
         return angleRad * (180 / Math.PI);
     }
     verticalAngleOfView(){
         const d = this.sensor.height;
-        const f = this.focalLength;
+        const f = this.focalLength * this.booster;
         const angleRad = 2 * Math.atan(d / (2 * f));
         return angleRad * (180 / Math.PI);
     }
