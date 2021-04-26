@@ -1,0 +1,23 @@
+{
+    "test": "testWert",
+    "sensors": [
+        {
+            "name": "test",
+            "height": 0.024,
+            "width": 0.036,
+            "resolution": {
+                    "v": 1080,
+                    "h": 1920
+                }
+        },
+        {
+            "name": "test2",
+            "height": 0.026,
+            "width": 0.039,
+            "resolution": {
+                    "v": 1080,
+                    "h": 1920
+                }
+        }
+    ]
+}

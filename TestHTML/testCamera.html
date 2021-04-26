@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<p id="near"></p>
+<p id="far"></p>
+<p id="total"></p>
+
+<script>
+    class Camera {
+        constructor() {
+            this.sensor = {
+                // full format in m
+                height: 0.024,
+                width: 0.036,
+                resolution: {
+                    v: 1080,
+                    h: 1920
+                }
+            };
+            this.fStop = 11;
+            this.focalLength = 0.055 //m
+        }
+        circleOfConfusion(){
+            const cocHorizontal = this.sensor.width / this.sensor.resolution.h;
+            const cocVertical = this.sensor.height / this.sensor.resolution.v
+            return Math.min(cocHorizontal, cocVertical);
+        }
+        calcFStop(focalLength, aperture){
+            return focalLength/aperture;
+        }
+
+        farDoF(focusDistance){
+            const rCoC = this.circleOfConfusion() / 2;
+            const k = this.fStop;
+            const f = this.focalLength;
+            return (2 * rCoC * k * focusDistance * (focusDistance - f)) / (f**2 - 2 * rCoC * k * (focusDistance - f));
+        }
+        nearDoF(focusDistance){
+            const rCoC = this.circleOfConfusion() / 2;
+            const k = this.fStop;
+            const f = this.focalLength;
+            return (2 * rCoC * k * focusDistance * (focusDistance - f)) / (f**2 + 2 * rCoC * k * (focusDistance - f));
+        }
+        totalDoF(focusDistance){
+            return this.farDoF(focusDistance) + this.nearDoF(focusDistance);
+        }
+
+        horizontalAngleOfView(){
+            const d = this.sensor.width;
+            const f = this.focalLength;
+            const angleRad = 2 * Math.atan(d / (2 * f));
+            return angleRad * (180 / Math.PI);
+        }
+        verticalAngleOfView(){
+            const d = this.sensor.height;
+            const f = this.focalLength;
+            const angleRad = 2 * Math.atan(d / (2 * f));
+            return angleRad * (180 / Math.PI);
+        }
+    }
+</script>
+
+
+<script type="module">
+    const cam = new Camera();
+
+    document.getElementById("near").innerHTML = cam.nearDoF(2);
+    document.getElementById("far").innerHTML = cam.farDoF(2);
+    document.getElementById("total").innerHTML = cam.totalDoF(2);
+    console.log(cam.fStop);
+    console.log("CoC: " + cam.circleOfConfusion());
+
+    console.log("horizontal: " + cam.horizontalAngleOfView());
+    console.log("vertical: " + cam.verticalAngleOfView());
+
+</script>
+
+<noscript>Sorry, your browser does not support JavaScript!</noscript>
+
+<p>A browser without support for JavaScript will show the text written inside the noscript element.</p>
+
+</body>
+</html>
+

@@ -1,14 +1,23 @@
 {
   "folders": [
-	{
-		"path": "."
-	},
-	{
-		"path": "../../../Dropbox/Studium/BACHELORARBEIT/5_Code-Konzepte/5_Video_App/React-Native-Tests/VideoCalculator"
-	},
-	{
-		"path": "../../Programmieren/recipes-app-react-native"
-	}
-],
+    {
+      "path": "."
+    },
+    {
+      "path": "../../../Dropbox/Studium/BACHELORARBEIT/5_Code-Konzepte/5_Video_App/React-Native-Tests/VideoCalculator"
+    },
+    {
+      "path": "../../Programmieren/recipes-app-react-native"
+    },
+    {
+      "path": "../../0_Bachelorarbeit/React-Native/Pixel-Data"
+    },
+    {
+      "path": "../../0_Bachelorarbeit/React-Native/TestThree/VideoAppThree2"
+    },
+    {
+      "path": "../../0_Bachelorarbeit/React-Native/BlendenRechner"
+    }
+  ],
   "settings": {}
 }
