@@ -2,22 +2,74 @@
     "test": "testWert",
     "sensors": [
         {
-            "name": "test",
+            "name": "1/3 Zoll (TV)",
+            "height": 0.0033,
+            "width": 0.0044,
+            "resolution": {
+                "v": 575,
+                "h": 767
+                },
+            "kommentar": "Aufloesung kontrollieren!"
+        },
+        {
+            "name": "1/2 Zoll (TV)",
+            "height": 0.0048,
+            "width": 0.0064,
+            "resolution": {
+                "v": 575,
+                "h": 767
+                },
+            "kommentar": "Aufloesung kontrollieren!"
+        },
+        {
+            "name": "2/3 Zoll 16:9 (TV)",
+            "height": 0.0054,
+            "width": 0.0096,
+            "resolution": {
+                "v": 575,
+                "h": 1022
+                },
+            "kommentar": "Aufloesung kontrollieren!"
+        },
+        {
+            "name": "2/3 Zoll 4:3 (TV)",
+            "height": 0.0066,
+            "width": 0.0088,
+            "resolution": {
+                "v": 575,
+                "h": 767
+                },
+            "kommentar": "Aufloesung kontrollieren!"
+        },
+        {
+            "name": "35 mm-Film",
+            "height": 0.016,
+            "width": 0.022,
+            "resolution": {
+                "v": 1080,
+                "h": 1920
+                },
+            "kommentar": "Aufloesung kontrollieren!"
+        },
+        {
+            "name": "APS-C (Foto)",
+            "height": 0.0149,
+            "width": 0.0224,
+            "resolution": {
+                "v": 1080,
+                "h": 1920
+                },
+            "kommentar": "Aufloesung kontrollieren!"
+        },
+        {
+            "name": "Vollformat (Foto)",
             "height": 0.024,
             "width": 0.036,
             "resolution": {
-                    "v": 1080,
-                    "h": 1920
-                }
-        },
-        {
-            "name": "test2",
-            "height": 0.026,
-            "width": 0.039,
-            "resolution": {
-                    "v": 1080,
-                    "h": 1920
-                }
+                "v": 1080,
+                "h": 1920
+                },
+            "kommentar": "Aufloesung kontrollieren!"
         }
     ]
 }

@@ -29,11 +29,15 @@ export default function AbbildungScreen() {
 
     const cameraData = require('../../calculation/cameraData.json');
 
-    const [stop, setStop] = React.useState(4,0);
+    const [distance, setDistance] = useState(5);
+    const distanceUp = () => setDistance(distance + 1);
+    const distanceDown = () => setDistance(Math.max((distance - 1), 0));
+
+    const [stop, setStop] = useState(4,0);
     const stopUp = () => setStop(stop * (Math.sqrt(Math.sqrt(2))));
     const stopDown = () => setStop(stop / (Math.sqrt(Math.sqrt(2))));
 
-    const [focal, setFocal] = React.useState(0.055);
+    const [focal, setFocal] = useState(0.055);
     const focalUp = () => setFocal(focal + 0.005);
     const focalDown = () => setFocal(focal - 0.005);
 
@@ -41,7 +45,7 @@ export default function AbbildungScreen() {
     const sensorUp = () => setSensorID(Math.min(sensorID + 1, cameraData.sensors.length-1));
     const sensorDown = () => setSensorID(Math.max(sensorID - 1, 0));
 
-    const [booster, setBooster] = React.useState(1.0);
+    const [booster, setBooster] = useState(1.0);
     const boosterUp = () => setBooster(booster + 0.1);
     const boosterDown = () => setBooster(booster - 0.1);
 
@@ -58,13 +62,15 @@ export default function AbbildungScreen() {
           </View>
           <Text style={{flex: 1}}>Horizontale Öffnung: {cam.horizontalAngleOfView().toFixed(2)}°</Text>
           <Text style={{flex: 1}}>vertikale Öffnung: {cam.verticalAngleOfView().toFixed(2)}°</Text>
-          <Text style={{flex: 1}}>Sensor: {cameraData.sensors[sensorID].name}</Text>
+          <Text style={{flex: 1}}>Tiefenschärfe (noch falsch): {cam.totalDoF(distance).toFixed(2)+" m"}</Text>
+
+          <ParameterElement label='Fokus-Distanz' value={distance.toFixed(0)+" m"} btnLeft={distanceDown} btnRight={distanceUp}/>
 
           <ParameterElement label='Blende' value={stop.toFixed(1)} btnLeft={stopDown} btnRight={stopUp}/>
           <ParameterElement label='Brennweite' value={(focal * 1000).toFixed(0)+" mm"} btnLeft={focalDown} btnRight={focalUp}/>
           <ParameterElement label='Speedbooster Faktor' value={booster.toFixed(1)+" x"} btnLeft={boosterDown} btnRight={boosterUp}/>
           <ParameterElement label='Sensorgröße' value={cam.sensor.name} btnLeft={sensorDown} btnRight={sensorUp}/>
-          <Text style={{paddingHorizontal: 30, paddingVertical: 0}}>{(cam.sensor.height * 1000)} x {(cam.sensor.width * 1000)} mm </Text>
+          <Text style={{paddingHorizontal: 30, paddingVertical: 0}}>{(cam.sensor.width * 1000)} x {(cam.sensor.height * 1000)} mm </Text>
           <ParameterElement label='Seitenverhältnis'/>
         </ScrollView>
       </View>
