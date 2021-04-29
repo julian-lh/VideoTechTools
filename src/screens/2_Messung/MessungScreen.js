@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { useState } from "react";
 import { Text, View, Button } from 'react-native';
-import WaveformMonitor from '../../Scopes/WaveformMonitor';
+import { Header } from 'react-native-elements';
+import WaveformMonitor from '../../ThreeJSViews/Scopes/WaveformMonitor';
 
 export default function MessungScreen() {
     const [test, setTest] = useState([22, 32]);
@@ -19,12 +20,9 @@ export default function MessungScreen() {
       }
     };
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>MessungScreen</Text>
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <Header centerComponent={{ text: 'MESSUNG', style: { color: '#fff', fontWeight: 'bold', fontSize: 20 } }} />
         <WaveformMonitor style={{ flex: 1 }} text={text} data={test}></WaveformMonitor>
-        <Button title="AddElement" onPress={addVal}></Button>
-        <Button title="SineWave" onPress={newOne}></Button>
-        <Button title="EmptyButton" onPress={newText}></Button>
       </View>
     );
   }

@@ -3,6 +3,7 @@ import { styles } from './AbbildungStyles';
 import { StyleSheet, View, TextInput, ScrollView } from 'react-native';
 import { Button, Header, Text } from 'react-native-elements';
 import { Camera } from '../../calculation/cameraDistance';
+import ViewingAngleSimulator from '../../ThreeJSViews/ViewingAngleSimulator';
 //import { data } from './cameraData.json';
 import {useState} from 'react';
 
@@ -57,13 +58,12 @@ export default function AbbildungScreen() {
           centerComponent={{ text: 'ABBILDUNG', style: { color: '#fff', fontWeight: 'bold', fontSize: 20 } }}
           />
         <ScrollView style={{width: '100%'}}>
-          <View style={styles.placeholder}>
-            <Text style={styles.placeholderText}>THREE.JS-View mit Simulation</Text>
+          <ViewingAngleSimulator></ViewingAngleSimulator>
+          <View style={{paddingHorizontal: 20}}>
+              <Text style={{flex: 1}}>Horizontale Öffnung:  {cam.horizontalAngleOfView().toFixed(2)}°</Text>
+              <Text style={{flex: 1}}>vertikale Öffnung:       {cam.verticalAngleOfView().toFixed(2)}°</Text>
+              <Text style={{flex: 1}}>Tiefenschärfe:              {cam.totalDoF(distance).toFixed(2)+" m"} (noch falsch)</Text>
           </View>
-          <Text style={{flex: 1}}>Horizontale Öffnung: {cam.horizontalAngleOfView().toFixed(2)}°</Text>
-          <Text style={{flex: 1}}>vertikale Öffnung: {cam.verticalAngleOfView().toFixed(2)}°</Text>
-          <Text style={{flex: 1}}>Tiefenschärfe (noch falsch): {cam.totalDoF(distance).toFixed(2)+" m"}</Text>
-
           <ParameterElement label='Fokus-Distanz' value={distance.toFixed(0)+" m"} btnLeft={distanceDown} btnRight={distanceUp}/>
 
           <ParameterElement label='Blende' value={stop.toFixed(1)} btnLeft={stopDown} btnRight={stopUp}/>

@@ -135,8 +135,8 @@ const WaveformMonitor = (props) => {
       > <Text style={{color: "green", fontSize: 50, top: 10, zIndex: 100}}>Test</Text>
       </GLView>
           <Text>Test: {props.text}</Text>
-          <Button title="Sine" onPress={selectSine}></Button>
-          <Button title="Other" onPress={otherData}></Button>
+          <Button title="SineWave with Offset" onPress={selectSine}></Button>
+          <Button title="Random 1" onPress={otherData}></Button>
           <Button title="PropsData" onPress={propsData}></Button>
     </View>
     );
