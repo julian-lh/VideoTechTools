@@ -11,6 +11,7 @@ import SignalpegelScreen from '../screens/3_Signalpegel/SignalpegelScreen'
 import FarbsystemeScreen from '../screens/4_Farbsysteme/FarbsystemeScreen'
 
 //<StatusBar style="auto" />
+// drawer test
 
 const Tab = createBottomTabNavigator();
 
