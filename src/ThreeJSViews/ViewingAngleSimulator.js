@@ -93,7 +93,6 @@ const ViewingAngleSimulator = (props) => {
             box.receiveShadow = true;
             scene.add(box);
 
-
             // Set camera position and look to sphere
             camera.position.set(
             cameraInitialPositionX,
