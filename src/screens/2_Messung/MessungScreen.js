@@ -19,9 +19,11 @@ export default function MessungScreen() {
       setTest(dataArray);
       }
     };
+
+    //<Header centerComponent={{ text: 'MESSUNG', style: { color: '#fff', fontWeight: 'bold', fontSize: 20 } }} />
+
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <Header centerComponent={{ text: 'MESSUNG', style: { color: '#fff', fontWeight: 'bold', fontSize: 20 } }} />
         <WaveformMonitor style={{ flex: 1 }} text={text} data={test}></WaveformMonitor>
       </View>
     );

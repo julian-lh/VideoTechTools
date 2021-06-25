@@ -51,12 +51,10 @@ export default function AbbildungScreen() {
     const boosterDown = () => setBooster(booster - 0.1);
 
     const cam = new Camera(stop, focal, sensorID, booster);
-
+//  <Header centerComponent={{ text: 'ABBILDUNG', style: { color: '#fff', fontWeight: 'bold', fontSize: 20 } }} />
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Header
-          centerComponent={{ text: 'ABBILDUNG', style: { color: '#fff', fontWeight: 'bold', fontSize: 20 } }}
-          />
+
         <ScrollView style={{width: '100%'}}>
           <ViewingAngleSimulator></ViewingAngleSimulator>
           <View style={{paddingHorizontal: 20}}>
