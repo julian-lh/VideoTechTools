@@ -7,6 +7,7 @@
   <p id="result">loading result...</p>
   <p id="primes">loading result...</p>
   <script>
+
   function generateRGBToXYZMatrix(rx, ry, gx, gy, bx, by, wX, wY, wZ) {
   	// Anhlehnung an http://www.brucelindbloom.com/index.html?Eqn_RGB_XYZ_Matrix.html
     const X = (x, y) => x/y;
@@ -35,24 +36,25 @@
     return transferMtx;
 	};
 
-    function XYZtoxyz(XYZ_array = [0, 0, 1]) {
+  function XYZtoxyz(XYZ_array = [0, 0, 1]) {
     const x = XYZ_array[0] / (XYZ_array[0] + XYZ_array[1] + XYZ_array[2]);
     const y = XYZ_array[1] / (XYZ_array[0] + XYZ_array[1] + XYZ_array[2]);
     const z = XYZ_array[2] / (XYZ_array[0] + XYZ_array[1] + XYZ_array[2]);
     return [x, y, z];
 	};
 
-  //var inverted = generateRGBToXYZMatrix(0.64, 0.33, 0.29, 0.6, 0.15, 0.06, 0.95047, 1, 1.08883); // Rec.601(625)
-  var inverted = generateRGBToXYZMatrix(0.64, 0.33, 0.3, 0.6, 0.15, 0.06, 0.95047, 1, 1.08883); // Rec.709/sRGB
-  //var inverted = generateRGBToXYZMatrix(0.708, 0.292, 0.170, 0.797, 0.131, 0.046, 0.95047, 1, 1.08883); // Rec.2020
+  //var mtxRGBToXYZ = generateRGBToXYZMatrix(0.64, 0.33, 0.29, 0.6, 0.15, 0.06, 0.95047, 1, 1.08883); // Rec.601(625)
+  var mtxRGBToXYZ = generateRGBToXYZMatrix(0.64, 0.33, 0.3, 0.6, 0.15, 0.06, 0.95047, 1, 1.08883); // Rec.709
+  //var mtxRGBToXYZ = generateRGBToXYZMatrix(0.708, 0.292, 0.170, 0.797, 0.131, 0.046, 0.95047, 1, 1.08883); // Rec.2020
 
-  // Prüfung, ob korrekte Werte wieder heraus kommen
+  // Prüfung, ob korrekte Werte wieder heraus kommen indem nacheinander
+  // [1, 0, 0], [0, 1, 0], [0, 0, 1], [1, 1, 1] ausprobiert werden
   var primes = new Array(3);
-  const XYZ = math.multiply(inverted, [0, 0, 1]);
+  const XYZ = math.multiply(mtxRGBToXYZ, [0, 0, 1]);
   primes = XYZtoxyz(XYZ);
 
 
-  document.getElementById("result").textContent = JSON.stringify(inverted);
+  document.getElementById("result").textContent = JSON.stringify(mtxRGBToXYZ);
   document.getElementById("primes").textContent = JSON.stringify(primes);
   </script>
 </body>

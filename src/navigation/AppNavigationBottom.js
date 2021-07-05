@@ -8,7 +8,7 @@ import AbbildungScreen from '../screens/0_Abbildung/AbbildungScreen'
 import AbtastungScreen from '../screens/1_Abtastung/AbtastungScreen'
 import MessungScreen from '../screens/2_Messung/MessungScreen'
 import SignalpegelScreen from '../screens/3_Signalpegel/SignalpegelScreen'
-import FarbsystemeScreen from '../screens/4_Farbsysteme/FarbsystemeScreen'
+import FarbsystemeScreen from '../screens/CIE/CIEScreen'
 
 //<StatusBar style="auto" />
 

@@ -2,7 +2,7 @@ import React, {useRef, useState, useEffect, useMemo, Suspense} from 'react';
 import { Button, View, Text } from 'react-native';
 import { Canvas, useFrame, useThree, extend, useLoader} from 'react-three-fiber';
 import * as THREE from 'three';
-import { rgbToYUV } from '../../calculation/ColorSpaceTransform';
+import { RGBtoYUV } from '../../calculation/ColorSpaceTransform';
 
 
 const SignalPlot = (props) => {
@@ -79,8 +79,8 @@ function Camera(props) {
  const VectorscopeView = (props) => {
 
     //const xyz =  XYZtoxyz(props.XYZ);
-    //const YUV = props.RGB[1];//rgbToYUV(props.RGB[1]);
-    const YUV = props.RGB;//props.RGB.map(x => rgbToYUV(x));
+    //const YUV = props.RGB[1];//RGBtoYUV(props.RGB[1]);
+    const YUV = props.RGB;//props.RGB.map(x => RGBtoYUV(x));
 
     return (
         <>
