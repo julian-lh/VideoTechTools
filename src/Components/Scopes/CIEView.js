@@ -128,7 +128,7 @@ function Camera(props) {
  const CIEView = (props) => {
     //const [posY, setPosY] = useState(0);
     const [camPos, setCamPos] = useState([1.1, 1.1, 1.1]);
-    const [bitDepth, setBitDepth] = useState(8);
+    const [bitDepth, setBitDepth] = useState(10);
     const videoStandards = ["601", "709", "2020"];
     const [vidStdIdx, setVidStdIdx] = useState(0);
     const switchVidStd = () => {vidStdIdx < 2 ? setVidStdIdx(vidStdIdx + 1) : setVidStdIdx(0)};
@@ -142,9 +142,10 @@ function Camera(props) {
     const xyz = XYZtoxyz(XYZ);
 
     return (
-        <>
-        <Button title={"Rec." + videoStandards[vidStdIdx]} onPress={switchVidStd}></Button>
-          <Canvas style={{backgroundColor: '#222'}}>
+      <View style={{flex: 1}}>
+        <View style={{flex: 1}}>
+
+          <Canvas style={{ zIndex: 0, flex: 1, backgroundColor: '#eee', minWidth: 20, minHeight: 20}}>
               <Camera position={camPos} />
               <ambientLight/>
               <pointLight position={[-1,1,1]} castShadow/>
@@ -152,6 +153,13 @@ function Camera(props) {
               <COS />
               <CIEBounds />
           </Canvas>
+          <View style={{ position: 'absolute', zIndex: 1, top: "2%", right:0, minWidth: 50, minHeight: 10, height: "25%", padding: 10}}>
+            <View style={{ backgroundColor: '#292', minWidth: 100, minHeight: 60, width: "30%", aspectRatio: 1.78, padding: 10}}>
+              <Text>Platzhalter Signal-Vorschau</Text>
+            </View>
+            <Button style={{ padding: 5}} title={"Rec." + videoStandards[vidStdIdx]} onPress={switchVidStd}></Button>
+          </View>
+        </View>
           <Text style={{backgroundColor: '#222', color: '#fff'}}>x: {xyz[0]} y: {xyz[1]}</Text>
           <View style={{ flexDirection: "row", justifyContent: 'space-around' }}>
             <Button title="X-Y" onPress={()=>setCamPos([0.5, 0.5, 1.1])}></Button>
@@ -162,7 +170,7 @@ function Camera(props) {
 
           </View>
 
-        </>
+        </View>
     ); //<Text style={{backgroundColor: '#222', color: '#fff'}}>X: {props.XYZ[0].toFixed(2)}, Y: {props.XYZ[1].toFixed(2)}, Z: {props.XYZ[2].toFixed(2)}</Text>
 
     //<Box position={[1, posY, 0]} positionY={posY} name={'box1'}/>

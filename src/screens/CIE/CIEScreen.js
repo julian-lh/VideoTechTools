@@ -6,6 +6,8 @@ import CIEView from '../../Components/Scopes/CIEView';
 import { RGBtoXYZ } from '../../calculation/ColorSpaceTransform';
 import { RGBtoYCRCB, upscaleYCRCB } from '../../calculation/componentSignal';
 
+import { YCrCbGenerator } from '../../Components/Generators/YCrCbGenerator'
+
 const ColorSelector = (props) => {
     return (
         <View style={styles.inputElement}>
@@ -28,7 +30,7 @@ export default function CIEScreen() {
     const [green, setGreen] = useState(0.5);
     const [blue, setBlue] = useState(0.5);
 
-    const [bitDepth, setBitDepth] = useState(8);
+    const [bitDepth, setBitDepth] = useState(10);
     const [videoStandard, setVideoStandard] = useState("709");
 
     const [colorSpaceIndex, setColorSpaceIndex] = useState(0);
@@ -44,7 +46,15 @@ export default function CIEScreen() {
       <View style={{ flex: 1}}>
         <CIEView XYZ={XYZ} signalYCRCB={signalYCRCB}/>
 
-        <View style={styles.colorPicker}>
+
+
+
+      </View>
+    );
+  }
+//<YCrCbGenerator/>
+  /*
+<View style={styles.colorPicker}>
             <ColorSelector label='R' thumbTintColor='red' value={red} valueChange={(x) => setRed(x)}/>
             <ColorSelector label='G' thumbTintColor='green'  value={green} valueChange={(x) => setGreen(x)}/>
             <ColorSelector label='B' thumbTintColor='blue' value={blue} valueChange={(x) => setBlue(x)}/>
@@ -53,11 +63,7 @@ export default function CIEScreen() {
             <Button title='RGB/HSV'/>
             <Button title='FARBRAUM'/>
         </View>
-
-      </View>
-    );
-  }
-
+  */
 
   const styles = StyleSheet.create({
     container: {
