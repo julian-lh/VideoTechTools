@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Header, Text, Slider } from 'react-native-elements';
-import CIEView from '../../Components/Scopes/CIEView';
+import VectorscopeView from '../../Components/Scopes/VectorscopeView';
 
-import { rgbToXYZ } from '../../calculation/ColorSpaceTransform';
 
 const ColorSelector = (props) => {
     return (
@@ -22,19 +21,17 @@ const ColorSelector = (props) => {
     );
 }
 
-export default function FarbsystemeScreen() {
+export default function VectorscopeScreen() {
     const [red, setRed] = useState(0.5);
     const [green, setGreen] = useState(0.5);
     const [blue, setBlue] = useState(0.5);
     const [colorSpaceIndex, setColorSpaceIndex] = useState(0);
     const colorSpaces = ['sRGB', 'Adobe RGB', 'rec709', 'rec2020'];
 
-    const XYZ = rgbToXYZ([red, green, blue]);
-
     return (
       <View style={{ flex: 1}}>
-        <CIEView XYZ={XYZ} />
-
+        <VectorscopeView RGB={[red, green, blue]} />
+        <Text>{red.toFixed(4)}  {green.toFixed(4)}  {blue.toFixed(4)}</Text>
         <View style={styles.colorPicker}>
             <ColorSelector label='R' thumbTintColor='red' value={red} valueChange={(x) => setRed(x)}/>
             <ColorSelector label='G' thumbTintColor='green'  value={green} valueChange={(x) => setGreen(x)}/>

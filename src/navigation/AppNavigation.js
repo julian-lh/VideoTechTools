@@ -13,6 +13,7 @@ import AbtastungScreen from '../screens/1_Abtastung/AbtastungScreen'
 import MessungScreen from '../screens/2_Messung/MessungScreen'
 import SignalpegelScreen from '../screens/3_Signalpegel/SignalpegelScreen'
 import FarbsystemeScreen from '../screens/4_Farbsysteme/FarbsystemeScreen'
+import VectorscopeScreen from '../screens/Vectorscope/VectorscopeScreen'
 
 //<StatusBar style="auto" />
 // drawer test
@@ -52,7 +53,12 @@ export default function Navigation() {
                       ? 'sunny'
                       : 'sunny-outline';
                       break;
-                  case "Farbsysteme":
+                  case "CIE xy 1931":
+                      iconName = focused
+                      ? 'color-palette'
+                      : 'color-palette-outline';
+                      break;
+                  case "Vectorscope":
                       iconName = focused
                       ? 'color-palette'
                       : 'color-palette-outline';
@@ -72,7 +78,8 @@ export default function Navigation() {
               <Drawer.Screen name="Abtastung" component={StackWrap_AbtastungScreen} />
               <Drawer.Screen name="Messung" component={StackWrap_MessungScreen} />
               <Drawer.Screen name="Signalpegel" component={StackWrap_SignalpegelScreen} />
-              <Drawer.Screen name="Farbsysteme" component={StackWrap_FarbsystemeScreen} />
+              <Drawer.Screen name="CIE xy 1931" component={StackWrap_FarbsystemeScreen} />
+              <Drawer.Screen name="Vectorscope" component={StackWrap_VectorscopeScreen} />
           </Drawer.Navigator>
       </NavigationContainer>
     );
@@ -128,6 +135,17 @@ export default function Navigation() {
       <Stack.Navigator>
         <Stack.Screen name= {"FarbsystemeScreen"} component={FarbsystemeScreen} options={{
             headerTitle: "Farbsysteme",
+          headerLeft: () => <Button icon={<Ionicons name="menu" size={25} color="gray" />} onPress={() => navigation.toggleDrawer()} type="clear"/>
+        }}/>
+      </Stack.Navigator>
+    );
+  }
+
+  function StackWrap_VectorscopeScreen({ navigation }) {
+    return (
+      <Stack.Navigator>
+        <Stack.Screen name= {"VectorscopeScreen"} component={VectorscopeScreen} options={{
+            headerTitle: "Vectorscope",
           headerLeft: () => <Button icon={<Ionicons name="menu" size={25} color="gray" />} onPress={() => navigation.toggleDrawer()} type="clear"/>
         }}/>
       </Stack.Navigator>
