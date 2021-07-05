@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Header, Text, Slider } from 'react-native-elements';
-import CIEView from '../../Components/Scopes/CIEView';
+import { CIEView } from '../../Components/Scopes/CIEView';
 
 import { RGBtoXYZ } from '../../calculation/ColorSpaceTransform';
 import { RGBtoYCRCB, upscaleYCRCB } from '../../calculation/componentSignal';
@@ -30,6 +30,8 @@ export default function CIEScreen() {
     const [green, setGreen] = useState(0.5);
     const [blue, setBlue] = useState(0.5);
 
+    const [testSig, setTestSig] = useState([[100, 128, 128]]);
+
     const [bitDepth, setBitDepth] = useState(10);
     const [videoStandard, setVideoStandard] = useState("709");
 
@@ -44,9 +46,9 @@ export default function CIEScreen() {
 
     return (
       <View style={{ flex: 1}}>
-        <CIEView XYZ={XYZ} signalYCRCB={signalYCRCB}/>
-
-
+        <CIEView signalYCRCB={signalYCRCB}/>
+        <Text>Signal: {testSig}</Text>
+        <YCrCbGenerator setSignal={(x) => setTestSig(x)}/>
 
 
       </View>

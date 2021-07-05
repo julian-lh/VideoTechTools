@@ -125,15 +125,14 @@ function Camera(props) {
     return <orthographicCamera ref={cam} zoom={170} near={0.0} {...props} />
   }
 
- const CIEView = (props) => {
+ export const CIEView = (props) => {
     //const [posY, setPosY] = useState(0);
     const [camPos, setCamPos] = useState([1.1, 1.1, 1.1]);
     const [bitDepth, setBitDepth] = useState(10);
+
     const videoStandards = ["601", "709", "2020"];
     const [vidStdIdx, setVidStdIdx] = useState(0);
     const switchVidStd = () => {vidStdIdx < 2 ? setVidStdIdx(vidStdIdx + 1) : setVidStdIdx(0)};
-
-    //const xyz =  XYZtoxyz(props.XYZ);
 
     const largeYCRCB = props.signalYCRCB[0];
     const smallYCRCB = downscaleYCRCB(largeYCRCB, bitDepth);
@@ -144,7 +143,6 @@ function Camera(props) {
     return (
       <View style={{flex: 1}}>
         <View style={{flex: 1}}>
-
           <Canvas style={{ zIndex: 0, flex: 1, backgroundColor: '#eee', minWidth: 20, minHeight: 20}}>
               <Camera position={camPos} />
               <ambientLight/>
@@ -153,15 +151,19 @@ function Camera(props) {
               <COS />
               <CIEBounds />
           </Canvas>
-          <View style={{ position: 'absolute', zIndex: 1, top: "2%", right:0, minWidth: 50, minHeight: 10, height: "25%", padding: 10}}>
-            <View style={{ backgroundColor: '#292', minWidth: 100, minHeight: 60, width: "30%", aspectRatio: 1.78, padding: 10}}>
-              <Text>Platzhalter Signal-Vorschau</Text>
+
+          <View style={{ position: 'absolute', zIndex: 1, top: 0}}>
+            <Text style={{ color: '#555', padding: 10}}>x: {xyz[0].toFixed(4)} {"\n"}y: {xyz[1].toFixed(4)}{"\n"}Y: {XYZ[1].toFixed(4)}</Text>
+          </View>
+
+          <View style={{ position: 'absolute', zIndex: 1, top: 5, right:0, minWidth: 50, minHeight: 10, height: "25%", padding: 10}}>
+            <View style={{ backgroundColor: ("rgb("+RGB[0]*255+", "+RGB[1]*255+", "+RGB[2]*255+")"), minWidth: 100, minHeight: 60, width: "30%", aspectRatio: 1.78}}>
+              <Text style={{ padding: 8 }}>Platzhalter Signal-Vorschau</Text>
             </View>
             <Button style={{ padding: 5}} title={"Rec." + videoStandards[vidStdIdx]} onPress={switchVidStd}></Button>
           </View>
-        </View>
-          <Text style={{backgroundColor: '#222', color: '#fff'}}>x: {xyz[0]} y: {xyz[1]}</Text>
-          <View style={{ flexDirection: "row", justifyContent: 'space-around' }}>
+
+          <View style={{ position: 'absolute', zIndex: 1, bottom: 0, width: "100%", flexDirection: "row", justifyContent: 'space-around' }}>
             <Button title="X-Y" onPress={()=>setCamPos([0.5, 0.5, 1.1])}></Button>
             <Button title="X-Z" onPress={()=>setCamPos([0.5, 1.1, 0.5])}></Button>
             <Button title="Z-Y" onPress={()=>setCamPos([1.1, 0.5, 0.5])}></Button>
@@ -169,12 +171,10 @@ function Camera(props) {
             <Button title="Perspective" onPress={()=>setCamPos([1.2, 1.2, 1.2])}></Button>
 
           </View>
+        </View>
+
+
 
         </View>
-    ); //<Text style={{backgroundColor: '#222', color: '#fff'}}>X: {props.XYZ[0].toFixed(2)}, Y: {props.XYZ[1].toFixed(2)}, Z: {props.XYZ[2].toFixed(2)}</Text>
-
-    //<Box position={[1, posY, 0]} positionY={posY} name={'box1'}/>
-    //<Button title="up" onPress={()=>setPosY(posY + 0.1)}></Button>
+    );
 }
-
-export default CIEView;
