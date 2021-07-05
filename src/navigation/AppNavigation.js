@@ -33,52 +33,53 @@ export default function Navigation() {
                   let iconName;
 
                   switch (route.name) {
-                  case "Abbildung":
+                    case "Abbildung":
+                        iconName = focused
+                        ? 'image'
+                        : 'image-outline';
+                        break;
+                    case "Abtastung":
+                        iconName = focused
+                        ? 'analytics'
+                        : 'analytics-outline';
+                        break;
+                    case "Messung":
+                        iconName = focused
+                        ? 'pulse'
+                        : 'pulse-outline';
+                        break;
+                    case "Signalpegel":
+                        iconName = focused
+                        ? 'sunny'
+                        : 'sunny-outline';
+                        break;
+                    case "CIE xy 1931":
+                        iconName = focused
+                        ? 'color-palette'
+                        : 'color-palette-outline';
+                        break;
+                    case "Vectorscope":
+                        iconName = focused
+                        ? 'color-palette'
+                        : 'color-palette-outline';
+                        break;
+                    default:
                       iconName = focused
-                      ? 'image'
-                      : 'image-outline';
-                      break;
-                  case "Abtastung":
-                      iconName = focused
-                      ? 'analytics'
-                      : 'analytics-outline';
-                      break;
-                  case "Messung":
-                      iconName = focused
-                      ? 'pulse'
-                      : 'pulse-outline';
-                      break;
-                  case "Signalpegel":
-                      iconName = focused
-                      ? 'sunny'
-                      : 'sunny-outline';
-                      break;
-                  case "CIE xy 1931":
-                      iconName = focused
-                      ? 'color-palette'
-                      : 'color-palette-outline';
-                      break;
-                  case "Vectorscope":
-                      iconName = focused
-                      ? 'color-palette'
-                      : 'color-palette-outline';
-                      break;
-                  default:
-                    iconName = focused
-                      ? 'color-palette'
-                      : 'color-palette-outline';
-                  break;
+                        ? 'color-palette'
+                        : 'color-palette-outline';
+                    break;
                   }
 
                   // You can return any component that you like here!
                   return <Ionicons name={iconName} size={size} color={color} />;
               },
               })}>
+              <Drawer.Screen name="CIE xy 1931" component={StackWrap_CIEScreen} />
               <Drawer.Screen name="Abbildung" component={StackWrap_AbbildungScreen} />
               <Drawer.Screen name="Abtastung" component={StackWrap_AbtastungScreen} />
               <Drawer.Screen name="Messung" component={StackWrap_MessungScreen} />
               <Drawer.Screen name="Signalpegel" component={StackWrap_SignalpegelScreen} />
-              <Drawer.Screen name="CIE xy 1931" component={StackWrap_CIEScreen} />
+
               <Drawer.Screen name="Vectorscope" component={StackWrap_VectorscopeScreen} />
           </Drawer.Navigator>
       </NavigationContainer>

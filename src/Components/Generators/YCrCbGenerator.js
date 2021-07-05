@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Header, Text, Slider } from 'react-native-elements';
-import VectorscopeView from './VectorscopeView';
+//import VectorscopeView from './VectorscopeView';
 
 import { RGBtoXYZ } from '../../calculation/ColorSpaceTransform';
 
@@ -185,11 +185,12 @@ export default function YCrCbGenerator() {
 
     return (
       <View style={{ flex: 1}}>
-        <VectorscopeView RGB={RGB} style={{flex: 1}}/>
         <SignalPicker signal={RGB} newSignal={(x) => setRGB(x)} style={{flex: 1}}/>
       </View>
     );
   }
+  //        <VectorscopeView RGB={RGB} style={{flex: 1}}/>
+
         //<SignalGenerator RGB={RGB} valueChange={(x) => setRGB(x)}/>
 
 /*<View style={{ flexDirection: 'row', justifyContent: 'space-around', backgroundColor: '#ccc', paddingVertical: 5}}>
