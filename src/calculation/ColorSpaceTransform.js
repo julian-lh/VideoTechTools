@@ -1,46 +1,46 @@
 
-function rgbToXYZ(rgb_array, colorSpace = 'sRGB') {
-    // ACHTUNG!! Rec.-Matrizen sind 2D!! Muss noch angepasst werden!!
+export function RGBtoXYZ(rgb_array, colorSpace = "709") {
     var mtx = new Array(9).fill(1);
 
     switch (colorSpace) {
-        case "sRGB":
-            mtx =  [0.4124564, 0.3575761, 0.1804375,
-                    0.2126729, 0.7151522, 0.0721750,
-                    0.0193339, 0.1191920, 0.9503041]
+        /*case "sRGB":
+            mtx =  [[0.4124564, 0.3575761, 0.1804375],
+                    [0.2126729, 0.7151522, 0.0721750],
+                    [0.0193339, 0.1191920, 0.9503041]]
             //https://www.image-engineering.de/library/technotes/958-how-to-convert-between-srgb-and-ciexyz
-            break;
-        case "Rec.601 (625)":
+            break;*/
+        case "601":
             mtx =   [[0.43061903350970027, 0.34154191225749564, 0.1783090542328042],
                     [0.2220379391534392, 0.7066384391534393, 0.07132362169312167],
                     [0.02018526719576718, 0.12955038051146386, 0.9390943522927688]]
             break;
-        case "Rec.709":
+        case ("709"|| "sRGB"):
             mtx =   [[0.4124564390896923, 0.357576077643909, 0.18043748326639894],
                     [0.2126728514056226, 0.715152155287818, 0.07217499330655958],
                     [0.019333895582329307, 0.11919202588130297, 0.9503040785363679]]
             break;
-        case "Rec.2020":
+        case "2020":
             mtx =   [[0.637010191411101, 0.14461502739696924, 0.16884478119192986],
                     [0.26272171736164057, 0.6779892755022617, 0.059289007136097506],
                     [4.994515405547194e-17, 0.0280723288476469, 1.0607576711523532]]
             break;
     }
 
-    const X = mtx[0] * rgb_array[0] + mtx[1] * rgb_array[1] + mtx[2] * rgb_array[2];
-    const Y = mtx[3] * rgb_array[0] + mtx[4] * rgb_array[1] + mtx[5] * rgb_array[2];
-    const Z = mtx[6] * rgb_array[0] + mtx[7] * rgb_array[1] + mtx[8] * rgb_array[2];
+    const X = mtx[0][0] * rgb_array[0] + mtx[0][1] * rgb_array[1] + mtx[0][2] * rgb_array[2];
+    const Y = mtx[1][0] * rgb_array[0] + mtx[1][1] * rgb_array[1] + mtx[1][2] * rgb_array[2];
+    const Z = mtx[2][0] * rgb_array[0] + mtx[2][1] * rgb_array[1] + mtx[2][2] * rgb_array[2];
     return [X, Y, Z];
 };
 
-function XYZtoxyz(XYZ_array = [0, 0, 1]) {
+export function XYZtoxyz(XYZ_array = [0, 0, 1]) {
     const x = XYZ_array[0] / (XYZ_array[0] + XYZ_array[1] + XYZ_array[2]);
     const y = XYZ_array[1] / (XYZ_array[0] + XYZ_array[1] + XYZ_array[2]);
     const z = XYZ_array[2] / (XYZ_array[0] + XYZ_array[1] + XYZ_array[2]);
     return [x, y, z];
 };
 
-function rgbToL(rgb_array, colorSpace = 'sRGB') {
+/*
+export function rgbToL(rgb_array, colorSpace = 'sRGB') {
     var mtx = new Array(3).fill(1);
 
     switch (colorSpace) {
@@ -52,23 +52,26 @@ function rgbToL(rgb_array, colorSpace = 'sRGB') {
     const L = mtx[0] * rgb_array[0] + mtx[1] * rgb_array[1] + mtx[2] * rgb_array[2];
     return L;
 };
+*/
 
-function rgbToYUV(rgb_array = [0, 0, 0]){
+export function RGBtoYUV(rgb_array = [0, 0, 0]){
     const Y = 0.299 * rgb_array[0] + 0.587 * rgb_array[1] + 0.114 * rgb_array[2];
     const U = 0.493 * (rgb_array[2] - Y);
     const V = 0.877 * (rgb_array[0] - Y);
     return [Y, U, V];
 };
 
-function generateRGBToXYZMatrix(rx, ry, gx, gy, bx, by) {
+
+/*
+export function generateRGBToXYZMatrix(rx, ry, gx, gy, bx, by) {
     // Quelle: http://www.brucelindbloom.com/index.html?Eqn_RGB_XYZ_Matrix.html
     const X = (x, y) => x/y;
     const Y = () => 1;
     const Z = (x, y) => (1 - x - y)/y;
 
 }
-
-const CIEBoundsValues = [[360, 0.175560, 0.005294, 0.819146],
+*/
+export const CIEBoundsValues = [[360, 0.175560, 0.005294, 0.819146],
                     [365, 0.175161, 0.005256, 0.819582],
                     [370, 0.174821, 0.005221, 0.819959],
                     [375, 0.174510, 0.005182, 0.820309],
@@ -163,6 +166,3 @@ const CIEBoundsValues = [[360, 0.175560, 0.005294, 0.819146],
                     [820, 0.734690, 0.265310, 0.000000],
                     [825, 0.734690, 0.265310, 0.000000],
                     [830, 0.734690, 0.265310, 0.000000]];
-
-
-export{rgbToXYZ, XYZtoxyz, rgbToL, rgbToYUV, CIEBoundsValues};

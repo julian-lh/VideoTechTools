@@ -3,7 +3,8 @@ import { StyleSheet, View } from 'react-native';
 import { Button, Header, Text, Slider } from 'react-native-elements';
 import CIEView from '../../Components/Scopes/CIEView';
 
-import { rgbToXYZ } from '../../calculation/ColorSpaceTransform';
+import { RGBtoXYZ } from '../../calculation/ColorSpaceTransform';
+import { RGBtoYCRCB, upscaleYCRCB } from '../../calculation/componentSignal';
 
 const ColorSelector = (props) => {
     return (
@@ -22,18 +23,26 @@ const ColorSelector = (props) => {
     );
 }
 
-export default function FarbsystemeScreen() {
+export default function CIEScreen() {
     const [red, setRed] = useState(0.5);
     const [green, setGreen] = useState(0.5);
     const [blue, setBlue] = useState(0.5);
+
+    const [bitDepth, setBitDepth] = useState(8);
+    const [videoStandard, setVideoStandard] = useState("709");
+
     const [colorSpaceIndex, setColorSpaceIndex] = useState(0);
     const colorSpaces = ['sRGB', 'Adobe RGB', 'rec709', 'rec2020'];
 
-    const XYZ = rgbToXYZ([red, green, blue]);
+    const smallYCRCB = RGBtoYCRCB([red, green, blue], videoStandard);
+    const largeYCRCB = upscaleYCRCB(smallYCRCB, bitDepth);
+    const signalYCRCB = [largeYCRCB];
+
+    const XYZ = RGBtoXYZ([red, green, blue]);
 
     return (
       <View style={{ flex: 1}}>
-        <CIEView XYZ={XYZ} />
+        <CIEView XYZ={XYZ} signalYCRCB={signalYCRCB}/>
 
         <View style={styles.colorPicker}>
             <ColorSelector label='R' thumbTintColor='red' value={red} valueChange={(x) => setRed(x)}/>

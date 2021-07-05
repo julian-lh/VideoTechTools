@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { Button, Header, Text, Slider } from 'react-native-elements';
 import VectorscopeView from './VectorscopeView';
 
-import { rgbToXYZ } from '../../calculation/ColorSpaceTransform';
+import { RGBtoXYZ } from '../../calculation/ColorSpaceTransform';
 
 const ColorSelector = (props) => {
     return (

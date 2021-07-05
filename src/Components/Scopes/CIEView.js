@@ -2,8 +2,9 @@ import React, {useRef, useState, useEffect, useMemo} from 'react';
 import { SafeAreaView, Button, View, Text } from 'react-native';
 import { Canvas, useFrame, useThree, extend} from 'react-three-fiber';
 import * as THREE from 'three';
-import { XYZtoxyz, CIEBoundsValues} from '../../calculation/ColorSpaceTransform';
+import { RGBtoXYZ, XYZtoxyz, CIEBoundsValues} from '../../calculation/ColorSpaceTransform';
 
+import { YCRCBtoRGB, downscaleYCRCB } from '../../calculation/componentSignal';
 
 const Box = (props) => {
     const mesh = useRef();
@@ -28,12 +29,12 @@ const Box = (props) => {
       //mesh.meshStandardMaterial.color = new THREE.Color(pos.x, pos.y,"xyz");
 
     });
-    var red_val = (props.position[0] ? props.position[0] * 255 : 0).toFixed(0);
-    var green_val = (props.position[1] ? props.position[1] * 255 : 0).toFixed(0);
-    var blue_val = (props.position[2] ? props.position[2] * 255 : 0).toFixed(0);
+    var red_val = (props.RGB[0] ? Math.abs(props.RGB[0]) * 255 : 0).toFixed(0);
+    var green_val = (props.RGB[1] ? Math.abs(props.RGB[1]) * 255 : 0).toFixed(0);
+    var blue_val = (props.RGB[2] ? Math.abs(props.RGB[2]) * 255 : 0).toFixed(0);
 
     return (
-      <mesh ref={mesh} position={props.position}>
+      <mesh ref={mesh} position={props.xyY}>
         <boxBufferGeometry args={[0.1, 0.1, 0.1]} />
         <meshStandardMaterial color={("rgb(" + red_val + ", " + green_val + ", " + blue_val + ")")}/>
       </mesh>
@@ -127,16 +128,27 @@ function Camera(props) {
  const CIEView = (props) => {
     //const [posY, setPosY] = useState(0);
     const [camPos, setCamPos] = useState([1.1, 1.1, 1.1]);
+    const [bitDepth, setBitDepth] = useState(8);
+    const videoStandards = ["601", "709", "2020"];
+    const [vidStdIdx, setVidStdIdx] = useState(0);
+    const switchVidStd = () => {vidStdIdx < 2 ? setVidStdIdx(vidStdIdx + 1) : setVidStdIdx(0)};
 
-    const xyz =  XYZtoxyz(props.XYZ);
+    //const xyz =  XYZtoxyz(props.XYZ);
+
+    const largeYCRCB = props.signalYCRCB[0];
+    const smallYCRCB = downscaleYCRCB(largeYCRCB, bitDepth);
+    const RGB = YCRCBtoRGB(smallYCRCB, videoStandards[vidStdIdx]);
+    const XYZ = RGBtoXYZ(RGB, videoStandards[vidStdIdx]);
+    const xyz = XYZtoxyz(XYZ);
 
     return (
         <>
+        <Button title={"Rec." + videoStandards[vidStdIdx]} onPress={switchVidStd}></Button>
           <Canvas style={{backgroundColor: '#222'}}>
               <Camera position={camPos} />
               <ambientLight/>
               <pointLight position={[-1,1,1]} castShadow/>
-              <BoxColorful position={xyz} name={'box1'}/>
+              <BoxColorful xyY={[xyz[0], xyz[1], XYZ[1]]} RGB={RGB} name={'box1'}/>
               <COS />
               <CIEBounds />
           </Canvas>
