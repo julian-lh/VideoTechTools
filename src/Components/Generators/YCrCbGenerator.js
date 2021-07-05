@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Header, Text, Slider } from 'react-native-elements';
 //import VectorscopeView from './VectorscopeView';
 
 import { RGBtoXYZ } from '../../calculation/ColorSpaceTransform';
+import { RGBtoYCRCB, upscaleYCRCB } from '../../calculation/componentSignal';
+
 
 const ColorSelector = (props) => {
     return (
@@ -65,33 +67,7 @@ const SignalPreview = (props) => {
         </View>
       );
 }
-/*
-const signalPreview = (props) => {
-    const mesh = useRef();
-    const shape = useMemo(() => {
-        const s = new THREE.Shape();
-        s.moveTo(props.YUV[0][1], props.YUV[0][2]);
-        for(let v of props.YUV) {
-          s.lineTo(v[1], v[2]);
-        }
-        //s.lineTo(CIEBoundsValues[0][1], CIEBoundsValues[0][2], CIEBoundsValues[0][3]);
-        return s;
-      }, [props.YUV])
 
-    //const geometry = new THREE.ShapeGeometry( shape );
-    //shape.autoClose = true;
-      const points = shape.getPoints();
-      //const spacedPoints = shape.getSpacedPoints( 0.1 );
-      const geometryPoints = new THREE.BufferGeometry().setFromPoints( points );
-      //const geometrySpacedPoints = new THREE.BufferGeometry().setFromPoints( spacedPoints );
-
-    return (
-      <line ref={mesh} position={[0, 0, 0]} geometry={geometryPoints}>
-        <lineBasicMaterial color="#0c0" />
-      </line>
-    );
-  }
-*/
 function videoBarsSignal(width = 8, height = 1){
     // zum Daten-Sparen nur 192 anstatt 1920
     const signalWidth = width;
@@ -173,25 +149,36 @@ const SignalPicker = (props) => {
 
 
 
-export default function YCrCbGenerator() {
+ export const YCrCbGenerator = (props) => {
     const [red, setRed] = useState(0.5);
     const [green, setGreen] = useState(0.5);
     const [blue, setBlue] = useState(0.5);
+    const [testSig, setTestSig] = useState([[100, 128, 128]]);
+
+
+    const [bitDepth, setBitDepth] = useState(10);
+    const [videoStandard, setVideoStandard] = useState("709");
 
     const [RGB, setRGB] = useState([[0.0, 0.0, 0.0], [0.0, 1.0, 1.0], [0.0, 1.0, 0.0], [0.5, 1.0, 1.0]]);
 
-    //const [colorSpaceIndex, setColorSpaceIndex] = useState(0);
-    //const colorSpaces = ['sRGB', 'Adobe RGB', 'rec709', 'rec2020'];
+
+    const smallYCRCB = RGBtoYCRCB([red, green, blue], videoStandard);
+    const largeYCRCB = upscaleYCRCB(smallYCRCB, bitDepth);
+    const signalYCRCB = [largeYCRCB];
+
+    useEffect(() => {
+        props.setSignal(signalYCRCB);
+   }, [red, green, blue]);
 
     return (
       <View style={{ flex: 1}}>
+        <Button title="Test" onPress={() => setRed(red + 0.1)}></Button>
+        <Text>{signalYCRCB[0]}</Text>
         <SignalPicker signal={RGB} newSignal={(x) => setRGB(x)} style={{flex: 1}}/>
       </View>
     );
   }
-  //        <VectorscopeView RGB={RGB} style={{flex: 1}}/>
 
-        //<SignalGenerator RGB={RGB} valueChange={(x) => setRGB(x)}/>
 
 /*<View style={{ flexDirection: 'row', justifyContent: 'space-around', backgroundColor: '#ccc', paddingVertical: 5}}>
 <Button title='RGB/HSV'/>
