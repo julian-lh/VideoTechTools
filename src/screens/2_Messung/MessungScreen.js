@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useState } from "react";
 import { Text, View, Button } from 'react-native';
 import { Header } from 'react-native-elements';
-import WaveformMonitor from '../../ThreeJSViews/Scopes/WaveformMonitor';
+import WaveformMonitor from '../../Components/Scopes/WaveformMonitor';
 
 export default function MessungScreen() {
     const [test, setTest] = useState([22, 32]);

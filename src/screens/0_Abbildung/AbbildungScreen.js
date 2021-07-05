@@ -3,7 +3,7 @@ import { styles } from './AbbildungStyles';
 import { StyleSheet, View, TextInput, ScrollView } from 'react-native';
 import { Button, Header, Text } from 'react-native-elements';
 import { Camera } from '../../calculation/cameraDistance';
-import ViewingAngleSimulator from '../../ThreeJSViews/ViewingAngleSimulator';
+import ViewingAngleSimulator from '../../Components/ViewingAngleSimulator';
 //import { data } from './cameraData.json';
 import {useState} from 'react';
 
