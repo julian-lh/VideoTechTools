@@ -50,10 +50,10 @@ const SamplingRateElement = (props) => {
 
 export default function AbtastungScreen() {
   const [selectedChannel, setSelectedChannel] = useState(0);
+//      <Header centerComponent={{ text: 'UNTERABTASTUNG', style: { color: '#fff', fontWeight: 'bold', fontSize: 20 } }} />
 
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Header centerComponent={{ text: 'UNTERABTASTUNG', style: { color: '#fff', fontWeight: 'bold', fontSize: 20 } }} />
       <ScrollView  contentContainerStyle={{flex: 1}} style={{width: "100%"}}>
 
         <Image
@@ -68,6 +68,7 @@ export default function AbtastungScreen() {
     </View>
   );
 }
+
 
 const styles = StyleSheet.create({
   image: {
