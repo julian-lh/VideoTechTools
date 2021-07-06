@@ -127,7 +127,7 @@ function Camera(props) {
 
  export const CIEView = (props) => {
     //const [posY, setPosY] = useState(0);
-    const [largePreview, setLargePreview] = useState(true);
+    const [largePreview, setLargePreview] = useState(false);
     const togglePreviewSize = () => setLargePreview(!largePreview);
     const [camPos, setCamPos] = useState([1.1, 1.1, 1.1]);
     const [bitDepth, setBitDepth] = useState(10);

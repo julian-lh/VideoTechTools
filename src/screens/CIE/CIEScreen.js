@@ -46,7 +46,7 @@ export default function CIEScreen() {
 
     return (
       <View style={{ flex: 1}}>
-        <CIEView signalYCRCB={signalYCRCB}/>
+        <CIEView signalYCRCB={testSig}/>
         <Text>Signal: {testSig}</Text>
         <YCrCbGenerator setSignal={(x) => setTestSig(x)}/>
 
