@@ -1,5 +1,5 @@
 import React, {useRef, useState, useEffect, useMemo} from 'react';
-import { SafeAreaView, Button, View, Text } from 'react-native';
+import { SafeAreaView, Button, View, Text, TouchableOpacity } from 'react-native';
 import { Canvas, useFrame, useThree, extend} from 'react-three-fiber';
 import * as THREE from 'three';
 import { RGBtoXYZ, XYZtoxyz, CIEBoundsValues} from '../../calculation/ColorSpaceTransform';
@@ -127,6 +127,8 @@ function Camera(props) {
 
  export const CIEView = (props) => {
     //const [posY, setPosY] = useState(0);
+    const [largePreview, setLargePreview] = useState(true);
+    const togglePreviewSize = () => setLargePreview(!largePreview);
     const [camPos, setCamPos] = useState([1.1, 1.1, 1.1]);
     const [bitDepth, setBitDepth] = useState(10);
 
@@ -156,10 +158,10 @@ function Camera(props) {
             <Text style={{ color: '#555', padding: 10}}>x: {xyz[0].toFixed(4)} {"\n"}y: {xyz[1].toFixed(4)}{"\n"}Y: {XYZ[1].toFixed(4)}</Text>
           </View>
 
-          <View style={{ position: 'absolute', zIndex: 1, top: 5, right:0, minWidth: 50, minHeight: 10, height: "25%", padding: 10}}>
-            <View style={{ backgroundColor: ("rgb("+RGB[0]*255+", "+RGB[1]*255+", "+RGB[2]*255+")"), minWidth: 100, minHeight: 60, width: "30%", aspectRatio: 1.78}}>
+          <View style={{ position: 'absolute', zIndex: 1, alignContent: "flex-right",top: 5, right:0, minWidth: 50, minHeight: 10, padding: 10}}>
+            <TouchableOpacity style={{ backgroundColor: ("rgb("+RGB[0]*255+", "+RGB[1]*255+", "+RGB[2]*255+")"), minWidth: 20, minHeight:(largePreview ? 100 : 40), width: (largePreview ? "60%" : "20%"), aspectRatio: 1.78}} onPress={togglePreviewSize}>
               <Text style={{ padding: 8 }}>Platzhalter Signal-Vorschau</Text>
-            </View>
+            </TouchableOpacity>
             <Button style={{ padding: 5}} title={"Rec." + videoStandards[vidStdIdx]} onPress={switchVidStd}></Button>
           </View>
 
