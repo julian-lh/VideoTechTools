@@ -35,7 +35,7 @@ const Box = (props) => {
 
     return (
       <mesh ref={mesh} position={props.xyY}>
-        <boxBufferGeometry args={[0.1, 0.1, 0.1]} />
+        <boxBufferGeometry args={[0.03, 0.03, 0.03]} />
         <meshStandardMaterial color={("rgb(" + red_val + ", " + green_val + ", " + blue_val + ")")}/>
       </mesh>
     )

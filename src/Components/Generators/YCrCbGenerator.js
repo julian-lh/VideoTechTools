@@ -1,11 +1,9 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Button} from 'react-native';
-import {  Header, Text, Slider } from 'react-native-elements';
-//import VectorscopeView from './VectorscopeView';
+import { Text, Slider } from 'react-native-elements';
 
-import { RGBtoXYZ } from '../../calculation/ColorSpaceTransform';
 import { cvtSignalRGBtoYCRCB, upscaleSignalYCRCB } from '../../calculation/componentSignal';
-import {generateRGBSignalFullColor,  generateRGBSignalGradient, generateRGBSignalBars, modifySignalSubPixel} from '../../calculation/signalGenerator';
+import { generateRGBSignalFullColor,  generateRGBSignalGradient, generateRGBSignalBars, offsetSignalContrast, offsetSignalBrightness, offsetSignalGamma } from '../../calculation/signalGenerator';
 
 const ColorSelector = (props) => {
     return (
@@ -148,8 +146,8 @@ const SignalPicker = (props) => {
 
     const [bitDepth, setBitDepth] = useState(10);
     const [videoStandard, setVideoStandard] = useState("709");
-    const [width, setWidth] = useState(16);
-    const [height, setHeight] = useState(9);
+    //const [width, setWidth] = useState(8);
+    //const [height, setHeight] = useState(1);
 
     const [pageID, setPageID] = useState(0);
     const [generatorIdx, setGeneratorIdx] = useState(0);
@@ -173,34 +171,48 @@ const SignalPicker = (props) => {
     var signalRGB = [[0, 0, 0]];
 
     switch(generatorIdx) {
+        //Due to performance limitations: Signalresolution only on necessary resolution
         case 0:
-            signalRGB = generateRGBSignalBars(width, height);
+            signalRGB = generateRGBSignalBars(8, 1);
             break;
         case 1:
-            signalRGB = generateRGBSignalFullColor([red, green, blue], width, height);
+            signalRGB = generateRGBSignalFullColor([red, green, blue], 1, 1);
             break;
         case 2:
-            signalRGB = generateRGBSignalGradient([red, green, blue],[red, green, blue],"horizontal", width, height);
+            signalRGB = generateRGBSignalGradient([red, green, blue],[red, green, blue],"horizontal", 8, 1);
             break;
     }
 
     const [fStopOffset, setFStopOffset] = useState(1); //[0...2]
 
     const [contrastOffset, setContrastOffset] = useState(1); //[0...2]
-    const [brightnessOffset, setBrightnessOffset] = useState(1); //[-2...2]
+    const [brightnessOffset, setBrightnessOffset] = useState(0); //[-2...2]
     const [gammaOffset, setGammaOffset] = useState(1); //[-3...3]
 
     // Blendenschieber
-    
+
+
+    // Modifizieren
+
+
+    signalRGB = (contrastOffset != 1 ? offsetSignalContrast(signalRGB, contrastOffset) : signalRGB);
+    signalRGB = (brightnessOffset != 0 ? offsetSignalBrightness(signalRGB, brightnessOffset) : signalRGB);
+    signalRGB = offsetSignalGamma(signalRGB, gammaOffset);
+
 
     // gesamt-Offset berechnen
 
     const signalSmallYCRCB = cvtSignalRGBtoYCRCB(signalRGB, videoStandard);
     const signalYCRCB = upscaleSignalYCRCB(signalSmallYCRCB, bitDepth);
 
+    /*
     useEffect(() => {
         props.setSignal(signalYCRCB);
    }, [red, green, blue, generatorIdx]);
+*/
+    useEffect(() => {
+        props.setSignal(signalYCRCB);
+    },[brightnessOffset, generatorIdx]);
 
     return (
       <View style={{ flex: 1, alignItems: "center"}}>
@@ -213,6 +225,14 @@ const SignalPicker = (props) => {
             <Button title="Einfarbig" onPress={()=>setGeneratorIdx(1)} color={(generatorIdx == 1 ? "orange" : "gray")}></Button>
             <Button title="Verlauf" onPress={()=>setGeneratorIdx(2)} color={(generatorIdx == 2 ? "orange" : "gray")}></Button>
         </View>
+
+        <View style={{ backgroundColor: "#ffffff", width: "50%", flexDirection: "row", justifyContent: 'space-around', alignItems: "center"}}>
+            <Button title="-" onPress={()=>setBrightnessOffset(Math.round((brightnessOffset - 0.05)*100)/100)} color={"black"}></Button>
+            <Text>{brightnessOffset.toFixed(2)}</Text>
+            <Button title="+" onPress={()=>setBrightnessOffset(Math.round((brightnessOffset + 0.05)*100)/100)} color={"black"}></Button>
+        </View>
+
+
         <Text>{signalYCRCB[0]}</Text>
 
       </View>
@@ -257,6 +277,7 @@ const SignalPicker = (props) => {
       },
       inputElementSlider:{
         flex: 1,
+        width: 200
       },
       inputElementSliderThumb:{
         width: 20,
