@@ -1,13 +1,13 @@
 
-export function offsetContrast(pixelValue = [0, 0, 0], m = 1) {
+function offsetContrast(pixelValue = [0, 0, 0], m = 1) {
     return pixelValue.map(x => x * m);
 }
 
-export function offsetBrightness(pixelValue = [0, 0, 0], b = 1) {
+function offsetBrightness(pixelValue = [0, 0, 0], b = 0) {
     return pixelValue.map(x => x + b);
 }
 
-export function offsetGamma(pixelValue = [0, 0, 0], gamma = 1, maxValue = 1) {
+function offsetGamma(pixelValue = [0, 0, 0], gamma = 1, maxValue = 1) {
     return pixelValue.map(x => (x/maxValue) ** gamma);
 }
 
@@ -16,7 +16,7 @@ export function offsetSignalContrast(signalRGB, m = 1) {
     return signalRGB.map( x => x.map( y => offsetContrast(y, m)));
 }
 
-export function offsetSignalBrightness(signalRGB, b = 1) {
+export function offsetSignalBrightness(signalRGB, b = 0) {
     return signalRGB.map( x => x.map( y => offsetBrightness(y, b)));
 }
 
