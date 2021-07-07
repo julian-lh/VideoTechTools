@@ -194,7 +194,7 @@ const SignalPicker = (props) => {
 
     // Modifizieren
 
-
+    // Operationen nur anwenden wenn verwendet
     signalRGB = (contrastOffset != 1 ? offsetSignalContrast(signalRGB, contrastOffset) : signalRGB);
     signalRGB = (brightnessOffset != 0 ? offsetSignalBrightness(signalRGB, brightnessOffset) : signalRGB);
     signalRGB = offsetSignalGamma(signalRGB, gammaOffset);
