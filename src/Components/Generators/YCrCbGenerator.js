@@ -168,7 +168,7 @@ const SignalPicker = (props) => {
     const [green, setGreen] = useState(0.5);
     const [blue, setBlue] = useState(0.5);
 
-    var signalRGB = [[0, 0, 0]];
+    var signalRGB = [[[0, 0, 0]]];
 
     switch(generatorIdx) {
         //Due to performance limitations: Signalresolution only on necessary resolution
@@ -179,7 +179,7 @@ const SignalPicker = (props) => {
             signalRGB = generateRGBSignalFullColor([red, green, blue], 1, 1);
             break;
         case 2:
-            signalRGB = generateRGBSignalGradient([red, green, blue],[red, green, blue],"horizontal", 8, 1);
+            signalRGB = generateRGBSignalGradient([red, green, blue],[1, 1, 1], 8, 8, "horizontal");
             break;
     }
 
@@ -234,6 +234,8 @@ const SignalPicker = (props) => {
 
 
         <Text>{signalYCRCB[0]}</Text>
+        <Text>{"-----"}</Text>
+        <Text>{signalYCRCB[1]}</Text>
 
       </View>
     );
