@@ -4,7 +4,7 @@ import { Canvas, useFrame, useThree, extend} from 'react-three-fiber';
 import * as THREE from 'three';
 import { RGBtoXYZ, XYZtoxyz, CIEBoundsValues} from '../../calculation/ColorSpaceTransform';
 
-import { YCRCBtoRGB, downscaleYCRCB } from '../../calculation/componentSignal';
+import { cvtSignalYCRCBtoRGB, downscaleSignalYCRCB } from '../../calculation/componentSignal';
 
 const Box = (props) => {
     const mesh = useRef();
@@ -136,9 +136,14 @@ function Camera(props) {
     const [vidStdIdx, setVidStdIdx] = useState(1);
     const switchVidStd = () => {vidStdIdx < 2 ? setVidStdIdx(vidStdIdx + 1) : setVidStdIdx(0)};
 
-    const largeYCRCB = props.signalYCRCB[0];
-    const smallYCRCB = downscaleYCRCB(largeYCRCB, bitDepth);
-    const RGB = YCRCBtoRGB(smallYCRCB, videoStandards[vidStdIdx]);
+    //const largeYCRCB = props.signalYCRCB[0];
+    //const smallYCRCB = downscaleYCRCB(largeYCRCB, bitDepth);
+    const signalYCRCB = props.signalYCRCB;
+    const smallSignalYCRCB = downscaleSignalYCRCB(signalYCRCB, bitDepth);
+    const signalRGB = cvtSignalYCRCBtoRGB(smallSignalYCRCB, videoStandards[vidStdIdx]);
+
+    const RGB = signalRGB[0][0]; //Erstmal nur einzelnes Pixel
+
     const XYZ = RGBtoXYZ(RGB, videoStandards[vidStdIdx]);
     const xyz = XYZtoxyz(XYZ);
 

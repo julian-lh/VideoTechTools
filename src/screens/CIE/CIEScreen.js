@@ -3,9 +3,6 @@ import { StyleSheet, View } from 'react-native';
 import { Button, Header, Text, Slider } from 'react-native-elements';
 import { CIEView } from '../../Components/Scopes/CIEView';
 
-import { RGBtoXYZ } from '../../calculation/ColorSpaceTransform';
-import { RGBtoYCRCB, upscaleYCRCB } from '../../calculation/componentSignal';
-
 import { YCrCbGenerator } from '../../Components/Generators/YCrCbGenerator'
 
 const ColorSelector = (props) => {
@@ -26,31 +23,13 @@ const ColorSelector = (props) => {
 }
 
 export default function CIEScreen() {
-  const [testSig, setTestSig] = useState([[100, 128, 128]]);
-
-  /*
-    const [red, setRed] = useState(0.5);
-    const [green, setGreen] = useState(0.5);
-    const [blue, setBlue] = useState(0.5);
-
-
-    const [bitDepth, setBitDepth] = useState(10);
-    const [videoStandard, setVideoStandard] = useState("709");
-
-    const [colorSpaceIndex, setColorSpaceIndex] = useState(0);
-    const colorSpaces = ['sRGB', 'Adobe RGB', 'rec709', 'rec2020'];
-
-    const smallYCRCB = RGBtoYCRCB([red, green, blue], videoStandard);
-    const largeYCRCB = upscaleYCRCB(smallYCRCB, bitDepth);
-    const signalYCRCB = [largeYCRCB];
-
-    const XYZ = RGBtoXYZ([red, green, blue]);*/
+  const [signalYCRCB, setSignalYCRCB] = useState([[[100, 128, 128]]]);
 
     return (
       <View style={{ flex: 1}}>
-        <CIEView signalYCRCB={testSig}/>
-        <Text>Signal: {testSig}</Text>
-        <YCrCbGenerator setSignal={(x) => setTestSig(x)}/>
+        <CIEView signalYCRCB={signalYCRCB}/>
+        <Text>Signal: {signalYCRCB[0][0]}</Text>
+        <YCrCbGenerator setSignal={(x) => setSignalYCRCB(x)}/>
 
 
       </View>

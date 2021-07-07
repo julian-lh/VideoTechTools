@@ -1,26 +1,11 @@
-/*
-export function RGBtoY(rgb, standard = "709") {
-    var rgbFactors = [1, 1, 1];
-
-    switch (standard){
-        case "601":
-            rgbFactors = [0.299, 0.587, 0.114];
-            break;
-        case "709":
-            rgbFactors = [0.2126, 0.7152, 0.0722];
-            break;
-        case "2020":
-            rgbFactors = [0.2627, 0.6780, 0.0593];
-            break;
-    }
-
-    const Y = rgb[0]*rgbFactors[0] + rgb[1]*rgbFactors[1] + rgb[2]*rgbFactors[2];
-    return Y;
-}
-*/
+// Collection of Component Signal Conversions
 
 
-export function RGBtoYCRCB(rgb, standard = "709") {
+// ----------------------------------------------------------------
+// ------------------- Single Value Basic Conversions -------------------
+
+
+export function cvtRGBtoYCRCB(rgb, standard = "709") {
     var rgbFactors = [1, 1, 1]; var crcbQuotients = [1, 1];
 
     switch (standard){
@@ -45,7 +30,7 @@ export function RGBtoYCRCB(rgb, standard = "709") {
     return [Y, Cr, Cb];
 }
 
-export function YCRCBtoRGB(YCrCb, standard = "709") {
+export function cvtYCRCBtoRGB(YCrCb, standard = "709") {
     var rgbFactors = [1, 1, 1]; var crcbQuotients = [1, 1];
 
     switch (standard){
@@ -70,8 +55,7 @@ export function YCRCBtoRGB(YCrCb, standard = "709") {
     return [R, G, B];
 }
 
-
-export function upscaleYCRCB(YCrCb, bitDepth = 8) {
+export function upscaleYCRCB(YCrCb, bitDepth = 10) {
     const bitFactor = 2**(bitDepth-8);
 
     // Rundung fuehrt zu Rundungsfehlern, ist aber in Standard so definiert
@@ -82,7 +66,7 @@ export function upscaleYCRCB(YCrCb, bitDepth = 8) {
     return [dY, dCr, dCb];
 }
 
-export function downscaleYCRCB(YCrCb, bitDepth = 8) {
+export function downscaleYCRCB(YCrCb, bitDepth = 10) {
     const bitFactor = 2**(bitDepth-8);
 
     const eY = ((YCrCb[0] / bitFactor) - 16) / 219;
@@ -90,4 +74,23 @@ export function downscaleYCRCB(YCrCb, bitDepth = 8) {
     const eCb = ((YCrCb[2] / bitFactor) - 128) / 224;
 
     return [eY, eCr, eCb];
+}
+
+// ----------------------------------------------------------------
+// ------------------- Image Signal Array Conversions -------------------
+
+export function cvtSignalRGBtoYCRCB(signalRGB, videoStandard = "709" ) {
+    return signalRGB.map( x => x.map( y => cvtRGBtoYCRCB(y, videoStandard)));
+}
+
+export function cvtSignalYCRCBtoRGB(signalYCRCB, videoStandard = "709" ) {
+    return signalYCRCB.map( x => x.map( y => cvtYCRCBtoRGB(y, videoStandard)));
+}
+
+export function upscaleSignalYCRCB(signalYCRCB, bitDepth = 10 ) {
+    return signalYCRCB.map( x => x.map( y => upscaleYCRCB(y, bitDepth)));
+}
+
+export function downscaleSignalYCRCB(signalYCRCB, bitDepth = 10 ) {
+    return signalYCRCB.map( x => x.map( y => downscaleYCRCB(y, bitDepth)));
 }

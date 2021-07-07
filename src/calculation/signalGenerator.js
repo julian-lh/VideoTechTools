@@ -1,15 +1,29 @@
 
-export function contrast(singal = [[0, 0, 0]], m = 1) {
-
+export function offsetContrast(pixelValue = [0, 0, 0], m = 1) {
+    return pixelValue.map(x => x * m);
 }
 
-export function brightness(singal = [[0, 0, 0]], b = 1) {
-
+export function offsetBrightness(pixelValue = [0, 0, 0], b = 1) {
+    return pixelValue.map(x => x + b);
 }
 
-export function gamma(singal = [[0, 0, 0]], gamma = 1) {
-
+export function offsetGamma(pixelValue = [0, 0, 0], gamma = 1, maxValue = 1) {
+    return pixelValue.map(x => (x/maxValue) ** gamma);
 }
+
+
+export function offsetSignalContrast(signalRGB, m = 1) {
+    return signalRGB.map( x => x.map( y => offsetContrast(y, m)));
+}
+
+export function offsetSignalBrightness(signalRGB, b = 1) {
+    return signalRGB.map( x => x.map( y => offsetBrightness(y, b)));
+}
+
+export function offsetSignalGamma(signalRGB, gamma = 1, maxValue = 1) {
+    return signalRGB.map( x => x.map( y => offsetGamma(y, gamma, maxValue)));
+}
+
 
 export function generateRGBSignalFullColor(valueRGB, width, height){
 
@@ -20,43 +34,6 @@ export function generateRGBSignalFullColor(valueRGB, width, height){
     }
     return signal;
 }
-
-/*
-export function generateBarsRGBSignal(width = 8, height = 1, type = "100/100"){
-    // zum Daten-Sparen nur 192 anstatt 1920
-    const signalWidth = width;
-    const signalHeight = height;
-    var signal = new Array(signalWidth * signalHeight);
-    // ITU 100/100 Bars
-    for (var i = 0; i < signalHeight; i++) { //alle Zeilen
-        for (var j = 0; j < signalWidth; j++){  //alle Spalten
-
-            const barWidth = signalWidth/8;
-            var color = [1.0, 0.0, 0.0];
-            if (j < barWidth){
-                color = [1.0, 1.0, 1.0];
-            }else if (j < barWidth * 2){
-                color = [1.0, 1.0, 0.0];
-            }else if (j < barWidth * 3){
-                color = [0.0, 1.0, 1.0];
-            }else if (j < barWidth * 4){
-                color = [0.0, 1.0, 0.0];
-            }else if (j < barWidth * 5){
-                color = [1.0, 0.0, 1.0];
-            }else if (j < barWidth * 6){
-                color = [1.0, 0.0, 0.0];
-            }else if (j < barWidth * 7){
-                color = [0.0, 0.0, 1.0];
-            }else {
-                color = [0.0, 0.0, 0.0];
-            }
-            var pixelIdx = (i * signalWidth + j);
-            signal[pixelIdx] = color;
-        }
-    }
-    return signal;
-}
-*/
 
 export function generateRGBSignalBars(width = 8, height = 1, type = "100/100"){
     var signal = new Array(height);
@@ -135,7 +112,7 @@ export function modifySignalPixel(signal, operation) {
 }
 
 // applies operation to every subpixel of a 2D-signal-Array
-export function modifySignalSubPixel(signal, operation) {
-    const result = signal.map( x => x.map(operation));
+export function modifySignalSubPixel(signal, operation, ...args) {
+    const result = signal.map( x => x.map( y => operation(y, args)));
     return result;
 }

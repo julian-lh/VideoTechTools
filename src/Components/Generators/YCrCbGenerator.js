@@ -4,7 +4,7 @@ import {  Header, Text, Slider } from 'react-native-elements';
 //import VectorscopeView from './VectorscopeView';
 
 import { RGBtoXYZ } from '../../calculation/ColorSpaceTransform';
-import { RGBtoYCRCB, upscaleYCRCB } from '../../calculation/componentSignal';
+import { cvtSignalRGBtoYCRCB, upscaleSignalYCRCB } from '../../calculation/componentSignal';
 import {generateRGBSignalFullColor,  generateRGBSignalGradient, generateRGBSignalBars, modifySignalSubPixel} from '../../calculation/signalGenerator';
 
 const ColorSelector = (props) => {
@@ -191,14 +191,12 @@ const SignalPicker = (props) => {
     const [gammaOffset, setGammaOffset] = useState(1); //[-3...3]
 
     // Blendenschieber
-
+    
 
     // gesamt-Offset berechnen
 
-
-    const smallYCRCB = RGBtoYCRCB(signalRGB[0], videoStandard);
-    const largeYCRCB = upscaleYCRCB(smallYCRCB, bitDepth);
-    const signalYCRCB = [largeYCRCB];
+    const signalSmallYCRCB = cvtSignalRGBtoYCRCB(signalRGB, videoStandard);
+    const signalYCRCB = upscaleSignalYCRCB(signalSmallYCRCB, bitDepth);
 
     useEffect(() => {
         props.setSignal(signalYCRCB);
