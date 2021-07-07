@@ -26,11 +26,13 @@ const ColorSelector = (props) => {
 }
 
 export default function CIEScreen() {
+  const [testSig, setTestSig] = useState([[100, 128, 128]]);
+
+  /*
     const [red, setRed] = useState(0.5);
     const [green, setGreen] = useState(0.5);
     const [blue, setBlue] = useState(0.5);
 
-    const [testSig, setTestSig] = useState([[100, 128, 128]]);
 
     const [bitDepth, setBitDepth] = useState(10);
     const [videoStandard, setVideoStandard] = useState("709");
@@ -42,7 +44,7 @@ export default function CIEScreen() {
     const largeYCRCB = upscaleYCRCB(smallYCRCB, bitDepth);
     const signalYCRCB = [largeYCRCB];
 
-    const XYZ = RGBtoXYZ([red, green, blue]);
+    const XYZ = RGBtoXYZ([red, green, blue]);*/
 
     return (
       <View style={{ flex: 1}}>

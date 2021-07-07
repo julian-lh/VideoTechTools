@@ -11,10 +11,14 @@ export function gamma(singal = [[0, 0, 0]], gamma = 1) {
 
 }
 
-export function generateFullColorRGBSignal(valueRGB, width, height){
-    //var signal = new Array(height);
-    //irgendwie mappen
-    return [[1, 0, 0]];
+export function generateRGBSignalFullColor(valueRGB, width, height){
+
+    var signal = new Array(height);
+
+    for (var row = 0; row < signal.length; row++) {
+      signal[row] = new Array(width).fill(valueRGB);
+    }
+    return signal;
 }
 
 /*
@@ -54,12 +58,71 @@ export function generateBarsRGBSignal(width = 8, height = 1, type = "100/100"){
 }
 */
 
-export function generateBarsRGBSignal(width = 8, height = 1, type = "100/100"){
-    return [[0, 0, 1]];
+export function generateRGBSignalBars(width = 8, height = 1, type = "100/100"){
+    var signal = new Array(height);
+
+    for (var row = 0; row < signal.length; row++) {
+    	signal[row] = new Array(width);
+
+    	// ITU 100/100 Bars
+    	for (var column = 0; column < signal[row].length; column++) {
+
+            const barWidth = width/8;
+            var color = [1.0, 0.0, 0.0];
+            if (column < barWidth){
+                color = [1.0, 1.0, 1.0];
+            }else if (column < barWidth * 2){
+                color = [1.0, 1.0, 0.0];
+            }else if (column < barWidth * 3){
+                color = [0.0, 1.0, 1.0];
+            }else if (column < barWidth * 4){
+                color = [0.0, 1.0, 0.0];
+            }else if (column < barWidth * 5){
+                color = [1.0, 0.0, 1.0];
+            }else if (column < barWidth * 6){
+                color = [1.0, 0.0, 0.0];
+            }else if (column < barWidth * 7){
+                color = [0.0, 0.0, 1.0];
+            }else {
+                color = [0.0, 0.0, 0.0];
+            }
+
+            signal[row][column] = color;
+        }
+    }
+    return signal;
 }
 
-export function generateGradientRGBSignal(startRGB, endRGB, direction = "horizontal", width, height){
-    return [[0, 1, 0]];
+// helper for generateRGBSignalGradient()
+function blendPixel(firstRGB, secondRGB, ratio = 0.5){
+	var result = new Array(firstRGB.length);
+	for (var x in firstRGB){
+		 result[x] = (1-ratio)*firstRGB[x] + ratio*secondRGB[x];
+    }
+    return result;
+}
+
+export function generateRGBSignalGradient(startRGB, endRGB, width, height, direction = "horizontal"){
+	var signal = new Array(height);
+
+    for (var row = 0; row < signal.length; row++) {
+    	signal[row] = new Array(width);
+
+    	for (var column = 0; column < signal[row].length; column++) {
+        	var color = [0, 0, 0];
+
+            // Gradient Signal
+            if (direction == "horizontal"){
+				color = blendPixel(startRGB, endRGB, (column/width))
+          	}
+            else { //vertical
+				color = blendPixel(startRGB, endRGB, (row/height))
+          	}
+
+        	signal[row][column] = color;
+        }
+    }
+    return signal;
 }
 
 

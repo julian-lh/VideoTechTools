@@ -5,7 +5,7 @@ import {  Header, Text, Slider } from 'react-native-elements';
 
 import { RGBtoXYZ } from '../../calculation/ColorSpaceTransform';
 import { RGBtoYCRCB, upscaleYCRCB } from '../../calculation/componentSignal';
-import {generateFullColorRGBSignal,  generateBarsRGBSignal, generateGradientRGBSignal, modifySignalSubPixel} from '../../calculation/signalGenerator';
+import {generateRGBSignalFullColor,  generateRGBSignalGradient, generateRGBSignalBars, modifySignalSubPixel} from '../../calculation/signalGenerator';
 
 const ColorSelector = (props) => {
     return (
@@ -151,6 +151,7 @@ const SignalPicker = (props) => {
     const [width, setWidth] = useState(16);
     const [height, setHeight] = useState(9);
 
+    const [pageID, setPageID] = useState(0);
     const [generatorIdx, setGeneratorIdx] = useState(0);
 
     // COLOR-PICKER
@@ -168,19 +169,18 @@ const SignalPicker = (props) => {
     const [red, setRed] = useState(0.5);
     const [green, setGreen] = useState(0.5);
     const [blue, setBlue] = useState(0.5);
-    //const [testSig, setTestSig] = useState([[100, 128, 128]]);
 
-    var RGB = [[0, 0, 0]];
+    var signalRGB = [[0, 0, 0]];
 
     switch(generatorIdx) {
         case 0:
-            RGB = generateBarsRGBSignal(width, height);
+            signalRGB = generateRGBSignalBars(width, height);
             break;
         case 1:
-            RGB = generateFullColorRGBSignal([red, green, blue], width, height);
+            signalRGB = generateRGBSignalFullColor([red, green, blue], width, height);
             break;
         case 2:
-            RGB = generateGradientRGBSignal([red, green, blue],[red, green, blue],"horizontal", width, height);
+            signalRGB = generateRGBSignalGradient([red, green, blue],[red, green, blue],"horizontal", width, height);
             break;
     }
 
@@ -195,10 +195,8 @@ const SignalPicker = (props) => {
 
     // gesamt-Offset berechnen
 
-    //const [RGB, setRGB] = useState([[0.0, 0.0, 0.0], [0.0, 1.0, 1.0], [0.0, 1.0, 0.0], [0.5, 1.0, 1.0]]);
 
-
-    const smallYCRCB = RGBtoYCRCB(RGB[0], videoStandard);
+    const smallYCRCB = RGBtoYCRCB(signalRGB[0], videoStandard);
     const largeYCRCB = upscaleYCRCB(smallYCRCB, bitDepth);
     const signalYCRCB = [largeYCRCB];
 
@@ -207,9 +205,12 @@ const SignalPicker = (props) => {
    }, [red, green, blue, generatorIdx]);
 
     return (
-      <View style={{ flex: 1}}>
-        <Button title="Test" onPress={() => setRed(red + 0.1)}></Button>
-        <View style={{ backgroundColor: "#dddddd", width: "100%", flexDirection: "row", justifyContent: 'space-around' }}>
+      <View style={{ flex: 1, alignItems: "center"}}>
+         <View style={{ backgroundColor: "#dddddd", width: "100%", flexDirection: "row", justifyContent: 'space-around' }}>
+            <Button title="Signal" onPress={()=>setPageID(0)} color={ (pageID == 0 ? "orange" : "gray")}></Button>
+            <Button title="Modifikation" onPress={()=>setPageID(1)} color={(pageID == 1 ? "orange" : "gray")}></Button>
+        </View>
+        <View style={{ backgroundColor: "#dedede", width: "90%", flexDirection: "row", justifyContent: 'space-around' }}>
             <Button title="Bars" onPress={()=>setGeneratorIdx(0)} color={ (generatorIdx == 0 ? "orange" : "gray")}></Button>
             <Button title="Einfarbig" onPress={()=>setGeneratorIdx(1)} color={(generatorIdx == 1 ? "orange" : "gray")}></Button>
             <Button title="Verlauf" onPress={()=>setGeneratorIdx(2)} color={(generatorIdx == 2 ? "orange" : "gray")}></Button>
