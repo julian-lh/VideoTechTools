@@ -133,7 +133,7 @@ function Camera(props) {
     const [bitDepth, setBitDepth] = useState(10);
 
     const videoStandards = ["601", "709", "2020"];
-    const [vidStdIdx, setVidStdIdx] = useState(0);
+    const [vidStdIdx, setVidStdIdx] = useState(1);
     const switchVidStd = () => {vidStdIdx < 2 ? setVidStdIdx(vidStdIdx + 1) : setVidStdIdx(0)};
 
     const largeYCRCB = props.signalYCRCB[0];
