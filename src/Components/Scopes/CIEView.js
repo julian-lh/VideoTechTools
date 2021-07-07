@@ -104,7 +104,7 @@ const CIEBounds = () => {
 
   return (
     <mesh position={[0, 0, 0]} geometry={geometry}>
-      <meshNormalMaterial />
+      <meshBasicMaterial color="#ddd" opacity={0.5} transparent/>
     </mesh>
   );
 }
@@ -112,9 +112,9 @@ const CIEBounds = () => {
 const SignalPreview = (props) => {
   return(
     <View style={{flex: 1}}>
-      {props.signal.map( (x) => {
-        return(<View style={{flex: 1, flexDirection: "row"}}>{
-          x.map( (y) => <View style={{flex: 1}} backgroundColor={"rgb("+y[0]*255+","+y[1]*255+","+y[2]*255+")"}/>)
+      {props.signal.map( (x, idx1) => {
+        return(<View style={{flex: 1, flexDirection: "row"}} key={idx1}>{
+          x.map( (y, idx2) => <View style={{flex: 1}} backgroundColor={"rgb("+y[0]*255+","+y[1]*255+","+y[2]*255+")"} key={(2000) + idx2}/>)
       }</View>)})
         }
     </View>
@@ -174,11 +174,11 @@ function Camera(props) {
             <Text style={{ color: '#555', padding: 10}}>x: {xyz[0].toFixed(4)} {"\n"}y: {xyz[1].toFixed(4)}{"\n"}Y: {XYZ[1].toFixed(4)}</Text>
           </View>
 
-          <View style={{ position: 'absolute', zIndex: 1, alignContent: "flex-right",top: 5, right:0, minWidth: 50, minHeight: 10, padding: 10}}>
-            <TouchableOpacity style={{ backgroundColor: ("rgb("+RGB[0]*255+", "+RGB[1]*255+", "+RGB[2]*255+")"), minWidth: 20, minHeight:(largePreview ? 100 : 40), width: (largePreview ? "60%" : "20%"), aspectRatio: 1.78}} onPress={togglePreviewSize}>
+          <View style={{ position: 'absolute', zIndex: 1, top: 10, right:10, minWidth: 70, minHeight: 80, justifyContent: "flex-start", alignItems: "flex-end"}}>
+            <TouchableOpacity style={{ backgroundColor: ("rgb("+RGB[0]*255+", "+RGB[1]*255+", "+RGB[2]*255+")"), minWidth: 20, minHeight:(largePreview ? 110 : 45), width: (largePreview ? "60%" : "20%"), aspectRatio: 1.78}} onPress={togglePreviewSize}>
               <SignalPreview signal={signalRGB} text={"test"}/>
             </TouchableOpacity>
-            <Button style={{ padding: 5}} title={"Rec." + videoStandards[vidStdIdx]} onPress={switchVidStd}></Button>
+            <Button style={{ verticalPadding: 5}} title={"Rec." + videoStandards[vidStdIdx]} onPress={switchVidStd}></Button>
           </View>
 
           <View style={{ position: 'absolute', zIndex: 1, bottom: 0, width: "100%", flexDirection: "row", justifyContent: 'space-around' }}>

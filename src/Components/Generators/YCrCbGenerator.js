@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Button} from 'react-native';
+import { StyleSheet, View, Button, ScrollView} from 'react-native';
 import { Text, Slider } from 'react-native-elements';
 
 import { cvtSignalRGBtoYCRCB, upscaleSignalYCRCB } from '../../calculation/componentSignal';
@@ -140,6 +140,19 @@ const SignalPicker = (props) => {
 }
 //            <Picker RGB={RGB} newValue={(x) => setRGB(x)}/>
 
+const TapButton = (props) => {
+    return(
+        <View style={{flex: 1, minWidth: 100, width: 180, justifyContent: "space-evenly", alignItems: "center"}}>
+            <Text>{props.label}</Text>
+            <View style={{ backgroundColor: "#ffffff", flexDirection: "row", felx: 1, justifyContent: "space-evenly", alignItems: "center"}}>
+                <Button title="    -    " onPress={()=>props.setValue(Math.round((props.currentValue - props.stepSize)*100)/100)} color={"black"} style={{flex: 1}}></Button>
+                <Text style={{flex: 1, textAlign: 'center', fontSize: 20}}>{props.currentValue.toFixed(2)}</Text>
+                <Button title="    +    " onPress={()=>props.setValue(Math.round((props.currentValue + props.stepSize)*100)/100)} color={"black"} style={{flex: 1}}></Button>
+            </View>
+        </View>
+);
+}
+
 
 
  export const YCrCbGenerator = (props) => {
@@ -205,14 +218,14 @@ const SignalPicker = (props) => {
     const signalSmallYCRCB = cvtSignalRGBtoYCRCB(signalRGB, videoStandard);
     const signalYCRCB = upscaleSignalYCRCB(signalSmallYCRCB, bitDepth);
 
-    /*
+
     useEffect(() => {
         props.setSignal(signalYCRCB);
    }, [red, green, blue, generatorIdx]);
-*/
+
     useEffect(() => {
         props.setSignal(signalYCRCB);
-    },[brightnessOffset, generatorIdx]);
+    },[contrastOffset, gammaOffset, brightnessOffset, generatorIdx]);
 
     return (
       <View style={{ flex: 1, alignItems: "center"}}>
@@ -226,16 +239,16 @@ const SignalPicker = (props) => {
             <Button title="Verlauf" onPress={()=>setGeneratorIdx(2)} color={(generatorIdx == 2 ? "orange" : "gray")}></Button>
         </View>
 
-        <View style={{ backgroundColor: "#ffffff", width: "50%", flexDirection: "row", justifyContent: 'space-around', alignItems: "center"}}>
-            <Button title="-" onPress={()=>setBrightnessOffset(Math.round((brightnessOffset - 0.05)*100)/100)} color={"black"}></Button>
-            <Text>{brightnessOffset.toFixed(2)}</Text>
-            <Button title="+" onPress={()=>setBrightnessOffset(Math.round((brightnessOffset + 0.05)*100)/100)} color={"black"}></Button>
-        </View>
+        <ScrollView width="100%" contentContainerStyle={{ flexGrow: 1, justifyContent: 'center', alignItems: "center" }}>
+            <TapButton label={"R"} currentValue={red} setValue={setRed} stepSize={0.1}/>
+            <TapButton label={"G"} currentValue={green} setValue={setGreen} stepSize={0.1}/>
+            <TapButton label={"B"} currentValue={blue} setValue={setBlue} stepSize={0.1}/>
 
-
-        <Text>{signalYCRCB[0]}</Text>
-        <Text>{"-----"}</Text>
-        <Text>{signalYCRCB[1]}</Text>
+            <Text h3 style={{paddingTop: 20, paddingBottom: 10}}>Modifikation</Text>
+            <TapButton label={"Kontrast"} currentValue={contrastOffset} setValue={setContrastOffset} stepSize={0.05}/>
+            <TapButton label={"Gamma"} currentValue={gammaOffset} setValue={setGammaOffset} stepSize={0.1}/>
+            <TapButton label={"Helligkeit"} currentValue={brightnessOffset} setValue={setBrightnessOffset} stepSize={0.05}/>
+        </ScrollView>
 
       </View>
     );
