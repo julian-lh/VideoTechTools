@@ -35,9 +35,10 @@ const BoxColorful = (props) => {
 
 const SphereColorful = (props) => {
     const mesh = useRef();
+    /*
     useFrame(() => {
       mesh.current.rotation.y = mesh.current.rotation.x += 0.01;
-    });
+    });*/
 
     const color = new THREE.Color( props.RGB[0], props.RGB[1], props.RGB[2] );
     const innergeometry = new THREE.SphereGeometry( 0.01, 5, 5 );
