@@ -28,7 +28,7 @@ export default function CIEScreen() {
     return (
       <View style={{ flex: 1}}>
         <CIEView signalYCRCB={signalYCRCB}/>
-        <Text>Signal: {signalYCRCB[0][0]}</Text>
+        <Text>Signal: {signalYCRCB[0][0].toString()}</Text>
         <YCrCbGenerator setSignal={(x) => setSignalYCRCB(x)}/>
 
 

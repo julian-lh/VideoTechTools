@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Button, ScrollView} from 'react-native';
+import { StyleSheet, View, Button, ScrollView, TouchableOpacity} from 'react-native';
 import { Text, Slider } from 'react-native-elements';
 
-import { cvtSignalRGBtoYCRCB, upscaleSignalYCRCB } from '../../calculation/componentSignal';
+import { cvtSignalRGBtoYCRCB, upscaleSignalYCRCB, limiterComponentSignal, limiterRGBSignal} from '../../calculation/componentSignal';
 import { generateRGBSignalFullColor,  generateRGBSignalGradient, generateRGBSignalBars, offsetSignalContrast, offsetSignalBrightness, offsetSignalGamma } from '../../calculation/signalGenerator';
+import { clamp } from '../../calculation/helpers';
 
 const ColorSelector = (props) => {
     return (
@@ -147,6 +148,7 @@ const TapButton = (props) => {
             <View style={{ backgroundColor: "#ffffff", flexDirection: "row", felx: 1, justifyContent: "space-evenly", alignItems: "center"}}>
                 <Button title="    -    " onPress={()=>props.setValue(Math.round((props.currentValue - props.stepSize)*100)/100)} color={"black"} style={{flex: 1}}></Button>
                 <Text style={{flex: 1, textAlign: 'center', fontSize: 20}}>{props.currentValue.toFixed(2)}</Text>
+
                 <Button title="    +    " onPress={()=>props.setValue(Math.round((props.currentValue + props.stepSize)*100)/100)} color={"black"} style={{flex: 1}}></Button>
             </View>
         </View>
@@ -177,9 +179,12 @@ const TapButton = (props) => {
         // setGreen();
     }, [hue, saturation, value]);
 
-    const [red, setRed] = useState(0.5);
-    const [green, setGreen] = useState(0.5);
-    const [blue, setBlue] = useState(0.5);
+    const [red, setRedDirectly] = useState(0.5);
+    const setRed = (value)  => setRedDirectly( clamp(value) );
+    const [green, setGreenDirectly] = useState(0.5);
+    const setGreen = (value)  => setGreenDirectly( clamp(value) );
+    const [blue, setBlueDirectly] = useState(0.5);
+    const setBlue = (value)  => setBlueDirectly( clamp(value) );
 
     var signalRGB = [[[0, 0, 0]]];
 
@@ -206,18 +211,17 @@ const TapButton = (props) => {
 
 
     // Modifizieren
-
-    // Operationen nur anwenden wenn verwendet
+        // Operationen nur anwenden wenn verwendet
     signalRGB = (contrastOffset != 1 ? offsetSignalContrast(signalRGB, contrastOffset) : signalRGB);
     signalRGB = (brightnessOffset != 0 ? offsetSignalBrightness(signalRGB, brightnessOffset) : signalRGB);
-    signalRGB = offsetSignalGamma(signalRGB, gammaOffset);
+    signalRGB = (gammaOffset != 1 ? offsetSignalGamma(signalRGB, gammaOffset) : signalRGB);
 
+    signalRGB = limiterRGBSignal(signalRGB);
 
-    // gesamt-Offset berechnen
-
+    // RGB -> YCrCb
     const signalSmallYCRCB = cvtSignalRGBtoYCRCB(signalRGB, videoStandard);
-    const signalYCRCB = upscaleSignalYCRCB(signalSmallYCRCB, bitDepth);
-
+    var signalYCRCB = upscaleSignalYCRCB(signalSmallYCRCB, bitDepth);
+    signalYCRCB = limiterComponentSignal(signalYCRCB, bitDepth);
 
     useEffect(() => {
         props.setSignal(signalYCRCB);
