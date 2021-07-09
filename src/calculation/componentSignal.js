@@ -1,5 +1,6 @@
 // Collection of Component Signal Conversions
 
+import { clamp } from './helpers';
 
 // ----------------------------------------------------------------
 // ------------------- Single Value Basic Conversions -------------------
@@ -75,6 +76,36 @@ export function downscaleYCRCB(YCrCb, bitDepth = 10) {
 
     return [eY, eCr, eCb];
 }
+
+export function limiterRGBSignal(signalRGB){
+    return signalRGB.map( x => x.map( y => y.map( z => clamp(z))));
+}
+
+export function limiterComponent(YCrCb, bitDepth) {
+    const bitDepthFactor = 2**(bitDepth - 8);
+
+    const peakLimitY = 235 * bitDepthFactor;
+    const blackLimitY = 16 * bitDepthFactor;
+    const upperChromaLimit = 240 * bitDepthFactor;
+    const lowerChromaLimit = 16 * bitDepthFactor;
+
+    var tempYCRCB = [...YCrCb]; //Array kopieren
+    tempYCRCB[0] = (tempYCRCB[0] > peakLimitY ? peakLimitY : tempYCRCB[0]);
+    tempYCRCB[0] = (tempYCRCB[0] < blackLimitY ? blackLimitY : tempYCRCB[0]);
+
+    tempYCRCB[1] = (tempYCRCB[1] > upperChromaLimit ? upperChromaLimit : tempYCRCB[1]);
+    tempYCRCB[1] = (tempYCRCB[1] < lowerChromaLimit ? lowerChromaLimit : tempYCRCB[1]);
+    tempYCRCB[2] = (tempYCRCB[2] > upperChromaLimit ? upperChromaLimit : tempYCRCB[2]);
+    tempYCRCB[2] = (tempYCRCB[2] < lowerChromaLimit ? lowerChromaLimit : tempYCRCB[2]);
+
+    return tempYCRCB;
+}
+
+export function limiterComponentSignal(signalYCrCb, bitDepth){
+    return signalYCrCb.map( x => x.map( y => limiterComponent(y, bitDepth)));
+}
+
+
 
 // ----------------------------------------------------------------
 // ------------------- Image Signal Array Conversions -------------------

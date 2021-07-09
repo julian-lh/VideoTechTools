@@ -2,7 +2,7 @@ import React, {useRef, useState, useEffect, useMemo} from 'react';
 import { SafeAreaView, Button, View, Text, TouchableOpacity } from 'react-native';
 import { Canvas, useFrame, useThree, extend} from 'react-three-fiber';
 import * as THREE from 'three';
-import { RGBtoXYZ, XYZtoxyz, CIEBoundsValues} from '../../calculation/ColorSpaceTransform';
+import { cvtRGBtoXYZ, cvtXYZtoxy,cvtSignalRGBtoXYZ, cvtSignalXYZtoxyY, CIEBoundsValues} from '../../calculation/ColorSpaceTransform';
 
 import { cvtSignalYCRCBtoRGB, downscaleSignalYCRCB } from '../../calculation/componentSignal';
 
@@ -27,7 +27,6 @@ const Box = (props) => {
       //mesh.meshStandardMaterial.color = new THREE.Color(pos.x, 1, 1);
 
       //mesh.meshStandardMaterial.color = new THREE.Color(pos.x, pos.y,"xyz");
-
     });
     var red_val = (props.RGB[0] ? Math.abs(props.RGB[0]) * 255 : 0).toFixed(0);
     var green_val = (props.RGB[1] ? Math.abs(props.RGB[1]) * 255 : 0).toFixed(0);
@@ -41,14 +40,79 @@ const Box = (props) => {
     )
   }
 
-const COS = (props) => {
+  const SphereColorful = (props) => {
+    const mesh = useRef();
+    useFrame(() => {
+      mesh.current.rotation.y = mesh.current.rotation.x += 0.01;
+    });
 
+    const color = new THREE.Color( props.RGB[0], props.RGB[1], props.RGB[2] );
+    const innergeometry = new THREE.SphereGeometry( 0.01, 5, 5 );
+    //const outerGeometry = new THREE.SphereGeometry( 0.03, 10, 10 );
+
+    /*<mesh ref={mesh} position={props.xyY} geometry={outerGeometry}>
+        <meshBasicMaterial color={color} opacity={0.2} transparent={true}/>
+      </mesh>*/
+
+    return (
+      <mesh ref={mesh} position={props.xyY} geometry={innergeometry}>
+        <meshBasicMaterial color={color}/>
+      </mesh>
+    )
+  }
+
+const COS = (props) => {
     return(
         <axesHelper {...props}/>
     );
 }
 
+const GamutBounds = (props) => {
+  const mesh = useRef();
+    const shape = useMemo(() => {
+      const s = new THREE.Shape();
+      s.moveTo(props.r[0], props.r[1], 0);
+      s.lineTo(props.g[0],props.g[1], 0);
+      s.lineTo(props.b[0],props.b[1], 0);
+      s.lineTo(props.r[0],props.r[1], 0);
+      return s;
+    }, [])
+
+    //const geometry = new THREE.ShapeGeometry( shape );
+    const points = shape.getPoints();
+    const geometryPoints = new THREE.BufferGeometry().setFromPoints( points );
+
+    return (
+      <line ref={mesh} position={[0, 0, 0]} geometry={geometryPoints}>
+        <lineBasicMaterial color="#0c0" />
+      </line>
+    );
+}
+
 const CIEBounds = () => {
+  const mesh = useRef();
+  const shape = useMemo(() => {
+    const s = new THREE.Shape();
+    s.moveTo(CIEBoundsValues[0][1], CIEBoundsValues[0][2], CIEBoundsValues[0][3]);
+    for (let v of CIEBoundsValues) {
+      s.lineTo(v[1], v[2], v[3]);
+    }
+    s.lineTo(CIEBoundsValues[0][1], CIEBoundsValues[0][2], CIEBoundsValues[0][3]);
+    return s;
+  }, [])
+
+  const points = shape.getPoints();
+  const geometryPoints = new THREE.BufferGeometry().setFromPoints( points );
+
+  return (
+    <line ref={mesh} position={[0, 0, 0]} geometry={geometryPoints}>
+      <lineBasicMaterial color="#999" linewidth={0.5}/>
+    </line>
+  );
+}
+
+
+const CIEBoundsShape = () => {
   const shape = useMemo(() => {
     const s = new THREE.Shape();
     s.moveTo(CIEBoundsValues[0][1], CIEBoundsValues[0][2], CIEBoundsValues[0][3]);
@@ -110,6 +174,7 @@ const CIEBounds = () => {
 }
 
 const SignalPreview = (props) => {
+  //Anlehnung: https://www.digitalocean.com/community/conceptual_articles/understanding-how-to-render-arrays-in-react
   return(
     <View style={{flex: 1}}>
       {props.signal.map( (x, idx1) => {
@@ -137,26 +202,25 @@ function Camera(props) {
   }
 
  export const CIEView = (props) => {
-    //const [posY, setPosY] = useState(0);
     const [largePreview, setLargePreview] = useState(false);
     const togglePreviewSize = () => setLargePreview(!largePreview);
     const [camPos, setCamPos] = useState([1.1, 1.1, 1.1]);
-    const [bitDepth, setBitDepth] = useState(10);
 
     const videoStandards = ["601", "709", "2020"];
     const [vidStdIdx, setVidStdIdx] = useState(1);
     const switchVidStd = () => {vidStdIdx < 2 ? setVidStdIdx(vidStdIdx + 1) : setVidStdIdx(0)};
 
-    //const largeYCRCB = props.signalYCRCB[0];
-    //const smallYCRCB = downscaleYCRCB(largeYCRCB, bitDepth);
+    const bitDepths = (vidStdIdx == 2 ? [10, 12] : [10, 8]);
+    const [bitDepthIdx, setBitDepthIdx] = useState(0);
+    const switchBitDepth = () => setBitDepthIdx(1 - bitDepthIdx);
+
+    // convert signal
     const signalYCRCB = props.signalYCRCB;
-    const smallSignalYCRCB = downscaleSignalYCRCB(signalYCRCB, bitDepth);
+    const smallSignalYCRCB = downscaleSignalYCRCB(signalYCRCB, bitDepths[bitDepthIdx]);
     const signalRGB = cvtSignalYCRCBtoRGB(smallSignalYCRCB, videoStandards[vidStdIdx]);
 
-    const RGB = signalRGB[0][0]; //Erstmal nur einzelnes Pixel
-
-    const XYZ = RGBtoXYZ(RGB, videoStandards[vidStdIdx]);
-    const xyz = XYZtoxyz(XYZ);
+    const signalXYZ = cvtSignalRGBtoXYZ(signalRGB, videoStandards[vidStdIdx]);
+    const signalxyY = cvtSignalXYZtoxyY(signalXYZ);
 
     return (
       <View style={{flex: 1}}>
@@ -165,20 +229,23 @@ function Camera(props) {
               <Camera position={camPos} />
               <ambientLight/>
               <pointLight position={[-1,1,1]} castShadow/>
-              <BoxColorful xyY={[xyz[0], xyz[1], XYZ[1]]} RGB={RGB} name={'box1'}/>
+              {signalxyY.map( (x, idx1) =>  x.map( (y, idx2) => (<SphereColorful xyY={y} RGB={signalRGB[idx1][idx2]} name={'box1'} key={(idx1 * 100) + idx2}/> ) ) )}
+              <GamutBounds r={[0.8, 0.1]} g={[0.5, 0.7]} b={[0.1, 0.1]}/>
               <COS />
               <CIEBounds />
           </Canvas>
 
           <View style={{ position: 'absolute', zIndex: 1, top: 0}}>
-            <Text style={{ color: '#555', padding: 10}}>x: {xyz[0].toFixed(4)} {"\n"}y: {xyz[1].toFixed(4)}{"\n"}Y: {XYZ[1].toFixed(4)}</Text>
+            <Text style={{ color: '#555', padding: 10}}>x: {signalxyY[0][0][0].toFixed(4)} {"\n"}y: {signalxyY[0][0][1].toFixed(4)}{"\n"}Y: {signalxyY[0][0][2].toFixed(4)}</Text>
           </View>
 
           <View style={{ position: 'absolute', zIndex: 1, top: 10, right:10, minWidth: 70, minHeight: 80, justifyContent: "flex-start", alignItems: "flex-end"}}>
-            <TouchableOpacity style={{ backgroundColor: ("rgb("+RGB[0]*255+", "+RGB[1]*255+", "+RGB[2]*255+")"), minWidth: 20, minHeight:(largePreview ? 110 : 45), width: (largePreview ? "60%" : "20%"), aspectRatio: 1.78}} onPress={togglePreviewSize}>
+            <TouchableOpacity style={{ minWidth: 20, minHeight:(largePreview ? 110 : 45), width: (largePreview ? "60%" : "20%"), aspectRatio: 1.78}} onPress={togglePreviewSize}>
               <SignalPreview signal={signalRGB} text={"test"}/>
             </TouchableOpacity>
-            <Button style={{ verticalPadding: 5}} title={"Rec." + videoStandards[vidStdIdx]} onPress={switchVidStd}></Button>
+            <Button title={"Rec." + videoStandards[vidStdIdx]} onPress={switchVidStd}></Button>
+            <Button title={bitDepths[bitDepthIdx] + " bit"} onPress={switchBitDepth}></Button>
+
           </View>
 
           <View style={{ position: 'absolute', zIndex: 1, bottom: 0, width: "100%", flexDirection: "row", justifyContent: 'space-around' }}>
@@ -191,8 +258,6 @@ function Camera(props) {
           </View>
         </View>
 
-
-
-        </View>
+      </View>
     );
 }

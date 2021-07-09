@@ -1,5 +1,5 @@
 
-export function RGBtoXYZ(rgb_array, colorSpace = "709") {
+export function cvtRGBtoXYZ(rgb_array, colorSpace = "709") {
     var mtx = new Array(9).fill(1);
 
     switch (colorSpace) {
@@ -43,12 +43,32 @@ export function RGBtoXYZ(rgb_array, colorSpace = "709") {
     return [X, Y, Z];
 };
 
-export function XYZtoxyz(XYZ_array = [0, 0, 1]) {
+export function cvtXYZtoxy(XYZ_array = [0, 0, 1]) {
     const x = XYZ_array[0] / (XYZ_array[0] + XYZ_array[1] + XYZ_array[2]);
     const y = XYZ_array[1] / (XYZ_array[0] + XYZ_array[1] + XYZ_array[2]);
-    const z = XYZ_array[2] / (XYZ_array[0] + XYZ_array[1] + XYZ_array[2]);
-    return [x, y, z];
+    //const z = XYZ_array[2] / (XYZ_array[0] + XYZ_array[1] + XYZ_array[2]);
+    return [x, y];
 };
+
+export function cvtXYZtoxyY(XYZ_array = [0, 0, 1]) {
+    const x = XYZ_array[0] / (XYZ_array[0] + XYZ_array[1] + XYZ_array[2]);
+    const y = XYZ_array[1] / (XYZ_array[0] + XYZ_array[1] + XYZ_array[2]);
+    //const z = XYZ_array[2] / (XYZ_array[0] + XYZ_array[1] + XYZ_array[2]);
+    return [x, y, XYZ_array[2]];
+};
+
+
+export function cvtSignalRGBtoXYZ(signalRGB, colorSpace = "709"){
+    return signalRGB.map( x => x.map( y => cvtRGBtoXYZ(y, colorSpace) ));
+}
+
+export function cvtSignalXYZtoxy(signalXYZ){
+    return signalXYZ.map( x => x.map( y => cvtXYZtoxy(y) ));
+}
+
+export function cvtSignalXYZtoxyY(signalXYZ){
+    return signalXYZ.map( x => x.map( y => cvtXYZtoxyY(y) ));
+}
 
 /*
 export function rgbToL(rgb_array, colorSpace = 'sRGB') {
