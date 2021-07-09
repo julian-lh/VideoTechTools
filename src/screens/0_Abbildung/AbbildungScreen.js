@@ -6,6 +6,7 @@ import { Camera } from '../../calculation/cameraDistance';
 import ViewingAngleSimulator from '../../Components/ViewingAngleSimulator';
 //import { data } from './cameraData.json';
 import {useState} from 'react';
+import cameraData from '../../calculation/data/cameraData.json';
 
 //const RaisedButton = (props) => <Button raised {...props} />;
 
@@ -28,7 +29,7 @@ export default function AbbildungScreen() {
     //const [camera, setCamera] = useState(new Camera());
     //setCamera(new Camera());
 
-    const cameraData = require('../../calculation/cameraData.json');
+    //const cameraData = require('../../calculation/data/cameraData.json');
 
     const [distance, setDistance] = useState(5);
     const distanceUp = () => setDistance(distance + 1);
