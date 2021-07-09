@@ -70,6 +70,56 @@ export function cvtSignalXYZtoxyY(signalXYZ){
     return signalXYZ.map( x => x.map( y => cvtXYZtoxyY(y) ));
 }
 
+// In Anlehnung an: https://gist.github.com/mjackson/5311256
+export function cvtRGBtoHSV(rgb) {
+    r = rgb[0];
+    g = rgb[1];
+    b = rgb[2];
+
+    var max = Math.max(r, g, b)
+    var min = Math.min(r, g, b);
+    var h, s, v = max;
+
+    var d = max - min;
+    s = (max == 0 ? 0 : d / max);
+
+    if (max == min) {
+      h = 0; // achromatic
+    } else {
+      switch (max) {
+        case r: h = ((g - b) / d + (g < b ? 6 : 0)) *120; break;
+        case g: h = ((b - r) / d + 2) * 120; break;
+        case b: h = ((r - g) / d + 4) * 120; break;
+      }
+      //h /= 6;
+      h %= 360;
+    }
+    return [ h, s, v ];
+  }
+
+export function cvtHSVtoRGB(hsv) {
+    var rgb = [0, 0, 0];
+    var [h, s, v] = hsv;
+
+    const c = v * s;
+    const x = c * (1 - Math.abs((h/60) % 2 - 1));
+    const m = v - c;
+
+    if(h < 60){
+    	rgb = [c, x, 0];
+    }else if(h < 120){
+    	rgb = [x, c, 0];
+    }else if(h < 180){
+    	rgb = [0, c, x];
+    }else if(h < 240){
+    	rgb = [0, x, c];
+    }else if(h < 300){
+    	rgb = [x, 0, c];
+    }else if(h < 360){
+    	rgb = [c, 0, x];
+    }
+    return rgb;
+  }
 /*
 export function rgbToL(rgb_array, colorSpace = 'sRGB') {
     var mtx = new Array(3).fill(1);

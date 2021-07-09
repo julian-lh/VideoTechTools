@@ -168,13 +168,6 @@ const PeakSignalTolerances = () => {
 }
 
 const SettingsPopOver = (props) => {
-
-  const toggleGamutBounds = (idx) =>{
-    const gamutArray = [...props.visibleGamutBounds];
-    gamutArray[idx] = !gamutArray[idx];
-    props.setVisibleGamutBounds(gamutArray);
-  }
-
   return(
     <View style={{left: 0, right: 0, top:0, backgroundColor: "#3338", position: 'absolute', zIndex: 2, alignItems: "center"}}>
       <View style={{width: "80%", minHeight: "70%", backgroundColor: "#ccc", padding: 10, marginVertical:10, justifyContent: "flex-start", alignItems: "center"}}>

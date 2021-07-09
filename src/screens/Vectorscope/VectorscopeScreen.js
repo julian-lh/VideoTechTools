@@ -4,7 +4,7 @@ import { Button, Header, Text, Slider } from 'react-native-elements';
 import { VectorscopeView } from '../../Components/Scopes/VectorscopeView';
 import { YCrCbGenerator } from '../../Components/Generators/YCrCbGenerator'
 
-
+/*
 const ColorSelector = (props) => {
     return (
         <View style={styles.inputElement}>
@@ -21,6 +21,7 @@ const ColorSelector = (props) => {
         </View>
     );
 }
+*/
 
 export default function VectorscopeScreen() {
   const [signalYCRCB, setSignalYCRCB] = useState([[[100, 128, 128]]]);
@@ -34,19 +35,6 @@ export default function VectorscopeScreen() {
     );
   }
 
-
-  /*
-<View style={styles.colorPicker}>
-            <ColorSelector label='R' thumbTintColor='red' value={red} valueChange={(x) => setRed(x)}/>
-            <ColorSelector label='G' thumbTintColor='green'  value={green} valueChange={(x) => setGreen(x)}/>
-            <ColorSelector label='B' thumbTintColor='blue' value={blue} valueChange={(x) => setBlue(x)}/>
-        </View>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-around', backgroundColor: '#ccc', paddingVertical: 5}}>
-            <Button title='RGB/HSV'/>
-            <Button title='FARBRAUM'/>
-        </View>
-
-  */
 
   const styles = StyleSheet.create({
     container: {
