@@ -2,26 +2,14 @@ import React, {useRef, useState, useEffect, useMemo} from 'react';
 import { SafeAreaView, Button, View, Text, TouchableOpacity } from 'react-native';
 import { Canvas, useFrame, useThree, extend} from 'react-three-fiber';
 import * as THREE from 'three';
-
+import { RGBSignalPreview } from '../RGBSignalPreview';
 import gamutData from '../../calculation/data/gamutData.json';
 import { cvtSignalRGBtoXYZ, cvtSignalXYZtoxyY, CIEBoundsValues } from '../../calculation/ColorSpaceTransform';
 
 import { cvtSignalYCRCBtoRGB, downscaleSignalYCRCB } from '../../calculation/componentSignal';
 
-const Box = (props) => {
-    const mesh = useRef();
-    useFrame(() => {
-      mesh.current.rotation.y = mesh.current.rotation.x += 0.01;
-    });
-    return (
-      <mesh ref={mesh} position={props.position}>
-        <boxBufferGeometry args={[0.1, 0.1, 0.1]} />
-        <meshPhysicalMaterial color={'blue'}/>
-      </mesh>
-    )
-  }
 
-  const BoxColorful = (props) => {
+const BoxColorful = (props) => {
     const mesh = useRef();
     useFrame(() => {
       mesh.current.rotation.y = mesh.current.rotation.x += 0.01;
@@ -40,9 +28,9 @@ const Box = (props) => {
         <meshStandardMaterial color={("rgb(" + red_val + ", " + green_val + ", " + blue_val + ")")}/>
       </mesh>
     )
-  }
+}
 
-  const SphereColorful = (props) => {
+const SphereColorful = (props) => {
     const mesh = useRef();
     useFrame(() => {
       mesh.current.rotation.y = mesh.current.rotation.x += 0.01;
@@ -61,7 +49,7 @@ const Box = (props) => {
         <meshBasicMaterial color={color}/>
       </mesh>
     )
-  }
+}
 
 const COS = (props) => {
     return(
@@ -142,7 +130,6 @@ const CIEBounds = () => {
   );
 }
 
-
 const CIEBoundsShape = () => {
   const shape = useMemo(() => {
     const s = new THREE.Shape();
@@ -204,19 +191,42 @@ const CIEBoundsShape = () => {
   );
 }
 
-const SignalPreview = (props) => {
-  //Anlehnung: https://www.digitalocean.com/community/conceptual_articles/understanding-how-to-render-arrays-in-react
-  return(
-    <View style={{flex: 1}}>
-      {props.signal.map( (x, idx1) => {
-        return(<View style={{flex: 1, flexDirection: "row"}} key={idx1}>{
-          x.map( (y, idx2) => <View style={{flex: 1}} backgroundColor={"rgb("+y[0]*255+","+y[1]*255+","+y[2]*255+")"} key={(2000) + idx2}/>)
-      }</View>)})
-        }
-    </View>
-  )
-}
+const SettingsPopOver = (props) => {
 
+  const toggleGamutBounds = (idx) =>{
+    const gamutArray = [...props.visibleGamutBounds];
+    gamutArray[idx] = !gamutArray[idx];
+    props.setVisibleGamutBounds(gamutArray);
+  }
+
+  return(
+    <View style={{left: 0, right: 0, top:0, backgroundColor: "#3338", position: 'absolute', zIndex: 2, alignItems: "center"}}>
+      <View style={{width: "80%", minHeight: "70%", backgroundColor: "#ccc", padding: 10, marginVertical:10, justifyContent: "flex-start", alignItems: "center"}}>
+        <Text style={{fontSize: 20, color: "#333", paddingBottom: 10}}>Settings</Text>
+        <View style={{backgroundColor: "#ddd", padding: 5, marginBottom: 5}}>
+          <Text>Input-Signal</Text>
+          <View style={{ width: "100%", flexDirection: "row", justifyContent: 'space-around', alignItems: "center" }}>
+            <Button title="Rec.601" color={(props.vidStdIdx == 0 ? "orange" : "gray")} onPress={()=> props.setVidStdIdx(0)}></Button>
+            <Button title="Rec.709" color={(props.vidStdIdx == 1 ? "orange" : "gray")} onPress={()=> props.setVidStdIdx(1)}></Button>
+            <Button title="Rec.2020" color={(props.vidStdIdx == 2 ? "orange" : "gray")} onPress={()=> props.setVidStdIdx(2)}></Button>
+          </View>
+          <View style={{ flexDirection: "row", justifyContent: 'space-around' }}>
+            {props.bitDepths.map((x, idx) => <Button title={x.toString()} color={(props.bitDepthIdx == idx ? "orange" : "gray")} onPress={()=>props.setBitDepthIdx(idx)}  key={idx}></Button>)}
+          </View>
+        </View>
+        <View style={{backgroundColor: "#ddd", padding: 5, marginBottom: 8}}>
+          <Text>Referenzen</Text>
+          <View style={{ flexDirection: "row", justifyContent: 'space-around', alignItems: "center" }}>
+            {props.visibleGamutBounds.map( (x, idx) => <Button title={gamutData[idx].name} color={(x ? "orange" : "gray")}  onPress={()=> toggleGamutBounds(idx)}  key={idx}></Button>)}
+          </View>
+        </View>
+        <Button title="Schließen" onPress={()=>props.setSettingsVisible(0)}></Button>
+
+
+      </View>
+    </View>
+  );
+}
 
 // Quelle: https://medium.com/@joooooo308/react-three-fiber-use-gesture-to-move-the-camera-f50288cec862
 function Camera(props) {
@@ -236,7 +246,8 @@ function Camera(props) {
     const [largePreview, setLargePreview] = useState(false);
     const togglePreviewSize = () => setLargePreview(!largePreview);
     const [camPos, setCamPos] = useState([1.1, 1.1, 1.1]);
-    const [visibleGamutBounds, setVisibleGamutBounds] = useState(new Array(gamutData.length).fill(true));
+    const [visibleGamutBounds, setVisibleGamutBounds] = useState(new Array(gamutData.length).fill(false));
+    const [settingsVisible, setSettingsVisible] = useState(false);
 
     const videoStandards = ["601", "709", "2020"];
     const [vidStdIdx, setVidStdIdx] = useState(1);
@@ -274,12 +285,15 @@ function Camera(props) {
             <GamutLabels visibleGamutBounds={visibleGamutBounds}/>
           </View>
 
+          {(settingsVisible ? <SettingsPopOver vidStdIdx={vidStdIdx} setVidStdIdx={setVidStdIdx} bitDepths={bitDepths} bitDepthIdx={bitDepthIdx} setBitDepthIdx={setBitDepthIdx} visibleGamutBounds={visibleGamutBounds} setVisibleGamutBounds={setVisibleGamutBounds} setSettingsVisible={setSettingsVisible}/> : <View/>)}
+
           <View style={{ position: 'absolute', zIndex: 1, top: 10, right:10, minWidth: 70, minHeight: 80, justifyContent: "flex-start", alignItems: "flex-end"}}>
             <TouchableOpacity style={{ minWidth: 20, minHeight:(largePreview ? 110 : 45), width: (largePreview ? "60%" : "20%"), aspectRatio: 1.78}} onPress={togglePreviewSize}>
-              <SignalPreview signal={signalRGB} text={"test"}/>
+              <RGBSignalPreview rgbSignal={signalRGB}/>
             </TouchableOpacity>
             <Button title={"Rec." + videoStandards[vidStdIdx]} onPress={switchVidStd}></Button>
             <Button title={bitDepths[bitDepthIdx] + " bit"} onPress={switchBitDepth}></Button>
+            <Button title={"Settings"} onPress={x => setSettingsVisible(!settingsVisible)}></Button>
 
           </View>
 
