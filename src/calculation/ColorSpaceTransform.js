@@ -92,16 +92,6 @@ export function RGBtoYUV(rgb_array = [0, 0, 0]){
     return [Y, U, V];
 };
 
-
-/*
-export function generateRGBToXYZMatrix(rx, ry, gx, gy, bx, by) {
-    // Quelle: http://www.brucelindbloom.com/index.html?Eqn_RGB_XYZ_Matrix.html
-    const X = (x, y) => x/y;
-    const Y = () => 1;
-    const Z = (x, y) => (1 - x - y)/y;
-
-}
-*/
 export const CIEBoundsValues = [[360, 0.175560, 0.005294, 0.819146],
                     [365, 0.175161, 0.005256, 0.819582],
                     [370, 0.174821, 0.005221, 0.819959],

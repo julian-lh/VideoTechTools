@@ -9,10 +9,12 @@
     - speed booster / Telekonverter
 
 */
+import cameraData from './data/cameraData.json';
+
 
 export class Camera {
     constructor(fStop = 11, focalLength = 0.055, sensorID = 0, booster = 1.0) {
-        this.allSensorData = require('./cameraData.json');
+        this.allSensorData = cameraData;//require('./cameraData.json');
 
         this.sensorID = sensorID;
         /*this.sensor = {

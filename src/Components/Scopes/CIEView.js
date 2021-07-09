@@ -2,7 +2,9 @@ import React, {useRef, useState, useEffect, useMemo} from 'react';
 import { SafeAreaView, Button, View, Text, TouchableOpacity } from 'react-native';
 import { Canvas, useFrame, useThree, extend} from 'react-three-fiber';
 import * as THREE from 'three';
-import { cvtRGBtoXYZ, cvtXYZtoxy,cvtSignalRGBtoXYZ, cvtSignalXYZtoxyY, CIEBoundsValues} from '../../calculation/ColorSpaceTransform';
+
+import gamutData from '../../calculation/data/gamutData.json';
+import { cvtSignalRGBtoXYZ, cvtSignalXYZtoxyY, CIEBoundsValues } from '../../calculation/ColorSpaceTransform';
 
 import { cvtSignalYCRCBtoRGB, downscaleSignalYCRCB } from '../../calculation/componentSignal';
 
@@ -67,7 +69,7 @@ const COS = (props) => {
     );
 }
 
-const GamutBounds = (props) => {
+const GamutTriangle = (props) => {
   const mesh = useRef();
     const shape = useMemo(() => {
       const s = new THREE.Shape();
@@ -81,12 +83,41 @@ const GamutBounds = (props) => {
     //const geometry = new THREE.ShapeGeometry( shape );
     const points = shape.getPoints();
     const geometryPoints = new THREE.BufferGeometry().setFromPoints( points );
+    const color = new THREE.Color( props.rgbColor[0], props.rgbColor[1], props.rgbColor[2] );
 
     return (
       <line ref={mesh} position={[0, 0, 0]} geometry={geometryPoints}>
-        <lineBasicMaterial color="#0c0" />
+        <lineBasicMaterial color={color} />
       </line>
     );
+}
+const GamutReferences = (props) => {
+    //const visibleGamutData = props.visibleGamutBounds.map( (x, idx) => (x ? gamutData[idx]));
+    const visibleGamutData = [];
+    props.visibleGamutBounds.forEach((value, idx) => {
+      if (value) {
+        visibleGamutData.push(gamutData[idx]);
+      }
+    });
+    return(
+      <>
+        {visibleGamutData.map((x, idx) => <GamutTriangle r={x.r} g={x.g} b={x.b} rgbColor={x.previewColor} key={idx}/>)}
+      </>
+    );
+}
+const GamutLabels = (props) => {
+  const visibleGamutData = [];
+  props.visibleGamutBounds.forEach((value, idx) => {
+    if (value) {
+      visibleGamutData.push(gamutData[idx]);
+    }
+  });
+  //hätte auch die Farbe einfach direkt als HEX-String anlegen können
+  return(
+    <>
+      {visibleGamutData.map((x, idx) => <Text style={{color: '#'+((x.previewColor[0]*10).toString(16))+((x.previewColor[1]*10).toString(16))+((x.previewColor[2]*10).toString(16))}} key={idx}>{x.name}</Text>)}
+    </>
+  );
 }
 
 const CIEBounds = () => {
@@ -205,6 +236,7 @@ function Camera(props) {
     const [largePreview, setLargePreview] = useState(false);
     const togglePreviewSize = () => setLargePreview(!largePreview);
     const [camPos, setCamPos] = useState([1.1, 1.1, 1.1]);
+    const [visibleGamutBounds, setVisibleGamutBounds] = useState(new Array(gamutData.length).fill(true));
 
     const videoStandards = ["601", "709", "2020"];
     const [vidStdIdx, setVidStdIdx] = useState(1);
@@ -221,7 +253,7 @@ function Camera(props) {
 
     const signalXYZ = cvtSignalRGBtoXYZ(signalRGB, videoStandards[vidStdIdx]);
     const signalxyY = cvtSignalXYZtoxyY(signalXYZ);
-
+  //<GamutBounds r={[0.8, 0.1]} g={[0.5, 0.7]} b={[0.1, 0.1]}/>
     return (
       <View style={{flex: 1}}>
         <View style={{flex: 1}}>
@@ -229,14 +261,17 @@ function Camera(props) {
               <Camera position={camPos} />
               <ambientLight/>
               <pointLight position={[-1,1,1]} castShadow/>
-              {signalxyY.map( (x, idx1) =>  x.map( (y, idx2) => (<SphereColorful xyY={y} RGB={signalRGB[idx1][idx2]} name={'box1'} key={(idx1 * 100) + idx2}/> ) ) )}
-              <GamutBounds r={[0.8, 0.1]} g={[0.5, 0.7]} b={[0.1, 0.1]}/>
               <COS />
               <CIEBounds />
+              {signalxyY.map( (x, idx1) =>  x.map( (y, idx2) => (<SphereColorful xyY={y} RGB={signalRGB[idx1][idx2]} name={'box1'} key={(idx1 * 100) + idx2}/> ) ) )}
+              <GamutReferences visibleGamutBounds={visibleGamutBounds}/>
           </Canvas>
 
           <View style={{ position: 'absolute', zIndex: 1, top: 0}}>
             <Text style={{ color: '#555', padding: 10}}>x: {signalxyY[0][0][0].toFixed(4)} {"\n"}y: {signalxyY[0][0][1].toFixed(4)}{"\n"}Y: {signalxyY[0][0][2].toFixed(4)}</Text>
+          </View>
+          <View style={{ position: 'absolute', zIndex: 1,top: 50, padding: 10}}>
+            <GamutLabels visibleGamutBounds={visibleGamutBounds}/>
           </View>
 
           <View style={{ position: 'absolute', zIndex: 1, top: 10, right:10, minWidth: 70, minHeight: 80, justifyContent: "flex-start", alignItems: "flex-end"}}>
