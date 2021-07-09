@@ -74,7 +74,7 @@ export default function Navigation() {
                   return <Ionicons name={iconName} size={size} color={color} />;
               },
               })}>
-              <Drawer.Screen name="Vectorscope" component={StackWrap_VectorscopeScreen} />
+              <Drawer.Screen name="Vektorskop" component={StackWrap_VectorscopeScreen} />
               <Drawer.Screen name="CIE xy 1931" component={StackWrap_CIEScreen} />
               <Drawer.Screen name="Abbildung" component={StackWrap_AbbildungScreen} />
               <Drawer.Screen name="Abtastung" component={StackWrap_AbtastungScreen} />
@@ -147,7 +147,7 @@ export default function Navigation() {
     return (
       <Stack.Navigator>
         <Stack.Screen name= {"VectorscopeScreen"} component={VectorscopeScreen} options={{
-            headerTitle: "Vectorscope",
+            headerTitle: "Vektorskop",
           headerLeft: () => <Button icon={<Ionicons name="menu" size={25} color="gray" />} onPress={() => navigation.toggleDrawer()} type="clear"/>
         }}/>
       </Stack.Navigator>
