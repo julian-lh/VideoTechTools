@@ -127,7 +127,7 @@ const SettingsPopOver = (props) => {
           </View>
         </View>
         <View style={{backgroundColor: "#ddd", padding: 5, marginBottom: 8}}>
-          
+
         </View>
         <Button title="Schließen" onPress={()=>props.setSettingsVisible(0)}></Button>
       </View>
@@ -173,6 +173,7 @@ export const VectorscopeView = (props) => {
 
     return (
       <View style={{flex: 1}}>
+      <Text>smallSignalYCRCB: {smallSignalYCRCB[0][0].map(x=>(" "+x.toFixed(3)))}</Text>
           <Canvas style={{ zIndex: 0, flex: 1, backgroundColor: '#eee', minWidth: 20, minHeight: 20}}>
               <Camera position={[0.3, 0, 1]} />
               <VectorscopeBounds />
@@ -190,8 +191,6 @@ export const VectorscopeView = (props) => {
 
           {(settingsVisible ? <SettingsPopOver vidStdIdx={vidStdIdx} setVidStdIdx={setVidStdIdx} bitDepths={bitDepths} bitDepthIdx={bitDepthIdx} setBitDepthIdx={setBitDepthIdx} setSettingsVisible={setSettingsVisible}/> : <View/>)}
 
-
-          <Text>smallSignalYCRCB: {smallSignalYCRCB[0][0].map(x=>x.toFixed())}</Text>
         </View>
     );
 }
