@@ -74,13 +74,14 @@ export default function Navigation() {
                   return <Ionicons name={iconName} size={size} color={color} />;
               },
               })}>
+              <Drawer.Screen name="Vectorscope" component={StackWrap_VectorscopeScreen} />
               <Drawer.Screen name="CIE xy 1931" component={StackWrap_CIEScreen} />
               <Drawer.Screen name="Abbildung" component={StackWrap_AbbildungScreen} />
               <Drawer.Screen name="Abtastung" component={StackWrap_AbtastungScreen} />
               <Drawer.Screen name="Messung" component={StackWrap_MessungScreen} />
               <Drawer.Screen name="Signalpegel" component={StackWrap_SignalpegelScreen} />
 
-              <Drawer.Screen name="Vectorscope" component={StackWrap_VectorscopeScreen} />
+
           </Drawer.Navigator>
       </NavigationContainer>
     );

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Header, Text, Slider } from 'react-native-elements';
-import VectorscopeView from '../../Components/Scopes/VectorscopeView';
+import { VectorscopeView } from '../../Components/Scopes/VectorscopeView';
+import { YCrCbGenerator } from '../../Components/Generators/YCrCbGenerator'
 
 
 const ColorSelector = (props) => {
@@ -22,17 +23,20 @@ const ColorSelector = (props) => {
 }
 
 export default function VectorscopeScreen() {
-    const [red, setRed] = useState(0.5);
-    const [green, setGreen] = useState(0.5);
-    const [blue, setBlue] = useState(0.5);
-    const [colorSpaceIndex, setColorSpaceIndex] = useState(0);
-    const colorSpaces = ['sRGB', 'Adobe RGB', 'rec709', 'rec2020'];
+  const [signalYCRCB, setSignalYCRCB] = useState([[[100, 128, 128]]]);
 
     return (
       <View style={{ flex: 1}}>
-        <VectorscopeView RGB={[red, green, blue]} />
-        <Text>{red.toFixed(4)}  {green.toFixed(4)}  {blue.toFixed(4)}</Text>
-        <View style={styles.colorPicker}>
+        <VectorscopeView signalYCRCB={signalYCRCB}/>
+        <Text>Signal: {signalYCRCB[0][0].toString()}</Text>
+        <YCrCbGenerator setSignal={(x) => setSignalYCRCB(x)}/>
+      </View>
+    );
+  }
+
+
+  /*
+<View style={styles.colorPicker}>
             <ColorSelector label='R' thumbTintColor='red' value={red} valueChange={(x) => setRed(x)}/>
             <ColorSelector label='G' thumbTintColor='green'  value={green} valueChange={(x) => setGreen(x)}/>
             <ColorSelector label='B' thumbTintColor='blue' value={blue} valueChange={(x) => setBlue(x)}/>
@@ -42,10 +46,7 @@ export default function VectorscopeScreen() {
             <Button title='FARBRAUM'/>
         </View>
 
-      </View>
-    );
-  }
-
+  */
 
   const styles = StyleSheet.create({
     container: {
