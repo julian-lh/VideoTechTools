@@ -30,23 +30,9 @@ export default function CIEScreen() {
         <CIEView signalYCRCB={signalYCRCB}/>
         <Text>Signal: {signalYCRCB[0][0].toString()}</Text>
         <YCrCbGenerator setSignal={(x) => setSignalYCRCB(x)}/>
-
-
       </View>
     );
   }
-//<YCrCbGenerator/>
-  /*
-<View style={styles.colorPicker}>
-            <ColorSelector label='R' thumbTintColor='red' value={red} valueChange={(x) => setRed(x)}/>
-            <ColorSelector label='G' thumbTintColor='green'  value={green} valueChange={(x) => setGreen(x)}/>
-            <ColorSelector label='B' thumbTintColor='blue' value={blue} valueChange={(x) => setBlue(x)}/>
-        </View>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-around', backgroundColor: '#ccc', paddingVertical: 5}}>
-            <Button title='RGB/HSV'/>
-            <Button title='FARBRAUM'/>
-        </View>
-  */
 
   const styles = StyleSheet.create({
     container: {

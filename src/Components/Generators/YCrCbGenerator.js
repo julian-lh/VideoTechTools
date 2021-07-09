@@ -159,8 +159,14 @@ const TapButton = (props) => {
 
  export const YCrCbGenerator = (props) => {
 
-    const [bitDepth, setBitDepth] = useState(10);
-    const [videoStandard, setVideoStandard] = useState("709");
+    const videoStandards = ["601", "709", "2020"];
+    const [vidStdIdx, setVidStdIdx] = useState(1);
+    const switchVidStd = () => {vidStdIdx < 2 ? setVidStdIdx(vidStdIdx + 1) : setVidStdIdx(0)};
+
+    const bitDepths = (vidStdIdx == 2 ? [10, 12] : [10, 8]);
+    const [bitDepthIdx, setBitDepthIdx] = useState(0);
+    const switchBitDepth = () => setBitDepthIdx(1 - bitDepthIdx);
+
     //const [width, setWidth] = useState(8);
     //const [height, setHeight] = useState(1);
 
@@ -219,13 +225,13 @@ const TapButton = (props) => {
     signalRGB = limiterRGBSignal(signalRGB);
 
     // RGB -> YCrCb
-    const signalSmallYCRCB = cvtSignalRGBtoYCRCB(signalRGB, videoStandard);
-    var signalYCRCB = upscaleSignalYCRCB(signalSmallYCRCB, bitDepth);
-    signalYCRCB = limiterComponentSignal(signalYCRCB, bitDepth);
+    const signalSmallYCRCB = cvtSignalRGBtoYCRCB(signalRGB, videoStandards[vidStdIdx]);
+    var signalYCRCB = upscaleSignalYCRCB(signalSmallYCRCB, bitDepths[bitDepthIdx]);
+    signalYCRCB = limiterComponentSignal(signalYCRCB, bitDepths[bitDepthIdx]);
 
     useEffect(() => {
         props.setSignal(signalYCRCB);
-   }, [red, green, blue, generatorIdx]);
+   }, [red, green, blue, generatorIdx, bitDepthIdx, vidStdIdx]);
 
     useEffect(() => {
         props.setSignal(signalYCRCB);
@@ -252,6 +258,10 @@ const TapButton = (props) => {
             <TapButton label={"Kontrast"} currentValue={contrastOffset} setValue={setContrastOffset} stepSize={0.05}/>
             <TapButton label={"Gamma"} currentValue={gammaOffset} setValue={setGammaOffset} stepSize={0.1}/>
             <TapButton label={"Helligkeit"} currentValue={brightnessOffset} setValue={setBrightnessOffset} stepSize={0.05}/>
+
+            <Text h3 style={{paddingTop: 20, paddingBottom: 10}}>Videostandard</Text>
+            <Button title={"Rec." + videoStandards[vidStdIdx]} onPress={switchVidStd}></Button>
+            <Button title={bitDepths[bitDepthIdx] + " bit"} onPress={switchBitDepth}></Button>
         </ScrollView>
 
       </View>

@@ -1,7 +1,10 @@
 import React, {useRef, useState, useEffect, useMemo} from 'react';
-import { SafeAreaView, Button, View, Text, TouchableOpacity } from 'react-native';
-import { Canvas, useFrame, useThree, extend} from 'react-three-fiber';
+import { Button, View, Text, TouchableOpacity } from 'react-native';
+import { Button as Btn } from 'react-native-elements';
+import { Canvas, useFrame, useThree } from 'react-three-fiber';
 import * as THREE from 'three';
+import Icon from 'react-native-vector-icons/Ionicons';
+
 import { RGBSignalPreview } from '../RGBSignalPreview';
 import gamutData from '../../calculation/data/gamutData.json';
 import { cvtSignalRGBtoXYZ, cvtSignalXYZtoxyY, CIEBoundsValues } from '../../calculation/ColorSpaceTransform';
@@ -202,7 +205,7 @@ const SettingsPopOver = (props) => {
   return(
     <View style={{left: 0, right: 0, top:0, backgroundColor: "#3338", position: 'absolute', zIndex: 2, alignItems: "center"}}>
       <View style={{width: "80%", minHeight: "70%", backgroundColor: "#ccc", padding: 10, marginVertical:10, justifyContent: "flex-start", alignItems: "center"}}>
-        <Text style={{fontSize: 20, color: "#333", paddingBottom: 10}}>Settings</Text>
+        <Text style={{fontSize: 20, color: "#333", paddingBottom: 10}}>Einstellungen</Text>
         <View style={{backgroundColor: "#ddd", padding: 5, marginBottom: 5}}>
           <Text>Input-Signal</Text>
           <View style={{ width: "100%", flexDirection: "row", justifyContent: 'space-around', alignItems: "center" }}>
@@ -221,8 +224,6 @@ const SettingsPopOver = (props) => {
           </View>
         </View>
         <Button title="Schließen" onPress={()=>props.setSettingsVisible(0)}></Button>
-
-
       </View>
     </View>
   );
@@ -265,13 +266,15 @@ function Camera(props) {
     const signalXYZ = cvtSignalRGBtoXYZ(signalRGB, videoStandards[vidStdIdx]);
     const signalxyY = cvtSignalXYZtoxyY(signalXYZ);
   //<GamutBounds r={[0.8, 0.1]} g={[0.5, 0.7]} b={[0.1, 0.1]}/>
+
+  //<ambientLight/>
+  //<pointLight position={[-1,1,1]} castShadow/>
     return (
       <View style={{flex: 1}}>
         <View style={{flex: 1}}>
           <Canvas style={{ zIndex: 0, flex: 1, backgroundColor: '#eee', minWidth: 20, minHeight: 20}}>
               <Camera position={camPos} />
-              <ambientLight/>
-              <pointLight position={[-1,1,1]} castShadow/>
+
               <COS />
               <CIEBounds />
               {signalxyY.map( (x, idx1) =>  x.map( (y, idx2) => (<SphereColorful xyY={y} RGB={signalRGB[idx1][idx2]} name={'box1'} key={(idx1 * 100) + idx2}/> ) ) )}
@@ -293,7 +296,7 @@ function Camera(props) {
             </TouchableOpacity>
             <Button title={"Rec." + videoStandards[vidStdIdx]} onPress={switchVidStd}></Button>
             <Button title={bitDepths[bitDepthIdx] + " bit"} onPress={switchBitDepth}></Button>
-            <Button title={"Settings"} onPress={x => setSettingsVisible(!settingsVisible)}></Button>
+            <Btn icon={<Icon name="settings-sharp" size={25} color="#38f"/>} title="" type="clear" onPress={x => setSettingsVisible(!settingsVisible)}/>
 
           </View>
 
