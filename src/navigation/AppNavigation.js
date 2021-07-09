@@ -14,6 +14,7 @@ import MessungScreen from '../screens/2_Messung/MessungScreen'
 import SignalpegelScreen from '../screens/3_Signalpegel/SignalpegelScreen'
 import CIEScreen from '../screens/CIE/CIEScreen'
 import VectorscopeScreen from '../screens/Vectorscope/VectorscopeScreen'
+import WFMScreen from '../screens/WFM/WFMScreen'
 
 //<StatusBar style="auto" />
 // drawer test
@@ -63,6 +64,11 @@ export default function Navigation() {
                         ? 'color-palette'
                         : 'color-palette-outline';
                         break;
+                    case "WFM":
+                        iconName = focused
+                        ? 'color-palette'
+                        : 'color-palette-outline';
+                        break;
                     default:
                       iconName = focused
                         ? 'color-palette'
@@ -74,6 +80,7 @@ export default function Navigation() {
                   return <Ionicons name={iconName} size={size} color={color} />;
               },
               })}>
+              <Drawer.Screen name="WFM" component={StackWrap_WFMScreen} />
               <Drawer.Screen name="Vektorskop" component={StackWrap_VectorscopeScreen} />
               <Drawer.Screen name="CIE xy 1931" component={StackWrap_CIEScreen} />
               <Drawer.Screen name="Abbildung" component={StackWrap_AbbildungScreen} />
@@ -148,6 +155,17 @@ export default function Navigation() {
       <Stack.Navigator>
         <Stack.Screen name= {"VectorscopeScreen"} component={VectorscopeScreen} options={{
             headerTitle: "Vektorskop",
+          headerLeft: () => <Button icon={<Ionicons name="menu" size={25} color="gray" />} onPress={() => navigation.toggleDrawer()} type="clear"/>
+        }}/>
+      </Stack.Navigator>
+    );
+  }
+
+  function StackWrap_WFMScreen({ navigation }) {
+    return (
+      <Stack.Navigator>
+        <Stack.Screen name= {"WFMScreen"} component={WFMScreen} options={{
+            headerTitle: "WFM",
           headerLeft: () => <Button icon={<Ionicons name="menu" size={25} color="gray" />} onPress={() => navigation.toggleDrawer()} type="clear"/>
         }}/>
       </Stack.Navigator>

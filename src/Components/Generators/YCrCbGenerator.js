@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Button, ScrollView, TouchableOpacity} from 'react-native';
 import { Text, Slider } from 'react-native-elements';
 
+import { cvtRGBtoHSV, cvtHSVtoRGB } from '../../calculation/ColorSpaceTransform';
 import { cvtSignalRGBtoYCRCB, upscaleSignalYCRCB, limiterComponentSignal, limiterRGBSignal} from '../../calculation/componentSignal';
 import { generateRGBSignalFullColor,  generateRGBSignalGradient, generateRGBSignalBars, offsetSignalContrast, offsetSignalBrightness, offsetSignalGamma } from '../../calculation/signalGenerator';
 import { clamp } from '../../calculation/helpers';
@@ -143,16 +144,15 @@ const SignalPicker = (props) => {
 
 const TapButton = (props) => {
     return(
-        <View style={{flex: 1, minWidth: 100, width: 180, justifyContent: "space-evenly", alignItems: "center"}}>
+        <View style={{flex: 1, minWidth: 50, maxWidth: 190, justifyContent: "space-evenly", alignItems: "center"}}>
             <Text>{props.label}</Text>
-            <View style={{ backgroundColor: "#ffffff", flexDirection: "row", felx: 1, justifyContent: "space-evenly", alignItems: "center"}}>
-                <Button title="    -    " onPress={()=>props.setValue(Math.round((props.currentValue - props.stepSize)*100)/100)} color={"black"} style={{flex: 1}}></Button>
+            <View style={{ backgroundColor: (props.color !== undefined ? props.color : "#ffffff"), flexDirection: "row", felx: 1, justifyContent: "space-evenly", alignItems: "center"}}>
+                <Button title=" - " onPress={()=>props.setValue(Math.round((props.currentValue - props.stepSize)*100)/100)} color={"black"} style={{flex: 1}}></Button>
                 <Text style={{flex: 1, textAlign: 'center', fontSize: 20}}>{props.currentValue.toFixed(2)}</Text>
-
-                <Button title="    +    " onPress={()=>props.setValue(Math.round((props.currentValue + props.stepSize)*100)/100)} color={"black"} style={{flex: 1}}></Button>
+                <Button title=" + " onPress={()=>props.setValue(Math.round((props.currentValue + props.stepSize)*100)/100)} color={"black"} style={{flex: 1}}></Button>
             </View>
         </View>
-);
+    );
 }
 
 
@@ -173,17 +173,16 @@ const TapButton = (props) => {
     const [pageID, setPageID] = useState(0);
     const [generatorIdx, setGeneratorIdx] = useState(0);
 
-    // COLOR-PICKER
-    const [hue, setHue] = useState(0.5);
-    const [saturation, setSaturation] = useState(0.5);
-    const [value, setValue] = useState(0.5);
+    // prevent infinite conversion loops
+    const [showingRgbControls, setShowingRgbControls] = useState(true);
 
-    //bei Veränderung direkt in rgb umrechnen
-    useEffect(() => {
-        // setRed();
-        // setBlue();
-        // setGreen();
-    }, [hue, saturation, value]);
+    // COLOR-PICKER
+    const [hue, setHueDirectly] = useState(0);
+    const setHue = (value)  => setHueDirectly((value % 360 < 0) ? (360 - Math.abs(value) % 360) : value % 360);
+    const [saturation, setSaturationDirectly] = useState(0.5);
+    const setSaturation = (value)  => setSaturationDirectly( clamp(value) );
+    const [value, setValueDirectly] = useState(0.5);
+    const setValue = (value)  => setValueDirectly( clamp(value) );
 
     const [red, setRedDirectly] = useState(0.5);
     const setRed = (value)  => setRedDirectly( clamp(value) );
@@ -191,6 +190,40 @@ const TapButton = (props) => {
     const setGreen = (value)  => setGreenDirectly( clamp(value) );
     const [blue, setBlueDirectly] = useState(0.5);
     const setBlue = (value)  => setBlueDirectly( clamp(value) );
+
+    /*
+    const updateHSV = () => {
+        const [h, s, v] = cvtRGBtoHSV([red, green, blue]);
+        setHueDirectly(h);
+        setSaturationDirectly(s);
+        setValueDirectly(v);
+    }
+    const updateRGB = () => {
+        const [r, g, b] = cvtHSVtoRGB([hue, saturation, value]);
+        setRedDirectly(r);
+        setGreenDirectly(g);
+        setBlueDirectly(b);
+    }*/
+
+    //bei Veränderung direkt in rgb umrechnen
+
+    useEffect(() => {
+        if (!showingRgbControls){
+            const [r, g, b] = cvtHSVtoRGB([hue, saturation, value]);
+            setRedDirectly(r);
+            setGreenDirectly(g);
+            setBlueDirectly(b);
+        }
+    }, [hue, saturation, value]);
+
+    useEffect(() => {
+        if (showingRgbControls){
+            const [h, s, v] = cvtRGBtoHSV([red, green, blue]);
+            setHueDirectly(h);
+            setSaturationDirectly(s);
+            setValueDirectly(v);
+        }
+    }, [red, green, blue]);
 
     var signalRGB = [[[0, 0, 0]]];
 
@@ -244,16 +277,30 @@ const TapButton = (props) => {
       <View style={{ flex: 1, alignItems: "center"}}>
          <View style={{ backgroundColor: "#dddddd", width: "100%", flexDirection: "row", justifyContent: 'space-around' }}>
         </View>
-        <View style={{ backgroundColor: "#dedede", width: "90%", flexDirection: "row", justifyContent: 'space-around' }}>
-            <Button title="Bars" onPress={()=>setGeneratorIdx(0)} color={ (generatorIdx == 0 ? "orange" : "gray")}></Button>
-            <Button title="Einfarbig" onPress={()=>setGeneratorIdx(1)} color={(generatorIdx == 1 ? "orange" : "gray")}></Button>
-            <Button title="Verlauf" onPress={()=>setGeneratorIdx(2)} color={(generatorIdx == 2 ? "orange" : "gray")}></Button>
-        </View>
+
 
         <ScrollView width="100%" contentContainerStyle={{ flexGrow: 1, justifyContent: 'center', alignItems: "center" }}>
-            <TapButton label={"R"} currentValue={red} setValue={setRed} stepSize={0.1}/>
-            <TapButton label={"G"} currentValue={green} setValue={setGreen} stepSize={0.1}/>
-            <TapButton label={"B"} currentValue={blue} setValue={setBlue} stepSize={0.1}/>
+            <View style={{ backgroundColor: "#dedede", width: "90%", flexDirection: "row", justifyContent: 'space-around' }}>
+                <Button title="Bars" onPress={()=>setGeneratorIdx(0)} color={ (generatorIdx == 0 ? "orange" : "gray")}></Button>
+                <Button title="Einfarbig" onPress={()=>setGeneratorIdx(1)} color={(generatorIdx == 1 ? "orange" : "gray")}></Button>
+                <Button title="Verlauf" onPress={()=>setGeneratorIdx(2)} color={(generatorIdx == 2 ? "orange" : "gray")}></Button>
+            </View>
+            <Button title={(showingRgbControls ? "HSV" : "RGB")} onPress={x => setShowingRgbControls(!showingRgbControls)}></Button>
+            {generatorIdx > 0 ?
+                (showingRgbControls ?
+                    <View style={{ flex: 1,  flexDirection: "column", justifyContent: 'space-around', alignItems: "center", padding: 10 }}>
+                        <TapButton label={"R"} currentValue={red} setValue={setRed} stepSize={0.1} color={"#fdd"}/>
+                        <TapButton label={"G"} currentValue={green} setValue={setGreen} stepSize={0.1} color={"#dfd"}/>
+                        <TapButton label={"B"} currentValue={blue} setValue={setBlue} stepSize={0.1} color={"#ddf"}/>
+                    </View> :
+                    <View style={{ flex: 1, flexDirection: "column", justifyContent: 'space-around', alignItems: "center", padding: 10}}>
+                        <TapButton label={"H"} currentValue={hue} setValue={setHue} stepSize={30}/>
+                        <TapButton label={"S"} currentValue={saturation} setValue={setSaturation} stepSize={0.1}/>
+                        <TapButton label={"V"} currentValue={value} setValue={setValue} stepSize={0.1}/>
+                    </View>)
+            : <View/>}
+
+
 
             <Text h3 style={{paddingTop: 20, paddingBottom: 10}}>Modifikation</Text>
             <TapButton label={"Kontrast"} currentValue={contrastOffset} setValue={setContrastOffset} stepSize={0.05}/>
@@ -267,7 +314,19 @@ const TapButton = (props) => {
 
       </View>
     );
-  }
+  }/*
+  {generatorIdx > 0 ? <View style={{ width: "100%", flexDirection: "row", justifyContent: 'space-evenly', alignItems: "center"}}>
+  <View style={{ flex: 1, flexDirection: "column", justifyContent: 'space-around', alignItems: "center", padding: 10}}>
+      <TapButton label={"H"} currentValue={hue} setValue={setHue} stepSize={30}/>
+      <TapButton label={"S"} currentValue={saturation} setValue={setSaturation} stepSize={0.1}/>
+      <TapButton label={"V"} currentValue={value} setValue={setValue} stepSize={0.1}/>
+  </View>
+  <View style={{ flex: 1,  flexDirection: "column", justifyContent: 'space-around', alignItems: "center", padding: 10 }}>
+      <TapButton label={"R"} currentValue={red} setValue={setRed} stepSize={0.1} color={"#fdd"}/>
+      <TapButton label={"G"} currentValue={green} setValue={setGreen} stepSize={0.1} color={"#dfd"}/>
+      <TapButton label={"B"} currentValue={blue} setValue={setBlue} stepSize={0.1} color={"#ddf"}/>
+  </View>
+</View> : <View/>}*/
   //  <SignalPicker signal={RGB} newSignal={(x) => setRGB(x)} style={{flex: 1}}/>
 
 
