@@ -54,7 +54,7 @@ export function cvtXYZtoxyY(XYZ_array = [0, 0, 1]) {
     const x = XYZ_array[0] / (XYZ_array[0] + XYZ_array[1] + XYZ_array[2]);
     const y = XYZ_array[1] / (XYZ_array[0] + XYZ_array[1] + XYZ_array[2]);
     //const z = XYZ_array[2] / (XYZ_array[0] + XYZ_array[1] + XYZ_array[2]);
-    return [x, y, XYZ_array[2]];
+    return [x, y, XYZ_array[1]];
 };
 
 

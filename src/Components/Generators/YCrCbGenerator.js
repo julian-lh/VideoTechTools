@@ -294,7 +294,7 @@ const TapButton = (props) => {
                         <TapButton label={"B"} currentValue={blue} setValue={setBlue} stepSize={0.1} color={"#ddf"}/>
                     </View> :
                     <View style={{ flex: 1, flexDirection: "column", justifyContent: 'space-around', alignItems: "center", padding: 10}}>
-                        <TapButton label={"H"} currentValue={hue} setValue={setHue} stepSize={30}/>
+                        <TapButton label={"H"} currentValue={hue} setValue={setHue} stepSize={15}/>
                         <TapButton label={"S"} currentValue={saturation} setValue={setSaturation} stepSize={0.1}/>
                         <TapButton label={"V"} currentValue={value} setValue={setValue} stepSize={0.1}/>
                     </View>)
