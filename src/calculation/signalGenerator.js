@@ -1,3 +1,5 @@
+import { cvtSignalRGBtoXYZ, cvtSignalXYZtoxyY } from './ColorSpaceTransform';
+
 
 function offsetContrast(pixelValue = [0, 0, 0], m = 1) {
     return pixelValue.map(x => x * m);
@@ -102,6 +104,33 @@ export function generateRGBSignalGradient(startRGB, endRGB, width, height, direc
     return signal;
 }
 
+export function generateRGB3dCoordinates(){
+    var rgbArray = [];
+    for(var r = 0; r <= 1; r += 0.2){
+        for(var g = 0; g <= 1; g += 0.2){
+            for(var b = 0; b <= 1; b += 0.2){
+                rgbArray.push([r, g, b]);
+            }
+        }
+    }
+    const rgbArraySignal = [[...rgbArray]];
+    return rgbArraySignal;
+}
+
+export function generateYxy3dCoordinates(colorSpace = "709"){
+    var rgbArray = [];
+    for(var r = 0; i <= 1; i += 0.2){
+        for(var g = 0; i <= 1; i += 0.2){
+            for(var b = 0; i <= 1; i += 0.2){
+                rgbArray.push([r, g, b]);
+            }
+        }
+    }
+    const rgbArraySignal = [[...rgbArray]];
+    const XYZArraySignal = cvtSignalRGBtoXYZ(rgbArraySignal, colorSpace);
+    const xyYArraySignal = cvtSignalXYZtoxyY(XYZArraySignal);
+    return xyYArraySignal;
+}
 
 
 

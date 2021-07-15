@@ -98,6 +98,10 @@ export function cvtRGBtoHSV(rgb) {
   }
 
 export function cvtHSVtoRGB(hsv) {
+    //Stimmt noch nicht! Wenn Sättigung singkt,
+    //müssen Neben-Farbanteile steigen anstatt die
+    // Hauptfarbe zu reduzieren
+
     var rgb = [0, 0, 0];
     var [h, s, v] = hsv;
 
