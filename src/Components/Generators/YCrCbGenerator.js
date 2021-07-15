@@ -4,7 +4,7 @@ import { Text, Slider } from 'react-native-elements';
 
 import { cvtRGBtoHSV, cvtHSVtoRGB } from '../../calculation/ColorSpaceTransform';
 import { cvtSignalRGBtoYCRCB, upscaleSignalYCRCB, limiterComponentSignal, limiterRGBSignal} from '../../calculation/componentSignal';
-import { generateRGBSignalFullColor,  generateRGBSignalGradient, generateRGBSignalBars, offsetSignalContrast, offsetSignalBrightness, offsetSignalGamma } from '../../calculation/signalGenerator';
+import { generateRGBSignalFullColor,  generateRGBSignalGradient, generateRGBSignalBars, offsetSignalContrast, offsetSignalBrightness, offsetSignalGamma, generateRGB3dCoordinates } from '../../calculation/signalGenerator';
 import { clamp } from '../../calculation/helpers';
 
 const ColorSelector = (props) => {
@@ -230,7 +230,7 @@ const TapButton = (props) => {
     switch(generatorIdx) {
         //Due to performance limitations: Signalresolution only on necessary resolution
         case 0:
-            signalRGB = generateRGBSignalBars(8, 1);
+            signalRGB = generateRGBSignalBars(8, 1); //generateRGB3dCoordinates(); //
             break;
         case 1:
             signalRGB = generateRGBSignalFullColor([red, green, blue], 1, 1);

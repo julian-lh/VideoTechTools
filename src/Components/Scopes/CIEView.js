@@ -35,6 +35,7 @@ const BoxColorful = (props) => {
 
 const SphereColorful = (props) => {
     const mesh = useRef();
+
     /*
     useFrame(() => {
       mesh.current.rotation.y = mesh.current.rotation.x += 0.01;
@@ -54,6 +55,31 @@ const SphereColorful = (props) => {
       </mesh>
     )
 }
+
+/*
+const SphereColorfulUseMemo = (props) => {
+  const mesh = useRef();
+  const meshes = useMemo(()=>{
+    const meshesArray = [];
+    for (const [idxX, x] of props.signalxyY.entries()){
+      for (const [idxY, y] of x.entries()){
+
+        const geometry = new THREE.SphereGeometry( 0.01, 5, 5 );
+        const clr = new THREE.Color( props.signalRGB[idxX][idxY][0], props.signalRGB[idxX][idxY][1], props.signalRGB[idxX][idxY][2] );
+        const material = new THREE.MeshBasicMaterial({ color: clr });
+        const ms = new THREE.Mesh( geometry, material )
+        ms.position = new THREE.Vector3( y[0], y[1], y[2] );
+        meshesArray.push(ms);
+      }
+    }
+    return meshesArray;
+  }, [props.signalxyY, props.signalRGB]);
+
+  return (
+    <mesh ref={mesh} mesh={meshes}/>
+  )
+}
+*/
 
 const COS = (props) => {
     return(
@@ -247,7 +273,7 @@ function Camera(props) {
  export const CIEView = (props) => {
     const [largePreview, setLargePreview] = useState(false);
     const togglePreviewSize = () => setLargePreview(!largePreview);
-    const [camPos, setCamPos] = useState([1.1, 1.1, 1.1]);
+    const [camPos, setCamPos] = useState([0.5, 0.5, 1.1]);
     const [visibleGamutBounds, setVisibleGamutBounds] = useState(new Array(gamutData.length).fill(false));
     const [settingsVisible, setSettingsVisible] = useState(false);
 
@@ -270,15 +296,17 @@ function Camera(props) {
 
   //<ambientLight/>
   //<pointLight position={[-1,1,1]} castShadow/>
+  //               {signalxyY.map( (x, idx1) =>  x.map( (y, idx2) => (<SphereColorful xyY={y} RGB={signalRGB[idx1][idx2]} name={'box1'} key={(idx1 * 100) + idx2}/> ) ) )}
+// <SphereColorfulUseMemo signalxyY={signalxyY} signalRGB={signalRGB} />
     return (
       <View style={{flex: 1}}>
         <View style={{flex: 1}}>
           <Canvas style={{ zIndex: 0, flex: 1, backgroundColor: '#eee', minWidth: 20, minHeight: 20}}>
               <Camera position={camPos} />
+              {signalxyY.map( (x, idx1) =>  x.map( (y, idx2) => (<SphereColorful xyY={y} RGB={signalRGB[idx1][idx2]} name={'box1'} key={(idx1 * 100) + idx2}/> ) ) )}
 
               <COS />
               <CIEBounds />
-              {signalxyY.map( (x, idx1) =>  x.map( (y, idx2) => (<SphereColorful xyY={y} RGB={signalRGB[idx1][idx2]} name={'box1'} key={(idx1 * 100) + idx2}/> ) ) )}
               <GamutReferences visibleGamutBounds={visibleGamutBounds}/>
           </Canvas>
 
