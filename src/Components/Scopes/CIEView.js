@@ -1,6 +1,6 @@
 import React, {useRef, useState, useEffect, useMemo} from 'react';
-import { Button, View, Text, TouchableOpacity } from 'react-native';
-import { Button as Btn } from 'react-native-elements';
+import { View, Text, TouchableOpacity } from 'react-native';
+import { Button } from 'react-native-elements';
 import { Canvas, useFrame, useThree } from 'react-three-fiber';
 import * as THREE from 'three';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -10,6 +10,7 @@ import gamutData from '../../calculation/data/gamutData.json';
 import { cvtSignalRGBtoXYZ, cvtSignalXYZtoxyY, CIEBoundsValues } from '../../calculation/ColorSpaceTransform';
 
 import { cvtSignalYCRCBtoRGB, downscaleSignalYCRCB } from '../../calculation/componentSignal';
+import { FloatType } from 'three';
 
 
 const BoxColorful = (props) => {
@@ -54,6 +55,113 @@ const SphereColorful = (props) => {
         <meshBasicMaterial color={color}/>
       </mesh>
     )
+}
+
+const DataPoints = ({ signalxyY, signalRGB }) => {
+
+  const tempObject = new THREE.Object3D();
+  const tempColor = new THREE.Color();
+
+
+  var flatSignalxyY = signalxyY.flat(1);//useMemo(() => props.signalxyY.flat(1), [props.signalxyY]);
+  var numData = flatSignalxyY.length;
+
+  var flatSignalRGB = signalRGB.flat(1);//useMemo(() => props.signalRGB.flat(1), [props.signalRGB, props.signalxyY]);
+  const colorArray = React.useMemo(() => new Float32Array(numData * 3), [signalxyY]);
+
+  const meshRef = useRef();
+  const colorAttrib = useRef();
+
+/*
+  const positions = useMemo(() => {
+    return new Float32Array(signalxyY.flat(2));
+  },[signalxyY]);
+
+  const colors = useMemo(() => {
+    return new Float32Array(signalRGB.flat(2));
+  },[signalRGB]);
+
+  const bufferRef = useRef();
+  const colorRef = useRef();
+
+  useEffect(() => {
+    bufferRef.current.needsUpdate = true;
+    colorRef.current.needsUpdate = true;
+  }, [signalxyY]);*/
+
+  useEffect(() => {
+    const mesh = meshRef.current;
+
+
+    for (let i = 0; i < numData; i++) {
+
+      const xyY = flatSignalxyY[i];
+      tempObject.position.set(xyY[0], xyY[1], xyY[2]);
+      const rgb = flatSignalRGB[i].map((x) => (x < 0 ? 0 : (x > 1 ? 1 : x) ));
+      tempColor.setRGB(rgb[0], rgb[1], rgb[2]);
+      //tempColor.set("#f00");
+      tempColor.toArray(colorArray, i * 3);
+      colorAttrib.current.needsUpdate = true;
+
+      tempObject.updateMatrix();
+      mesh.setMatrixAt(i, tempObject.matrix);
+    }
+    colorAttrib.current.needsUpdate = true;
+
+    meshRef.current.instanceMatrix.needsUpdate = true;
+
+  }, [flatSignalxyY]);
+//<instancedBufferAttribute attachObject={['attributes', 'color']} args={[colorArray, 3]}  itemSize={3}/>
+//<meshBasicMaterial vertexColors={THREE.VertexColors} />
+
+  return (
+    <instancedMesh
+      ref={meshRef}
+      args={[null, null, numData]}
+      frustumCulled={false}
+    >
+      <sphereGeometry attach="geometry" args={[0.01, 5, 5 ]}>
+      <instancedBufferAttribute
+          ref={colorAttrib}
+          attachObject={['attributes', 'color']}
+          args={[colorArray, 3]}
+        />
+      </sphereGeometry>
+      <meshBasicMaterial
+        attach="material"
+        vertexColors={THREE.VertexColors}
+      />
+    </instancedMesh>
+  )
+  /*
+  return(
+    <points>
+      <bufferGeometry attach="geometry">
+        <bufferAttribute
+        ref={bufferRef}
+          attachObject={['attributes', 'position']}
+          array={positions}
+          count={positions.length / 3}
+          itemSize={3}
+        />
+        <bufferAttribute
+          ref={colorRef}
+          attachObject={['attributes', 'color']}
+          array={colors}
+          count={colors.length / 3}
+        />
+      </bufferGeometry>
+      <pointsMaterial
+        attach="material"
+        size={5}
+        sizeAttenuation
+        transparent={false}
+        alphaTest={0.5}
+        opacity={1.0}
+        vertexColors={THREE.VertexColors}
+      />
+    </points>
+  )*/
 }
 
 /*
@@ -287,27 +395,28 @@ function Camera(props) {
 
     // convert signal
     const signalYCRCB = props.signalYCRCB;
-    const smallSignalYCRCB = downscaleSignalYCRCB(signalYCRCB, bitDepths[bitDepthIdx]);
-    const signalRGB = cvtSignalYCRCBtoRGB(smallSignalYCRCB, videoStandards[vidStdIdx]);
+    const smallSignalYCRCB = useMemo(() => downscaleSignalYCRCB(signalYCRCB, bitDepths[bitDepthIdx]), [signalYCRCB, bitDepthIdx]);
+    const signalRGB = useMemo(() => cvtSignalYCRCBtoRGB(smallSignalYCRCB, videoStandards[vidStdIdx]), [smallSignalYCRCB, vidStdIdx]);
 
-    const signalXYZ = cvtSignalRGBtoXYZ(signalRGB, videoStandards[vidStdIdx]);
-    const signalxyY = cvtSignalXYZtoxyY(signalXYZ);
+    const signalXYZ = useMemo(() => cvtSignalRGBtoXYZ(signalRGB, videoStandards[vidStdIdx]), [signalRGB, vidStdIdx]);
+    const signalxyY = useMemo(() => cvtSignalXYZtoxyY(signalXYZ), [signalXYZ]);
   //<GamutBounds r={[0.8, 0.1]} g={[0.5, 0.7]} b={[0.1, 0.1]}/>
 
   //<ambientLight/>
   //<pointLight position={[-1,1,1]} castShadow/>
   //               {signalxyY.map( (x, idx1) =>  x.map( (y, idx2) => (<SphereColorful xyY={y} RGB={signalRGB[idx1][idx2]} name={'box1'} key={(idx1 * 100) + idx2}/> ) ) )}
 // <SphereColorfulUseMemo signalxyY={signalxyY} signalRGB={signalRGB} />
+//              {signalxyY.map( (x, idx1) =>  x.map( (y, idx2) => (<SphereColorful xyY={y} RGB={signalRGB[idx1][idx2]} name={'box1'} key={(idx1 * 100) + idx2}/> ) ) )}
+
     return (
       <View style={{flex: 1}}>
         <View style={{flex: 1}}>
           <Canvas style={{ zIndex: 0, flex: 1, backgroundColor: '#eee', minWidth: 20, minHeight: 20}}>
               <Camera position={camPos} />
-              {signalxyY.map( (x, idx1) =>  x.map( (y, idx2) => (<SphereColorful xyY={y} RGB={signalRGB[idx1][idx2]} name={'box1'} key={(idx1 * 100) + idx2}/> ) ) )}
-
               <COS />
               <CIEBounds />
               <GamutReferences visibleGamutBounds={visibleGamutBounds}/>
+              <DataPoints signalxyY={signalxyY} signalRGB={signalRGB}/>
           </Canvas>
 
           <View style={{ position: 'absolute', zIndex: 1, top: 0}}>
@@ -323,18 +432,17 @@ function Camera(props) {
             <TouchableOpacity style={{ minWidth: 20, minHeight:(largePreview ? 110 : 45), width: (largePreview ? "60%" : "20%"), aspectRatio: 1.78}} onPress={togglePreviewSize}>
               <RGBSignalPreview rgbSignal={signalRGB}/>
             </TouchableOpacity>
-            <Button title={"Rec." + videoStandards[vidStdIdx]} onPress={switchVidStd}></Button>
-            <Button title={bitDepths[bitDepthIdx] + " bit"} onPress={switchBitDepth}></Button>
-            <Btn icon={<Icon name="settings-sharp" size={25} color="#38f"/>} title="" type="clear" onPress={x => setSettingsVisible(!settingsVisible)}/>
-
+            <Button title={"Rec." + videoStandards[vidStdIdx]} onPress={switchVidStd} type="clear"/>
+            <Button title={bitDepths[bitDepthIdx] + " bit"} onPress={switchBitDepth} type="clear"/>
+            <Button icon={<Icon name="settings-sharp" size={25} color="#38f"/>} title="" type="clear" onPress={x => setSettingsVisible(!settingsVisible)}/>
           </View>
 
           <View style={{ position: 'absolute', zIndex: 1, bottom: 0, width: "100%", flexDirection: "row", justifyContent: 'space-around' }}>
-            <Button title="X-Y" onPress={()=>setCamPos([0.5, 0.5, 1.1])}></Button>
-            <Button title="X-Z" onPress={()=>setCamPos([0.5, 1.1, 0.5])}></Button>
-            <Button title="Z-Y" onPress={()=>setCamPos([1.1, 0.5, 0.5])}></Button>
+            <Button title="X-Y" onPress={()=>setCamPos([0.5, 0.5, 1.1])} type="clear"/>
+            <Button title="X-Z" onPress={()=>setCamPos([0.5, 1.1, 0.5])} type="clear"/>
+            <Button title="Z-Y" onPress={()=>setCamPos([1.1, 0.5, 0.5])} type="clear"/>
 
-            <Button title="Perspective" onPress={()=>setCamPos([1.2, 1.2, 1.2])}></Button>
+            <Button title="Perspective" onPress={()=>setCamPos([1.2, 1.2, 1.2])} type="clear"/>
 
           </View>
         </View>

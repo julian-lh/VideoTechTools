@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Button, ScrollView, TouchableOpacity} from 'react-native';
-import { Text, Slider } from 'react-native-elements';
+import { StyleSheet, View, ScrollView, TouchableOpacity} from 'react-native';
+import { Button, Text, Slider } from 'react-native-elements';
 
 import { cvtRGBtoHSV, cvtHSVtoRGB } from '../../calculation/ColorSpaceTransform';
 import { cvtSignalRGBtoYCRCB, upscaleSignalYCRCB, limiterComponentSignal, limiterRGBSignal} from '../../calculation/componentSignal';
@@ -171,7 +171,7 @@ const TapButton = (props) => {
     //const [height, setHeight] = useState(1);
 
     const [pageID, setPageID] = useState(0);
-    const [generatorIdx, setGeneratorIdx] = useState(0);
+    const [generatorIdx, setGeneratorIdx] = useState(1);
 
     // prevent infinite conversion loops
     const [showingRgbControls, setShowingRgbControls] = useState(true);
@@ -230,7 +230,7 @@ const TapButton = (props) => {
     switch(generatorIdx) {
         //Due to performance limitations: Signalresolution only on necessary resolution
         case 0:
-            signalRGB = generateRGBSignalBars(8, 1); //generateRGB3dCoordinates(); //
+            signalRGB = generateRGB3dCoordinates(); //generateRGBSignalBars(8, 1); //
             break;
         case 1:
             signalRGB = generateRGBSignalFullColor([red, green, blue], 1, 1);
@@ -281,9 +281,9 @@ const TapButton = (props) => {
 
         <ScrollView width="100%" contentContainerStyle={{ flexGrow: 1, justifyContent: 'center', alignItems: "center" }}>
             <View style={{ backgroundColor: "#dedede", width: "90%", flexDirection: "row", justifyContent: 'space-around' }}>
-                <Button title="Bars" onPress={()=>setGeneratorIdx(0)} color={ (generatorIdx == 0 ? "orange" : "gray")}></Button>
-                <Button title="Einfarbig" onPress={()=>setGeneratorIdx(1)} color={(generatorIdx == 1 ? "orange" : "gray")}></Button>
-                <Button title="Verlauf" onPress={()=>setGeneratorIdx(2)} color={(generatorIdx == 2 ? "orange" : "gray")}></Button>
+                <Button title="Bars" onPress={()=>setGeneratorIdx(0)} style={ {color: (generatorIdx == 0 ? "orange" : "gray")}} type="clear"/>
+                <Button title="Einfarbig" onPress={()=>setGeneratorIdx(1)} color={(generatorIdx == 1 ? "orange" : "gray")} type="clear"/>
+                <Button title="Verlauf" onPress={()=>setGeneratorIdx(2)} color={(generatorIdx == 2 ? "orange" : "gray")} type="clear"/>
             </View>
             <Button title={(showingRgbControls ? "HSV" : "RGB")} onPress={x => setShowingRgbControls(!showingRgbControls)}></Button>
             {generatorIdx > 0 ?
@@ -308,8 +308,8 @@ const TapButton = (props) => {
             <TapButton label={"Helligkeit"} currentValue={brightnessOffset} setValue={setBrightnessOffset} stepSize={0.05}/>
 
             <Text h3 style={{paddingTop: 20, paddingBottom: 10}}>Videostandard</Text>
-            <Button title={"Rec." + videoStandards[vidStdIdx]} onPress={switchVidStd}></Button>
-            <Button title={bitDepths[bitDepthIdx] + " bit"} onPress={switchBitDepth}></Button>
+            <Button title={"Rec." + videoStandards[vidStdIdx]} onPress={switchVidStd}type="clear"/>
+            <Button title={bitDepths[bitDepthIdx] + " bit"} onPress={switchBitDepth}type="clear"/>
         </ScrollView>
 
       </View>

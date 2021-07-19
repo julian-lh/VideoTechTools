@@ -4,7 +4,7 @@ import { StyleSheet, View, TextInput, ScrollView } from 'react-native';
 import { Image, Button, ButtonGroup, Header, Text } from 'react-native-elements';
 import { ActivityIndicator } from 'react-native';
 
-
+/*
 export class BtnGroup extends PureComponent {
   // Quelle https://www.sitepoint.com/community/t/react-native-elements-button-group/366392
   constructor() {
@@ -32,6 +32,19 @@ export class BtnGroup extends PureComponent {
       />
     )
   }
+}*/
+
+const BtnGroup = () => {
+  const buttons = ['Y', 'Cr/Cb']
+  const [selectedIdx, setSelectedIdx] = useState(0);
+
+  return(
+    <ButtonGroup
+        onPress={() => setSelectedIdx( 1 - selectedIdx )}
+        selectedIndex={selectedIdx}
+        buttons={buttons}
+      />
+  );
 }
 
 const SamplingRateElement = (props) => {
