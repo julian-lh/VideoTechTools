@@ -72,9 +72,9 @@ export function cvtSignalXYZtoxyY(signalXYZ){
 
 // In Anlehnung an: https://gist.github.com/mjackson/5311256
 export function cvtRGBtoHSV(rgb) {
-    r = rgb[0];
-    g = rgb[1];
-    b = rgb[2];
+    const r = rgb[0];
+    const g = rgb[1];
+    const b = rgb[2];
 
     var max = Math.max(r, g, b)
     var min = Math.min(r, g, b);
