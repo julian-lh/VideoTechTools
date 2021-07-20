@@ -60,9 +60,13 @@ export function upscaleYCRCB(YCrCb, bitDepth = 10) {
     const bitFactor = 2**(bitDepth-8);
 
     // Rundung fuehrt zu Rundungsfehlern, ist aber in Standard so definiert
-    const dY = Math.round( (219 * YCrCb[0] + 16) * bitFactor);
-    const dCr = Math.round( (224 * YCrCb[1] + 128) * bitFactor);
-    const dCb = Math.round( (224 * YCrCb[2] + 128) * bitFactor);
+    //const dY = Math.round( (219 * YCrCb[0] + 16) * bitFactor);
+    //const dCr = Math.round( (224 * YCrCb[1] + 128) * bitFactor);
+    //const dCb = Math.round( (224 * YCrCb[2] + 128) * bitFactor);
+
+    const dY = (219 * YCrCb[0] + 16) * bitFactor;
+    const dCr = (224 * YCrCb[1] + 128) * bitFactor;
+    const dCb = (224 * YCrCb[2] + 128) * bitFactor;
 
     return [dY, dCr, dCb];
 }
@@ -81,13 +85,20 @@ export function limiterRGBSignal(signalRGB){
     return signalRGB.map( x => x.map( y => y.map( z => clamp(z))));
 }
 
-export function limiterComponent(YCrCb, bitDepth) {
+export function limiterComponent(YCrCb, bitDepth, exceedVideoLevels = false) {
     const bitDepthFactor = 2**(bitDepth - 8);
 
-    const peakLimitY = 235 * bitDepthFactor;
-    const blackLimitY = 16 * bitDepthFactor;
-    const upperChromaLimit = 240 * bitDepthFactor;
-    const lowerChromaLimit = 16 * bitDepthFactor;
+    var peakLimitY = 235 * bitDepthFactor;
+    var blackLimitY = 16 * bitDepthFactor;
+    var upperChromaLimit = 240 * bitDepthFactor;
+    var lowerChromaLimit = 16 * bitDepthFactor;
+
+    if (exceedVideoLevels){
+        peakLimitY = (256 * bitDepthFactor) - (bitDepthFactor - 1);
+        blackLimitY = 1 * bitDepthFactor;
+        upperChromaLimit = peakLimitY;
+        lowerChromaLimit = blackLimitY;
+    }
 
     var tempYCRCB = [...YCrCb]; //Array kopieren
     tempYCRCB[0] = (tempYCRCB[0] > peakLimitY ? peakLimitY : tempYCRCB[0]);
@@ -101,8 +112,8 @@ export function limiterComponent(YCrCb, bitDepth) {
     return tempYCRCB;
 }
 
-export function limiterComponentSignal(signalYCrCb, bitDepth){
-    return signalYCrCb.map( x => x.map( y => limiterComponent(y, bitDepth)));
+export function limiterComponentSignal(signalYCrCb, bitDepth, exceedVideoLevels = false){
+    return signalYCrCb.map( x => x.map( y => limiterComponent(y, bitDepth, exceedVideoLevels)));
 }
 
 

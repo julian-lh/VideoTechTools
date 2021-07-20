@@ -232,13 +232,13 @@ const TapButton = (props) => {
     switch(generatorIdx) {
         //Due to performance limitations: Signalresolution only on necessary resolution
         case 0:
-            signalRGB = generateRGBSignalBars(8, 1); //generateRGB3dCoordinates(); //
-            break;
-        case 1:
             signalRGB = generateRGBSignalFullColor([red, green, blue], 1, 1);
             break;
+        case 1:
+            signalRGB = generateRGBSignalGradient([red, green, blue],[1, 1, 1], 8, 1, "horizontal");
+            break;
         case 2:
-            signalRGB = generateRGBSignalGradient([red, green, blue],[1, 1, 1], 8, 8, "horizontal");
+            signalRGB = generateRGBSignalBars(8, 1); //generateRGB3dCoordinates(); //
             break;
     }
 
@@ -250,6 +250,8 @@ const TapButton = (props) => {
 
     // Blendenschieber
 
+    // Überpegel erlauben
+    const [exceedVideoLevels, setExceedVideoLevels] = useState(false);
 
     // Modifizieren
         // Operationen nur anwenden wenn verwendet
@@ -257,20 +259,21 @@ const TapButton = (props) => {
     signalRGB = (brightnessOffset != 0 ? offsetSignalBrightness(signalRGB, brightnessOffset) : signalRGB);
     signalRGB = (gammaOffset != 1 ? offsetSignalGamma(signalRGB, gammaOffset) : signalRGB);
 
-    //signalRGB = limiterRGBSignal(signalRGB);
+    signalRGB = exceedVideoLevels ?  signalRGB : limiterRGBSignal(signalRGB);
 
     // RGB -> YCrCb
+
     const signalSmallYCRCB = cvtSignalRGBtoYCRCB(signalRGB, videoStandards[vidStdIdx]);
     var signalYCRCB = upscaleSignalYCRCB(signalSmallYCRCB, bitDepths[bitDepthIdx]);
-    signalYCRCB = limiterComponentSignal(signalYCRCB, bitDepths[bitDepthIdx]);
+    signalYCRCB = limiterComponentSignal(signalYCRCB, bitDepths[bitDepthIdx], exceedVideoLevels);
 
     useEffect(() => {
         props.setSignal(signalYCRCB);
-   }, [red, green, blue, generatorIdx, bitDepthIdx, vidStdIdx]);
+   }, [red, green, blue, generatorIdx, bitDepthIdx, vidStdIdx, exceedVideoLevels]);
 
     useEffect(() => {
         props.setSignal(signalYCRCB);
-    },[contrastOffset, gammaOffset, brightnessOffset, generatorIdx]);
+    },[contrastOffset, gammaOffset, brightnessOffset, generatorIdx, exceedVideoLevels]);
 
     //            <Button title="Signal" onPress={()=>setPageID(0)} color={ (pageID == 0 ? "orange" : "gray")}></Button>
     //            <Button title="Modifikation" onPress={()=>setPageID(1)} color={(pageID == 1 ? "orange" : "gray")}></Button>
@@ -280,15 +283,15 @@ const TapButton = (props) => {
          <View style={{ backgroundColor: "#dddddd", width: "100%", flexDirection: "row", justifyContent: 'space-around' }}>
         </View>
 
-
         <ScrollView width="100%" contentContainerStyle={{ flexGrow: 1, justifyContent: 'center', alignItems: "center" }}>
             <View style={{ backgroundColor: "#dedede", width: "90%", flexDirection: "row", justifyContent: 'space-around' }}>
-                <Button title="Bars" onPress={()=>setGeneratorIdx(0)} style={ {color: (generatorIdx == 0 ? "orange" : "gray")}} type="clear"/>
-                <Button title="Einfarbig" onPress={()=>setGeneratorIdx(1)} color={(generatorIdx == 1 ? "orange" : "gray")} type="clear"/>
-                <Button title="Verlauf" onPress={()=>setGeneratorIdx(2)} color={(generatorIdx == 2 ? "orange" : "gray")} type="clear"/>
+                <Button title="Einfarbig" onPress={()=>setGeneratorIdx(0)} titleStyle={{ color: (generatorIdx == 0 ? "orange" : "gray")}} type="clear"/>
+                <Button title="Verlauf" onPress={()=>setGeneratorIdx(1)} titleStyle={{ color: (generatorIdx == 1 ? "orange" : "gray")}} type="clear"/>
+                <Button title="Bars" onPress={()=>setGeneratorIdx(2)} titleStyle={{ color: (generatorIdx == 2 ? "orange" : "gray")}} type="clear"/>
             </View>
             <Button title={(showingRgbControls ? "HSV" : "RGB")} onPress={x => setShowingRgbControls(!showingRgbControls)}></Button>
-            {generatorIdx > 0 ?
+
+            {generatorIdx < 2 ?
                 (showingRgbControls ?
                     <View style={{ flex: 1,  flexDirection: "column", justifyContent: 'space-around', alignItems: "center", padding: 10 }}>
                         <TapButton label={"R"} currentValue={red} setValue={setRed} stepSize={0.1} color={"#fdd"}/>
@@ -312,6 +315,7 @@ const TapButton = (props) => {
             <Text h3 style={{paddingTop: 20, paddingBottom: 10}}>Videostandard</Text>
             <Button title={"Rec." + videoStandards[vidStdIdx]} onPress={switchVidStd}type="clear"/>
             <Button title={bitDepths[bitDepthIdx] + " bit"} onPress={switchBitDepth}type="clear"/>
+            <Button title={(exceedVideoLevels ? "mit Überpegel" : "ohne Überpegel")} onPress={() => setExceedVideoLevels(!exceedVideoLevels)} type="clear"/>
         </ScrollView>
 
       </View>

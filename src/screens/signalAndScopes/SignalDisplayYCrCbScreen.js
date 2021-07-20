@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
-import { Text } from 'react-native-elements';
+import { Text, Button } from 'react-native-elements';
 
 import { RGBSignalPreview } from '../../components/visualizers/signalPreview/RGBSignalPreview';
 import { YCrCbGenerator } from '../../components/generators/YCrCbSignalGenerator/YCrCbSignalGenerator'
@@ -20,10 +20,15 @@ export default function SignalDisplayYCrCbScreen() {
     const smallSignalYCRCB = downscaleSignalYCRCB(signalYCRCB, bitDepths[bitDepthIdx]);
     const signalRGB = cvtSignalYCRCBtoRGB(smallSignalYCRCB, videoStandards[vidStdIdx]);
 
+    const labels = ["Keine", "RGB", "YCrCb", ];
+    const [labelIdx, setLabelIdx] = useState(1);
+    const switchLabelIdx = () => {labelIdx < 2 ? setLabelIdx(labelIdx + 1) : setLabelIdx(0)};
+
+
     return (
       <View style={{ flex: 1}}>
-        <RGBSignalPreview rgbSignal={signalRGB}/>
-        <Text>Signal: {signalYCRCB[0][0].toString()}</Text>
+        <RGBSignalPreview rgbSignal={signalRGB} YCrCbSignal={signalYCRCB} labelIndex={labelIdx}/>
+        <Button title={labels[labelIdx]} onPress={switchLabelIdx} style={{alignSelf: 'flex-end', paddingEnd: 10}} type="clear"/>
         <YCrCbGenerator setSignal={(x) => setSignalYCRCB(x)}/>
       </View>
     );
