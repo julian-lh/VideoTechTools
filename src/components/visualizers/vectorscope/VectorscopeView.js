@@ -1,6 +1,6 @@
 import React, {useRef, useState, useEffect, useMemo, Suspense} from 'react';
-import { Button, View, Text, TouchableOpacity } from 'react-native';
-import { Button as Btn } from 'react-native-elements';
+import { View, Text, TouchableOpacity } from 'react-native';
+import { Button } from 'react-native-elements';
 
 import { Canvas, useFrame, useThree } from 'react-three-fiber';
 import * as THREE from 'three';
@@ -248,7 +248,7 @@ export const VectorscopeView = (props) => {
             </TouchableOpacity>
             <Button title={"Rec." + videoStandards[vidStdIdx]} onPress={switchVidStd}></Button>
             <Button title={bitDepths[bitDepthIdx] + " bit"} onPress={switchBitDepth}></Button>
-            <Btn icon={<Icon name="settings-sharp" size={25} color="#38f"/>} title="" type="clear" onPress={x => setSettingsVisible(!settingsVisible)}/>
+            <Button icon={<Icon name="settings-sharp" size={25} color="#38f"/>} title="" type="clear" onPress={x => setSettingsVisible(!settingsVisible)}/>
           </View>
 
           {(settingsVisible ? <SettingsPopOver vidStdIdx={vidStdIdx} setVidStdIdx={setVidStdIdx} bitDepths={bitDepths} bitDepthIdx={bitDepthIdx} setBitDepthIdx={setBitDepthIdx} setSettingsVisible={setSettingsVisible} discreteSigRep={discreteSignalRepresentation} setDiscreteSigRep={setDiscreteSignalRepresentation}/> : <View/>)}
