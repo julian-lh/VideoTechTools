@@ -1,20 +1,25 @@
+// icons von https://oblador.github.io/react-native-vector-icons/
+
 import * as React from 'react';
 import { Text, View} from 'react-native';
 import { Button } from 'react-native-elements';
 import { NavigationContainer } from '@react-navigation/native';
-//import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import AbbildungScreen from '../screens/z_others/Abbildung/AbbildungScreen'
-import AbtastungScreen from '../screens/z_others/Abtastung/AbtastungScreen'
-import MessungScreen from '../screens/z_others/Messung/MessungScreen'
-import SignalpegelScreen from '../screens/z_others/Signalpegel/SignalpegelScreen'
-import CIEScreen from '../screens/signalAndScopes/CIEScreen'
-import VectorscopeScreen from '../screens/signalAndScopes/VectorscopeScreen'
-import WFMScreen from '../screens/signalAndScopes/WFMScreen'
+//import AbbildungScreen from '../screens/z_others/Abbildung/AbbildungScreen'
+//import AbtastungScreen from '../screens/z_others/Abtastung/AbtastungScreen'
+//import MessungScreen from '../screens/z_others/Messung/MessungScreen'
+//import SignalpegelScreen from '../screens/z_others/Signalpegel/SignalpegelScreen'
+
+import CIEScreen from '../screens/signalAndScopes/CIEScreen';
+import VectorscopeScreen from '../screens/signalAndScopes/VectorscopeScreen';
+import WFMScreen from '../screens/signalAndScopes/WFMScreen';
+import ScopesCombinationScreen from '../screens/signalAndScopes/ScopesCombinationScreen';
+import SignalDisplayYCrCbScreen from '../screens/signalAndScopes/SignalDisplayYCrCbScreen';
 
 //<StatusBar style="auto" />
 // drawer test
@@ -27,48 +32,41 @@ export default function Navigation() {
       <NavigationContainer>
           <Drawer.Navigator
                 drawerStyle={{
-                    width: 200,
+                    width: 240,
+
                     }}
               screenOptions={({ route }) => ({
               drawerIcon: ({ focused, color, size }) => {
                   let iconName;
 
                   switch (route.name) {
-                    case "Abbildung":
-                        iconName = focused
-                        ? 'image'
-                        : 'image-outline';
-                        break;
-                    case "Abtastung":
-                        iconName = focused
-                        ? 'analytics'
-                        : 'analytics-outline';
-                        break;
-                    case "Messung":
-                        iconName = focused
-                        ? 'pulse'
-                        : 'pulse-outline';
-                        break;
-                    case "Signalpegel":
-                        iconName = focused
-                        ? 'sunny'
-                        : 'sunny-outline';
-                        break;
+
                     case "CIE xy 1931":
                         iconName = focused
                         ? 'color-palette'
                         : 'color-palette-outline';
                         break;
-                    case "Vectorscope":
+                    case "Vektorskop":
                         iconName = focused
-                        ? 'color-palette'
-                        : 'color-palette-outline';
+                        ? 'md-locate'
+                        : 'md-locate-outline';
                         break;
                     case "WFM":
                         iconName = focused
-                        ? 'color-palette'
-                        : 'color-palette-outline';
+                        ? 'md-bar-chart'
+                        : 'md-bar-chart-outline';
                         break;
+                    case "Komponentensignal":
+                        iconName = focused
+                        ? 'tv'
+                        : 'tv-outline';
+                        break;
+                    case "Scopes Übersicht":
+                        iconName = focused
+                        ? 'ios-grid'
+                        : 'ios-grid-outline';
+                        break;
+
                     default:
                       iconName = focused
                         ? 'color-palette'
@@ -80,14 +78,12 @@ export default function Navigation() {
                   return <Ionicons name={iconName} size={size} color={color} />;
               },
               })}>
+              
               <Drawer.Screen name="WFM" component={StackWrap_WFMScreen} />
               <Drawer.Screen name="Vektorskop" component={StackWrap_VectorscopeScreen} />
               <Drawer.Screen name="CIE xy 1931" component={StackWrap_CIEScreen} />
-              <Drawer.Screen name="Abbildung" component={StackWrap_AbbildungScreen} />
-              <Drawer.Screen name="Abtastung" component={StackWrap_AbtastungScreen} />
-              <Drawer.Screen name="Messung" component={StackWrap_MessungScreen} />
-              <Drawer.Screen name="Signalpegel" component={StackWrap_SignalpegelScreen} />
-
+              <Drawer.Screen name="Komponentensignal" component={StackWrap_SignalDisplayYCrCbScreen} />
+              <Drawer.Screen name="Scopes Übersicht" component={StackWrap_ScopesCombinationScreen} />
 
           </Drawer.Navigator>
       </NavigationContainer>
@@ -95,6 +91,94 @@ export default function Navigation() {
   }
 
   // TODO: Muss eleganter geloest werden
+
+
+  function StackWrap_CIEScreen({ navigation }) {
+    return (
+      <Stack.Navigator>
+        <Stack.Screen name= {"CIEScreen"} component={CIEScreen} options={{
+            headerTitle: "CIE-Normfarbtafel",
+          headerLeft: () => <Button icon={<Ionicons name="menu" size={25} color="gray" />} onPress={() => navigation.toggleDrawer()} type="clear"/>
+        }}/>
+      </Stack.Navigator>
+    );
+  }
+
+  function StackWrap_VectorscopeScreen({ navigation }) {
+    return (
+      <Stack.Navigator>
+        <Stack.Screen name= {"VectorscopeScreen"} component={VectorscopeScreen} options={{
+            headerTitle: "Vektorskop",
+          headerLeft: () => <Button icon={<Ionicons name="menu" size={25} color="gray" />} onPress={() => navigation.toggleDrawer()} type="clear"/>
+        }}/>
+      </Stack.Navigator>
+    );
+  }
+
+  function StackWrap_WFMScreen({ navigation }) {
+    return (
+      <Stack.Navigator>
+        <Stack.Screen name= {"WFMScreen"} component={WFMScreen} options={{
+            headerTitle: "WFM",
+          headerLeft: () => <Button icon={<Ionicons name="menu" size={25} color="gray" />} onPress={() => navigation.toggleDrawer()} type="clear"/>
+        }}/>
+      </Stack.Navigator>
+    );
+  }
+
+  function StackWrap_SignalDisplayYCrCbScreen({ navigation }) {
+    return (
+      <Stack.Navigator>
+        <Stack.Screen name= {"ComponentSignalScreen"} component={SignalDisplayYCrCbScreen} options={{
+            headerTitle: "Komponentensignal",
+          headerLeft: () => <Button icon={<Ionicons name="menu" size={25} color="gray" />} onPress={() => navigation.toggleDrawer()} type="clear"/>
+        }}/>
+      </Stack.Navigator>
+    );
+  }
+
+  function StackWrap_ScopesCombinationScreen({ navigation }) {
+    return (
+      <Stack.Navigator>
+        <Stack.Screen name= {"ScopesOverviewScreen"} component={ScopesCombinationScreen} options={{
+            headerTitle: "Scopes Übersicht",
+          headerLeft: () => <Button icon={<Ionicons name="menu" size={25} color="gray" />} onPress={() => navigation.toggleDrawer()} type="clear"/>
+        }}/>
+      </Stack.Navigator>
+    );
+  }
+
+
+  /*
+  // ------------------ Sonstige ------------------
+
+
+                    // case "Abbildung":
+                    //     iconName = focused
+                    //     ? 'image'
+                    //     : 'image-outline';
+                    //     break;
+                    // case "Abtastung":
+                    //     iconName = focused
+                    //     ? 'analytics'
+                    //     : 'analytics-outline';
+                    //     break;
+                    // case "Messung":
+                    //     iconName = focused
+                    //     ? 'pulse'
+                    //     : 'pulse-outline';
+                    //     break;
+                    // case "Signalpegel":
+                    //     iconName = focused
+                    //     ? 'sunny'
+                    //     : 'sunny-outline';
+                    //     break;
+
+
+  //<Drawer.Screen name="Abbildung" component={StackWrap_AbbildungScreen} />
+  //<Drawer.Screen name="Abtastung" component={StackWrap_AbtastungScreen} />
+  //<Drawer.Screen name="Messung" component={StackWrap_MessungScreen} />
+  //<Drawer.Screen name="Signalpegel" component={StackWrap_SignalpegelScreen} />
   function StackWrap_AbbildungScreen({ navigation }) {
     return (
       <Stack.Navigator>
@@ -138,36 +222,4 @@ export default function Navigation() {
       </Stack.Navigator>
     );
   }
-
-  function StackWrap_CIEScreen({ navigation }) {
-    return (
-      <Stack.Navigator>
-        <Stack.Screen name= {"CIEScreen"} component={CIEScreen} options={{
-            headerTitle: "CIE-Normfarbtafel",
-          headerLeft: () => <Button icon={<Ionicons name="menu" size={25} color="gray" />} onPress={() => navigation.toggleDrawer()} type="clear"/>
-        }}/>
-      </Stack.Navigator>
-    );
-  }
-
-  function StackWrap_VectorscopeScreen({ navigation }) {
-    return (
-      <Stack.Navigator>
-        <Stack.Screen name= {"VectorscopeScreen"} component={VectorscopeScreen} options={{
-            headerTitle: "Vektorskop",
-          headerLeft: () => <Button icon={<Ionicons name="menu" size={25} color="gray" />} onPress={() => navigation.toggleDrawer()} type="clear"/>
-        }}/>
-      </Stack.Navigator>
-    );
-  }
-
-  function StackWrap_WFMScreen({ navigation }) {
-    return (
-      <Stack.Navigator>
-        <Stack.Screen name= {"WFMScreen"} component={WFMScreen} options={{
-            headerTitle: "WFM",
-          headerLeft: () => <Button icon={<Ionicons name="menu" size={25} color="gray" />} onPress={() => navigation.toggleDrawer()} type="clear"/>
-        }}/>
-      </Stack.Navigator>
-    );
-  }
+*/
