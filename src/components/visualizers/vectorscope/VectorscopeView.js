@@ -172,40 +172,42 @@ const SettingsPopOver = (props) => {
     <View style={{left: 0, right: 0, top:0, backgroundColor: "#3338", position: 'absolute', zIndex: 2, alignItems: "center"}}>
       <View style={{width: "80%", minHeight: "70%", backgroundColor: "#ccc", padding: 10, marginVertical:10, justifyContent: "flex-start", alignItems: "center"}}>
         <Text style={{fontSize: 20, color: "#333", paddingBottom: 10}}>Einstellungen</Text>
+
         <View style={{backgroundColor: "#ddd", padding: 5, marginBottom: 5}}>
-          <Text>Input-Signal</Text>
+          <Text>Input-Signal interpretieren als</Text>
           <View style={{ width: "100%", flexDirection: "row", justifyContent: 'space-around', alignItems: "center" }}>
-            <Button title="Rec.601" color={(props.vidStdIdx == 0 ? "orange" : "gray")} onPress={()=> props.setVidStdIdx(0)}></Button>
-            <Button title="Rec.709" color={(props.vidStdIdx == 1 ? "orange" : "gray")} onPress={()=> props.setVidStdIdx(1)}></Button>
-            <Button title="Rec.2020" color={(props.vidStdIdx == 2 ? "orange" : "gray")} onPress={()=> props.setVidStdIdx(2)}></Button>
-          </View>
-          <View style={{ flexDirection: "row", justifyContent: 'space-around' }}>
-            {props.bitDepths.map((x, idx) => <Button title={x.toString()} color={(props.bitDepthIdx == idx ? "orange" : "gray")} onPress={()=>props.setBitDepthIdx(idx)}  key={idx}></Button>)}
+            <Button title={"Rec." + props.vidStdLabel} onPress={props.switchVideoStd} type="clear"/>
+            <Button title={props.bitDepthsLabel + " bit"} onPress={props.switchBitDepth} type="clear"/>
           </View>
         </View>
+
         <View style={{backgroundColor: "#ddd", padding: 5, marginBottom: 8, width: "100%"}}>
          <Text>Signalplot</Text>
-          <Button title={(props.discreteSigRep? "diskrete Punkte" : "Linienzug")} color="orange" onPress={()=>props.setDiscreteSigRep(!props.discreteSigRep)}></Button>
+          <Button title={(props.discreteSigRep? "diskrete Punkte" : "Linienzug")} color="orange" onPress={()=>props.setDiscreteSigRep(!props.discreteSigRep)} type="clear"/>
         </View>
-        <Button title="Schließen" onPress={()=>props.setSettingsVisible(0)}></Button>
+        <Button title="Schließen" onPress={()=>props.setSettingsVisible(0)} type="clear"/>
       </View>
+
     </View>
   );
 }
-
+ fontWeight: 'bold'
 
 // Quelle: https://medium.com/@joooooo308/react-three-fiber-use-gesture-to-move-the-camera-f50288cec862
 function Camera(props) {
     const cam = useRef()
     const { setDefaultCamera } = useThree()
 
+    const { camera, size: { width, height } } = useThree();
+    const initialZoom = Math.min(width/2.4, height/2.4);
+
     useEffect(() => void setDefaultCamera(cam.current), [])
 
     useFrame(() => {
       cam.current.updateMatrixWorld();
-      cam.current.lookAt(0.3, 0, 0);
+      cam.current.lookAt(0.2, 0, 0);
     })
-    return <orthographicCamera ref={cam} zoom={110} near={0.0} {...props} />
+    return <orthographicCamera ref={cam} zoom={initialZoom} near={0.0} {...props} />
   }
 
 
@@ -216,7 +218,8 @@ export const VectorscopeView = (props) => {
 
   const videoStandards = ["601", "709", "2020"];
   const [vidStdIdx, setVidStdIdx] = useState(1);
-  const switchVidStd = () => {vidStdIdx < 2 ? setVidStdIdx(vidStdIdx + 1) : setVidStdIdx(0)};
+  const switchVideoStd = () => {vidStdIdx < videoStandards.length-1 ? setVidStdIdx(vidStdIdx + 1) : setVidStdIdx(0)};
+
 
   const bitDepths = (vidStdIdx == 2 ? [10, 12] : [10, 8]);
   const [bitDepthIdx, setBitDepthIdx] = useState(0);
@@ -236,7 +239,7 @@ export const VectorscopeView = (props) => {
       <View style={{flex: 1}}>
       <Text>smallSignalYCRCB: {smallSignalYCRCB[0][0].map(x=>(" "+x.toFixed(3)))}</Text>
           <Canvas style={{ zIndex: 0, flex: 1, backgroundColor: '#eee', minWidth: 20, minHeight: 20}}>
-              <Camera position={[0.3, 0, 1]} />
+              <Camera position={[0.2, 0, 1]} />
               <VectorscopeBounds />
               <PeakSignalHexagon videoStandard={videoStandards[vidStdIdx]}/>
               {discreteSignalRepresentation ? smallSignalYCRCB.map( (x, idx1) =>  x.map( (y, idx2) => (<SphereColorful position={[y[2],y[1], 0]} RGB={signalRGB[idx1][idx2]} name={'box1'} key={(idx1 * 100) + idx2}/> ) ) ) : <SignalPlot smallSignalYCRCB={smallSignalYCRCB}/>}
@@ -246,12 +249,16 @@ export const VectorscopeView = (props) => {
             <TouchableOpacity style={{ minWidth: 20, minHeight:(largePreview ? 110 : 45), width: (largePreview ? "60%" : "20%"), aspectRatio: 1.78}} onPress={togglePreviewSize}>
               <RGBSignalPreview rgbSignal={signalRGB}/>
             </TouchableOpacity>
-            <Button title={"Rec." + videoStandards[vidStdIdx]} onPress={switchVidStd}></Button>
-            <Button title={bitDepths[bitDepthIdx] + " bit"} onPress={switchBitDepth}></Button>
             <Button icon={<Icon name="settings-sharp" size={25} color="#38f"/>} title="" type="clear" onPress={x => setSettingsVisible(!settingsVisible)}/>
           </View>
 
-          {(settingsVisible ? <SettingsPopOver vidStdIdx={vidStdIdx} setVidStdIdx={setVidStdIdx} bitDepths={bitDepths} bitDepthIdx={bitDepthIdx} setBitDepthIdx={setBitDepthIdx} setSettingsVisible={setSettingsVisible} discreteSigRep={discreteSignalRepresentation} setDiscreteSigRep={setDiscreteSignalRepresentation}/> : <View/>)}
+          {(settingsVisible ? <SettingsPopOver vidStdLabel={videoStandards[vidStdIdx]}
+                                                switchVideoStd={switchVideoStd}
+                                                bitDepthsLabel={bitDepths[bitDepthIdx]}
+                                                switchBitDepth={switchBitDepth}
+                                                setSettingsVisible={setSettingsVisible}
+                                                discreteSigRep={discreteSignalRepresentation}
+                                                setDiscreteSigRep={setDiscreteSignalRepresentation}/> : <View/>)}
 
         </View>
     );
