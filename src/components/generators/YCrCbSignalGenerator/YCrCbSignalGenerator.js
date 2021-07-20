@@ -232,7 +232,7 @@ const TapButton = (props) => {
     switch(generatorIdx) {
         //Due to performance limitations: Signalresolution only on necessary resolution
         case 0:
-            signalRGB = generateRGB3dCoordinates(); //generateRGBSignalBars(8, 1); //
+            signalRGB = generateRGBSignalBars(8, 1); //generateRGB3dCoordinates(); //
             break;
         case 1:
             signalRGB = generateRGBSignalFullColor([red, green, blue], 1, 1);
@@ -257,7 +257,7 @@ const TapButton = (props) => {
     signalRGB = (brightnessOffset != 0 ? offsetSignalBrightness(signalRGB, brightnessOffset) : signalRGB);
     signalRGB = (gammaOffset != 1 ? offsetSignalGamma(signalRGB, gammaOffset) : signalRGB);
 
-    signalRGB = limiterRGBSignal(signalRGB);
+    //signalRGB = limiterRGBSignal(signalRGB);
 
     // RGB -> YCrCb
     const signalSmallYCRCB = cvtSignalRGBtoYCRCB(signalRGB, videoStandards[vidStdIdx]);
