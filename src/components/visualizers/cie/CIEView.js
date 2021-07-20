@@ -319,7 +319,7 @@ const SettingsPopOver = ({vidStdLabel,
           <View style={{width: "100%", backgroundColor: "#ddd", padding: 5, marginBottom: 5}}>
             <Text>Gamut-Grenzen</Text>
             <View style={{  flexDirection: "row", justifyContent: 'space-around', alignItems: "center" }}>
-              {visibleGamutBounds.map( (x, idx) => <Button title={gamutData[idx].name} titleStyle={{ color: (x ? "orange" : "gray")}}  onPress={()=> toggleGamutBounds(idx)}  key={idx} type="clear"/>)}
+              {visibleGamutBounds.map( (x, idx) => <Button title={gamutData[idx].name} titleStyle={{ color: (x ? "orange" : "gray")}} onPress={()=> toggleGamutBounds(idx)}  key={idx} type="clear"/>)}
             </View>
           </View> : <View />}
 
