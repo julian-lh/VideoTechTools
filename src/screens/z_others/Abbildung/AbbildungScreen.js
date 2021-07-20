@@ -6,7 +6,7 @@ import { Camera } from '../../../components/z_others/ViewingAngleSimulator';
 import ViewingAngleSimulator from '../../../components/z_others/ViewingAngleSimulator';
 //import { data } from './cameraData.json';
 import { useState } from 'react';
-import cameraData from '../../../calculation/data/cameraData.json';
+import cameraData from '../../../calculation/data/CameraData.json';
 
 //const RaisedButton = (props) => <Button raised {...props} />;
 
