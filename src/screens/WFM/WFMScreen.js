@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Button, Header, Text, Slider } from 'react-native-elements';
-import { WFMView} from '../../Components/Scopes/WFMView';
+import { View } from 'react-native';
+import { Text} from 'react-native-elements';
+import { WFMView } from '../../components/displays/WFM/WFMView';//'../../components/displays/WFM/WFMView';
 
-import { YCrCbGenerator } from '../../Components/Generators/YCrCbGenerator'
+import { YCrCbGenerator } from '../../components/generators/YCrCbSignalGenerator/YCrCbSignalGenerator'
 
 
 export default function WFMScreen() {

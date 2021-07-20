@@ -9,7 +9,7 @@
     - speed booster / Telekonverter
 
 */
-import cameraData from './data/cameraData.json';
+import cameraData from '../data/cameraData.json';
 
 
 export class Camera {

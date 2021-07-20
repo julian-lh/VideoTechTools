@@ -1,15 +1,18 @@
 import React, {useRef, useState, useEffect, useMemo} from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
+
 import { Button } from 'react-native-elements';
 import { Canvas, useFrame, useThree } from 'react-three-fiber';
 import * as THREE from 'three';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import { RGBSignalPreview } from '../RGBSignalPreview';
-import gamutData from '../../calculation/data/gamutData.json';
-import { cvtSignalRGBtoXYZ, cvtSignalXYZtoxyY, CIEBoundsValues } from '../../calculation/ColorSpaceTransform';
+import { styles } from './CIEViewStyle';
 
-import { cvtSignalYCRCBtoRGB, downscaleSignalYCRCB } from '../../calculation/componentSignal';
+import { RGBSignalPreview } from '../SignalPreview/RGBSignalPreview';
+import gamutData from '../../../calculation/data/gamutData.json';
+import { cvtSignalRGBtoXYZ, cvtSignalXYZtoxyY, CIEBoundsValues } from '../../../calculation/ColorSpaceTransform';
+
+import { cvtSignalYCRCBtoRGB, downscaleSignalYCRCB } from '../../../calculation/componentSignal';
 import { FloatType } from 'three';
 
 

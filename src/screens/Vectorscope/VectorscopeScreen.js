@@ -1,27 +1,10 @@
 import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Button, Header, Text, Slider } from 'react-native-elements';
-import { VectorscopeView } from '../../Components/Scopes/VectorscopeView';
-import { YCrCbGenerator } from '../../Components/Generators/YCrCbGenerator'
+import { View } from 'react-native';
+import { Text } from 'react-native-elements';
 
-/*
-const ColorSelector = (props) => {
-    return (
-        <View style={styles.inputElement}>
-            <Text style={styles.inputElementLabel}>{props.label}</Text>
-            <Button style={styles.inputElementButtons} title='<' onPress={() => props.valueChange(props.value - 0.1)}/>
-            <Slider style={styles.inputElementSlider}
-            value={props.value}
-            onValueChange={(x) => props.valueChange(x)}
-            minimumTrackTintColor={props.trackColor}
-            thumbTintColor={props.thumbTintColor}
-            thumbStyle={styles.inputElementSliderThumb}
-            />
-            <Button style={styles.inputElementButtons} title='>' onPress={() => props.valueChange(props.value + 0.1)}/>
-        </View>
-    );
-}
-*/
+import { VectorscopeView } from '../../components/displays/Vectorscope/VectorscopeView';
+import { YCrCbGenerator } from '../../components/generators/YCrCbSignalGenerator/YCrCbSignalGenerator'
+
 
 export default function VectorscopeScreen() {
   const [signalYCRCB, setSignalYCRCB] = useState([[[100, 128, 128]]]);
@@ -36,39 +19,3 @@ export default function VectorscopeScreen() {
   }
 
 
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: '#fff',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    colorPicker: {
-        flex: 1,
-        backgroundColor: '#ddd',
-        maxHeight: 150
-    },
-
-
-    inputElement: {
-        flex: 1,
-        flexDirection: "row",
-        flexWrap: "wrap",
-        alignItems: 'center',
-        paddingHorizontal: 20
-      },
-      inputElementLabel: {
-        fontSize: 20,
-      },
-      inputElementButtons: {
-        padding: 5,
-        width: 40
-      },
-      inputElementSlider:{
-        flex: 1,
-      },
-      inputElementSliderThumb:{
-        width: 20,
-        height: 20
-      },
-  });

@@ -8,10 +8,10 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import AbbildungScreen from '../screens/0_Abbildung/AbbildungScreen'
-import AbtastungScreen from '../screens/1_Abtastung/AbtastungScreen'
-import MessungScreen from '../screens/2_Messung/MessungScreen'
-import SignalpegelScreen from '../screens/3_Signalpegel/SignalpegelScreen'
+import AbbildungScreen from '../screens/z_others/0_Abbildung/AbbildungScreen'
+import AbtastungScreen from '../screens/z_others/1_Abtastung/AbtastungScreen'
+import MessungScreen from '../screens/z_others/2_Messung/MessungScreen'
+import SignalpegelScreen from '../screens/z_others/3_Signalpegel/SignalpegelScreen'
 import CIEScreen from '../screens/CIE/CIEScreen'
 import VectorscopeScreen from '../screens/Vectorscope/VectorscopeScreen'
 import WFMScreen from '../screens/WFM/WFMScreen'
