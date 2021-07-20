@@ -5,9 +5,9 @@ import { Button, Text, Slider } from 'react-native-elements';
 import { styles } from './YCrCbSignalGeneratorStyle';
 
 import { cvtRGBtoHSV, cvtHSVtoRGB } from '../../../calculation/ColorSpaceTransform';
-import { cvtSignalRGBtoYCRCB, upscaleSignalYCRCB, limiterComponentSignal, limiterRGBSignal} from '../../../calculation/componentSignal';
-import { generateRGBSignalFullColor,  generateRGBSignalGradient, generateRGBSignalBars, offsetSignalContrast, offsetSignalBrightness, offsetSignalGamma, generateRGB3dCoordinates } from '../../../calculation/signalGenerator';
-import { clamp } from '../../../calculation/helpers';
+import { cvtSignalRGBtoYCRCB, upscaleSignalYCRCB, limiterComponentSignal, limiterRGBSignal} from '../../../calculation/ComponentSignal';
+import { generateRGBSignalFullColor,  generateRGBSignalGradient, generateRGBSignalBars, offsetSignalContrast, offsetSignalBrightness, offsetSignalGamma, generateRGB3dCoordinates } from '../../../calculation/SignalGenerator';
+import { clamp } from '../../../calculation/Helpers';
 
 const ColorSelector = (props) => {
     return (

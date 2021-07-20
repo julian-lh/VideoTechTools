@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View } from 'react-native';
 import { Text } from 'react-native-elements';
 
-import { CIEView } from '../../components/displays/CIE/CIEView';
+import { CIEView } from '../../components/visualizers/cie/CIEView';
 import { YCrCbGenerator } from '../../components/generators/YCrCbSignalGenerator/YCrCbSignalGenerator'
 
 

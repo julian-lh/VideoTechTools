@@ -8,11 +8,11 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 import { styles } from './CIEViewStyle';
 
-import { RGBSignalPreview } from '../SignalPreview/RGBSignalPreview';
-import gamutData from '../../../calculation/data/gamutData.json';
+import { RGBSignalPreview } from '../signalPreview/RGBSignalPreview';
+import gamutData from '../../../calculation/data/GamutData.json';
 import { cvtSignalRGBtoXYZ, cvtSignalXYZtoxyY, CIEBoundsValues } from '../../../calculation/ColorSpaceTransform';
 
-import { cvtSignalYCRCBtoRGB, downscaleSignalYCRCB } from '../../../calculation/componentSignal';
+import { cvtSignalYCRCBtoRGB, downscaleSignalYCRCB } from '../../../calculation/ComponentSignal';
 import { FloatType } from 'three';
 
 

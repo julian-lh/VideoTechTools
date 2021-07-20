@@ -1,6 +1,6 @@
 // Collection of Component Signal Conversions
 
-import { clamp } from './helpers';
+import { clamp } from './Helpers';
 
 // ----------------------------------------------------------------
 // ------------------- Single Value Basic Conversions -------------------
