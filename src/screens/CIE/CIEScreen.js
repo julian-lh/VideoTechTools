@@ -1,10 +1,26 @@
 import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Button, Header, Text, Slider } from 'react-native-elements';
-import { CIEView } from '../../Components/Scopes/CIEView';
+import { View } from 'react-native';
+import { Text } from 'react-native-elements';
 
-import { YCrCbGenerator } from '../../Components/Generators/YCrCbGenerator'
+import { CIEView } from '../../components/displays/CIE/CIEView';
+import { YCrCbGenerator } from '../../components/generators/YCrCbSignalGenerator/YCrCbSignalGenerator'
 
+
+export default function CIEScreen() {
+  const [signalYCRCB, setSignalYCRCB] = useState([[[100, 128, 128]]]);
+
+    return (
+      <View style={{ flex: 1}}>
+        <CIEView signalYCRCB={signalYCRCB}/>
+        <Text>Signal: {signalYCRCB[0][0].toString()}</Text>
+        <YCrCbGenerator setSignal={(x) => setSignalYCRCB(x)}/>
+      </View>
+    );
+  }
+
+
+
+  /*
 const ColorSelector = (props) => {
     return (
         <View style={styles.inputElement}>
@@ -21,52 +37,4 @@ const ColorSelector = (props) => {
         </View>
     );
 }
-
-export default function CIEScreen() {
-  const [signalYCRCB, setSignalYCRCB] = useState([[[100, 128, 128]]]);
-
-    return (
-      <View style={{ flex: 1}}>
-        <CIEView signalYCRCB={signalYCRCB}/>
-        <Text>Signal: {signalYCRCB[0][0].toString()}</Text>
-        <YCrCbGenerator setSignal={(x) => setSignalYCRCB(x)}/>
-      </View>
-    );
-  }
-
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: '#fff',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    colorPicker: {
-        flex: 1,
-        backgroundColor: '#ddd',
-        maxHeight: 150
-    },
-
-
-    inputElement: {
-        flex: 1,
-        flexDirection: "row",
-        flexWrap: "wrap",
-        alignItems: 'center',
-        paddingHorizontal: 20
-      },
-      inputElementLabel: {
-        fontSize: 20,
-      },
-      inputElementButtons: {
-        padding: 5,
-        width: 40
-      },
-      inputElementSlider:{
-        flex: 1,
-      },
-      inputElementSliderThumb:{
-        width: 20,
-        height: 20
-      },
-  });
+*/

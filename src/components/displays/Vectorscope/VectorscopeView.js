@@ -6,8 +6,8 @@ import { Canvas, useFrame, useThree } from 'react-three-fiber';
 import * as THREE from 'three';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import { RGBSignalPreview } from '../RGBSignalPreview';
-import { cvtSignalYCRCBtoRGB, cvtSignalRGBtoYCRCB, downscaleSignalYCRCB } from '../../calculation/componentSignal';
+import { RGBSignalPreview } from '../SignalPreview/RGBSignalPreview';
+import { cvtSignalYCRCBtoRGB, cvtSignalRGBtoYCRCB, downscaleSignalYCRCB } from '../../../calculation/componentSignal';
 
 
 
