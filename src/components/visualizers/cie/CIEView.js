@@ -6,6 +6,8 @@ import { Canvas, useFrame, useThree } from 'react-three-fiber';
 import * as THREE from 'three';
 import Icon from 'react-native-vector-icons/Ionicons';
 
+//import { Camera } from '../helpers/Camera';
+
 import { styles } from './CIEViewStyle';
 
 import { RGBSignalPreview } from '../signalPreview/RGBSignalPreview';
@@ -40,11 +42,6 @@ const BoxColorful = (props) => {
 const SphereColorful = (props) => {
     const mesh = useRef();
 
-    /*
-    useFrame(() => {
-      mesh.current.rotation.y = mesh.current.rotation.x += 0.01;
-    });*/
-
     const color = new THREE.Color( props.RGB[0], props.RGB[1], props.RGB[2] );
     const innergeometry = new THREE.SphereGeometry( 0.01, 5, 5 );
     //const outerGeometry = new THREE.SphereGeometry( 0.03, 10, 10 );
@@ -60,7 +57,7 @@ const SphereColorful = (props) => {
     )
 }
 
-const DataPoints = ({ signalxyY, signalRGB }) => {
+const CIEDataPoints2 = ({ signalxyY, signalRGB }) => {
 
   const tempObject = new THREE.Object3D();
   const tempColor = new THREE.Color();
@@ -167,6 +164,15 @@ const DataPoints = ({ signalxyY, signalRGB }) => {
   )*/
 }
 
+const CIEDataPoints = ({ signalxyY, signalRGB }) => {
+
+    return(
+    <>
+      {signalxyY.map( (x, idx1) =>  x.map( (y, idx2) => (<SphereColorful xyY={y} RGB={signalRGB[idx1][idx2]} name={'box1'} key={(idx1 * 100) + idx2}/> ) ) )}
+    </>
+  )
+}
+
 /*
 const SphereColorfulUseMemo = (props) => {
   const mesh = useRef();
@@ -200,25 +206,25 @@ const COS = (props) => {
 
 const GamutTriangle = (props) => {
   const mesh = useRef();
-    const shape = useMemo(() => {
-      const s = new THREE.Shape();
-      s.moveTo(props.r[0], props.r[1], 0);
-      s.lineTo(props.g[0],props.g[1], 0);
-      s.lineTo(props.b[0],props.b[1], 0);
-      s.lineTo(props.r[0],props.r[1], 0);
-      return s;
-    }, [])
+  const shape = useMemo(() => {
+    const s = new THREE.Shape();
+    s.moveTo(props.r[0], props.r[1], 0);
+    s.lineTo(props.g[0],props.g[1], 0);
+    s.lineTo(props.b[0],props.b[1], 0);
+    s.lineTo(props.r[0],props.r[1], 0);
+    return s;
+  }, [])
 
-    //const geometry = new THREE.ShapeGeometry( shape );
-    const points = shape.getPoints();
-    const geometryPoints = new THREE.BufferGeometry().setFromPoints( points );
-    const color = new THREE.Color( props.rgbColor[0], props.rgbColor[1], props.rgbColor[2] );
+  //const geometry = new THREE.ShapeGeometry( shape );
+  const points = shape.getPoints();
+  const geometryPoints = new THREE.BufferGeometry().setFromPoints( points );
+  const color = new THREE.Color( props.rgbColor[0], props.rgbColor[1], props.rgbColor[2] );
 
-    return (
-      <line ref={mesh} position={[0, 0, 0]} geometry={geometryPoints}>
-        <lineBasicMaterial color={color} />
-      </line>
-    );
+  return (
+    <line ref={mesh} position={[0, 0, 0]} geometry={geometryPoints}>
+      <lineBasicMaterial color={color} />
+    </line>
+  );
 }
 const GamutReferences = (props) => {
     //const visibleGamutData = props.visibleGamutBounds.map( (x, idx) => (x ? gamutData[idx]));
@@ -271,67 +277,6 @@ const CIEBounds = () => {
   );
 }
 
-const CIEBoundsShape = () => {
-  const shape = useMemo(() => {
-    const s = new THREE.Shape();
-    s.moveTo(CIEBoundsValues[0][1], CIEBoundsValues[0][2], CIEBoundsValues[0][3]);
-    for (let v of CIEBoundsValues) {
-      s.lineTo(v[1], v[2], v[3]);
-    }
-    s.lineTo(CIEBoundsValues[0][1], CIEBoundsValues[0][2], CIEBoundsValues[0][3]);
-    return s;
-  }, [])
-
-  const geometry = new THREE.ShapeGeometry( shape );
-/*
-  var material = new THREE.ShaderMaterial({
-    uniforms: {
-      color1: {
-        value: new THREE.Color("red")
-      },
-      color2: {
-        value: new THREE.Color("purple")
-      },
-      bboxMin: {
-        value: 0
-      },
-      bboxMax: {
-        value: 1
-      }
-    },
-    vertexShader: `
-      uniform vec3 bboxMin;
-      uniform vec3 bboxMax;
-
-      varying vec2 vUv;
-
-      void main() {
-        vUv.y = (position.y - bboxMin.y) / (bboxMax.y - bboxMin.y);
-        gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0);
-      }
-    `,
-    fragmentShader: `
-      uniform vec3 color1;
-      uniform vec3 color2;
-
-      varying vec2 vUv;
-
-      void main() {
-
-        gl_FragColor = vec4(mix(color1, color2, vUv.y), 1.0);
-      }
-    `,
-    wireframe: false
-  });*/
-//   <meshBasicMaterial attach="material" color="hotpink" />
-
-  return (
-    <mesh position={[0, 0, 0]} geometry={geometry}>
-      <meshBasicMaterial color="#ddd" opacity={0.5} transparent/>
-    </mesh>
-  );
-}
-
 const SettingsPopOver = (props) => {
 
   const toggleGamutBounds = (idx) =>{
@@ -367,6 +312,8 @@ const SettingsPopOver = (props) => {
   );
 }
 
+
+
 // Quelle: https://medium.com/@joooooo308/react-three-fiber-use-gesture-to-move-the-camera-f50288cec862
 function Camera(props) {
     const cam = useRef()
@@ -381,12 +328,14 @@ function Camera(props) {
     return <orthographicCamera ref={cam} zoom={170} near={0.0} {...props} />
   }
 
+
  export const CIEView = (props) => {
     const [largePreview, setLargePreview] = useState(false);
     const togglePreviewSize = () => setLargePreview(!largePreview);
     const [camPos, setCamPos] = useState([0.5, 0.5, 1.1]);
     const [visibleGamutBounds, setVisibleGamutBounds] = useState(new Array(gamutData.length).fill(false));
     const [settingsVisible, setSettingsVisible] = useState(false);
+    const [lightBackground, setLightBackground] = useState(true);
 
     const videoStandards = ["601", "709", "2020"];
     const [vidStdIdx, setVidStdIdx] = useState(1);
@@ -413,13 +362,15 @@ function Camera(props) {
     return (
       <View style={{flex: 1}}>
         <View style={{flex: 1}}>
-          <Canvas style={{ zIndex: 0, flex: 1, backgroundColor: '#eee', minWidth: 20, minHeight: 20}}>
-              <Camera position={camPos} />
-              <COS />
-              <CIEBounds />
-              <GamutReferences visibleGamutBounds={visibleGamutBounds}/>
-              <DataPoints signalxyY={signalxyY} signalRGB={signalRGB}/>
+
+          <Canvas style={{ zIndex: 0, flex: 1, backgroundColor: (lightBackground ? '#eee' : '#333'), minWidth: 20, minHeight: 20}}>
+            <Camera position={camPos} />
+            <COS />
+            <CIEBounds />
+            <GamutReferences visibleGamutBounds={visibleGamutBounds}/>
+            <CIEDataPoints signalxyY={signalxyY} signalRGB={signalRGB}/>
           </Canvas>
+
 
           <View style={{ position: 'absolute', zIndex: 1, top: 0}}>
             <Text style={{ color: '#555', padding: 10}}>x: {signalxyY[0][0][0].toFixed(4)} {"\n"}y: {signalxyY[0][0][1].toFixed(4)}{"\n"}Y: {signalxyY[0][0][2].toFixed(4)}</Text>
