@@ -32,8 +32,9 @@ export default function Navigation() {
       <NavigationContainer>
           <Drawer.Navigator
                 drawerStyle={{
-                    width: 240,
 
+                    maxWidth: 240,
+                    paddingTop: "40%"
                     }}
               screenOptions={({ route }) => ({
               drawerIcon: ({ focused, color, size }) => {
@@ -78,7 +79,7 @@ export default function Navigation() {
                   return <Ionicons name={iconName} size={size} color={color} />;
               },
               })}>
-              
+
               <Drawer.Screen name="WFM" component={StackWrap_WFMScreen} />
               <Drawer.Screen name="Vektorskop" component={StackWrap_VectorscopeScreen} />
               <Drawer.Screen name="CIE xy 1931" component={StackWrap_CIEScreen} />

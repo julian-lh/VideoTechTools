@@ -57,26 +57,25 @@ const SphereColorful = (props) => {
 const SettingsPopOver = (props) => {
     return(
       <View style={{left: 0, right: 0, top:0, backgroundColor: "#3338", position: 'absolute', zIndex: 2, alignItems: "center"}}>
-        <View style={{width: "80%", minHeight: "70%", backgroundColor: "#ccc", padding: 10, marginVertical:10, justifyContent: "flex-start", alignItems: "center"}}>
-          <Text style={{fontSize: 20, color: "#333", paddingBottom: 10}}>Einstellungen</Text>
-          <View style={{backgroundColor: "#ddd", padding: 5, marginBottom: 5}}>
-            <Text>Input-Signal</Text>
-            <View style={{ width: "100%", flexDirection: "row", justifyContent: 'space-around', alignItems: "center" }}>
-              <Button title="Rec.601" color={(props.vidStdIdx == 0 ? "orange" : "gray")} onPress={()=> props.setVidStdIdx(0)}></Button>
-              <Button title="Rec.709" color={(props.vidStdIdx == 1 ? "orange" : "gray")} onPress={()=> props.setVidStdIdx(1)}></Button>
-              <Button title="Rec.2020" color={(props.vidStdIdx == 2 ? "orange" : "gray")} onPress={()=> props.setVidStdIdx(2)}></Button>
-            </View>
-            <View style={{ flexDirection: "row", justifyContent: 'space-around' }}>
-              {props.bitDepths.map((x, idx) => <Button title={x.toString()} color={(props.bitDepthIdx == idx ? "orange" : "gray")} onPress={()=>props.setBitDepthIdx(idx)}  key={idx}></Button>)}
-            </View>
+      <View style={{width: "80%", minHeight: "70%", backgroundColor: "#ccc", padding: 10, marginVertical:10, justifyContent: "flex-start", alignItems: "center"}}>
+        <Text style={{fontSize: 20, color: "#333", paddingBottom: 10}}>Einstellungen</Text>
+
+        <View style={{backgroundColor: "#ddd", padding: 5, marginBottom: 5}}>
+          <Text>Input-Signal interpretieren als</Text>
+          <View style={{ width: "100%", flexDirection: "row", justifyContent: 'space-around', alignItems: "center" }}>
+            <Button title={"Rec." + props.vidStdLabel} onPress={props.switchVideoStd} type="clear"/>
+            <Button title={props.bitDepthsLabel + " bit"} onPress={props.switchBitDepth} type="clear"/>
           </View>
-          <View style={{backgroundColor: "#ddd", padding: 5, marginBottom: 8, width: "100%"}}>
-           <Text>Signalplot</Text>
-            <Button title={(props.discreteSigRep? "diskrete Punkte" : "Linienzug")} color="orange" onPress={()=>props.setDiscreteSigRep(!props.discreteSigRep)}></Button>
-          </View>
-          <Button title="Schließen" onPress={()=>props.setSettingsVisible(0)}></Button>
         </View>
+
+        <View style={{backgroundColor: "#ddd", padding: 5, marginBottom: 8, width: "100%"}}>
+         <Text>Signalplot</Text>
+          <Button title={(props.discreteSigRep? "diskrete Punkte" : "Linienzug")} color="orange" onPress={()=>props.setDiscreteSigRep(!props.discreteSigRep)} type="clear"/>
+        </View>
+        <Button title="Schließen" onPress={()=>props.setSettingsVisible(0)} type="clear"/>
       </View>
+
+    </View>
     );
   }
 /*
@@ -264,13 +263,17 @@ function Camera(props) {
     const cam = useRef()
     const { setDefaultCamera } = useThree()
 
+    const { camera, size: { width, height } } = useThree();
+    const initialZoom = Math.min(width/2, height/2);
+
+
     useEffect(() => void setDefaultCamera(cam.current), [])
 
     useFrame(() => {
       cam.current.updateMatrixWorld();
       cam.current.lookAt(0.5, 0.3, 0);
     })
-    return <orthographicCamera ref={cam} zoom={160} near={0.0} {...props} />
+    return <orthographicCamera ref={cam} zoom={initialZoom} near={0.0} {...props} />
   }
 
 export const WFMView = (props) => {
@@ -280,7 +283,7 @@ export const WFMView = (props) => {
 
     const videoStandards = ["601", "709", "2020"];
     const [vidStdIdx, setVidStdIdx] = useState(1);
-    const switchVidStd = () => {vidStdIdx < 2 ? setVidStdIdx(vidStdIdx + 1) : setVidStdIdx(0)};
+    const switchVideoStd = () => {vidStdIdx < videoStandards.length-1 ? setVidStdIdx(vidStdIdx + 1) : setVidStdIdx(0)};
 
     const bitDepths = (vidStdIdx == 2 ? [10, 12] : [10, 8]);
     const [bitDepthIdx, setBitDepthIdx] = useState(0);
@@ -312,20 +315,24 @@ export const WFMView = (props) => {
           </Canvas>
 
           <View style={{ position: 'absolute', zIndex: 1, top: 10, right:10, minWidth: 70, minHeight: 80, justifyContent: "flex-start", alignItems: "flex-end"}}>
-            <Button title={"Rec." + videoStandards[vidStdIdx]} onPress={switchVidStd} type="clear"/>
-            <Button title={bitDepths[bitDepthIdx] + " bit"} onPress={switchBitDepth} type="clear"/>
-            <Button title={wfmReps[wfmRepIdx]} onPress={switchWfmRep} type="clear"/>
-            <Button icon={<Icon name="settings-sharp" size={25} color="#38f"/>} title="" type="clear" onPress={x => setSettingsVisible(!settingsVisible)}/>
+          <Button icon={<Icon name="settings-sharp" size={25} color="#38f"/>} title="" type="clear" onPress={x => setSettingsVisible(!settingsVisible)}/>
+          <Button title={wfmReps[wfmRepIdx]} onPress={switchWfmRep} type="clear"/>
           </View>
 
-          <View style={{ position: 'absolute', zIndex: 4, bottom: 0, right:20, left: 20, minHeight: (largePreview ? 110 : 30), justifyContent: "flex-start", alignItems: 'center'}}>
+          <View style={{ position: 'absolute', zIndex: 1, bottom: 0, right:20, left: 20, minHeight: (largePreview ? 110 : 30), justifyContent: "flex-start", alignItems: 'center'}}>
             <TouchableOpacity style={{ height: '100%', aspectRatio: (largePreview ? 1.78 : undefined), width: (largePreview ? undefined : '100%')}} onPress={togglePreviewSize}>
               <RGBSignalPreview rgbSignal={signalRGB}/>
             </TouchableOpacity>
           </View>
 
 
-            {(settingsVisible ? <SettingsPopOver vidStdIdx={vidStdIdx} setVidStdIdx={setVidStdIdx} bitDepths={bitDepths} bitDepthIdx={bitDepthIdx} setBitDepthIdx={setBitDepthIdx} setSettingsVisible={setSettingsVisible} discreteSigRep={discreteSignalRepresentation} setDiscreteSigRep={setDiscreteSignalRepresentation}/> : <View/>)}
+            {(settingsVisible ? <SettingsPopOver vidStdLabel={videoStandards[vidStdIdx]}
+                                                  switchVideoStd={switchVideoStd}
+                                                  bitDepthsLabel={bitDepths[bitDepthIdx]}
+                                                  switchBitDepth={switchBitDepth}
+                                                  setSettingsVisible={setSettingsVisible}
+                                                  discreteSigRep={discreteSignalRepresentation}
+                                                  setDiscreteSigRep={setDiscreteSignalRepresentation}/> : <View/>)}
 
           </View>
       );
