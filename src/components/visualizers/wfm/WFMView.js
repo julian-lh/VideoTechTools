@@ -135,7 +135,7 @@ const WFMPlot = ({signalYCRCB, signalRGB, representationID}) => {
 
   const points = [new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( pixelWidth, 0, 0 )];
   const geometry =  new THREE.BufferGeometry().setFromPoints( points );
-  const lineMaterial = new THREE.LineBasicMaterial( { color: '#f33', linewidth: 2} );
+  const lineMaterial = new THREE.LineBasicMaterial( { color: '#393', linewidth: 2} );
 
   return(
     <>
@@ -165,6 +165,9 @@ const WFMGrid = () => {
   return(
     <>
     {positions.map((pos) => {return (<line ref={meshRef} position={pos} geometry={geometry} material={lineMaterial} name="lala" key={pos[1]}/>)})}
+    <line ref={meshRef} position={[0,0,0]} geometry={geometry}  name="lala" key={34323}>
+      <lineBasicMaterial color="#333" linewidth={1} />
+    </line>
     </>
   )
 }
@@ -301,22 +304,26 @@ export const WFMView = (props) => {
 
       return (
         <View style={{flex: 1}}>
-        <Text>smallSignalYCRCB: {smallSignalYCRCB[0][0].map(x=>(" "+x.toFixed(3)))}</Text>
-            <Canvas style={{ zIndex: 0, flex: 1, backgroundColor: '#eee', minWidth: 20, minHeight: 20}}>
-                <Camera position={[0.5, 0.3, 1]} />
-                <WFMGrid />
-                <WFMPlot signalYCRCB={smallSignalYCRCB} signalRGB={signalRGB} representationID={wfmRepIdx}/>
-            </Canvas>
+          <Text>smallSignalYCRCB: {smallSignalYCRCB[0][0].map(x=>(" "+x.toFixed(3)))}</Text>
+          <Canvas style={{ zIndex: 0, flex: 1, backgroundColor: '#eee', minWidth: 20, minHeight: 20}}>
+              <Camera position={[0.5, 0.3, 1]} />
+              <WFMGrid />
+              <WFMPlot signalYCRCB={smallSignalYCRCB} signalRGB={signalRGB} representationID={wfmRepIdx}/>
+          </Canvas>
 
-            <View style={{ position: 'absolute', zIndex: 1, top: 10, right:10, minWidth: 70, minHeight: 80, justifyContent: "flex-start", alignItems: "flex-end"}}>
-              <TouchableOpacity style={{ minWidth: 20, minHeight:(largePreview ? 110 : 45), width: (largePreview ? "60%" : "20%"), aspectRatio: 1.78}} onPress={togglePreviewSize}>
-                <RGBSignalPreview rgbSignal={signalRGB}/>
-              </TouchableOpacity>
-              <Button title={"Rec." + videoStandards[vidStdIdx]} onPress={switchVidStd} type="clear"/>
-              <Button title={bitDepths[bitDepthIdx] + " bit"} onPress={switchBitDepth} type="clear"/>
-              <Button title={wfmReps[wfmRepIdx]} onPress={switchWfmRep} type="clear"/>
-              <Button icon={<Icon name="settings-sharp" size={25} color="#38f"/>} title="" type="clear" onPress={x => setSettingsVisible(!settingsVisible)}/>
-            </View>
+          <View style={{ position: 'absolute', zIndex: 1, top: 10, right:10, minWidth: 70, minHeight: 80, justifyContent: "flex-start", alignItems: "flex-end"}}>
+            <Button title={"Rec." + videoStandards[vidStdIdx]} onPress={switchVidStd} type="clear"/>
+            <Button title={bitDepths[bitDepthIdx] + " bit"} onPress={switchBitDepth} type="clear"/>
+            <Button title={wfmReps[wfmRepIdx]} onPress={switchWfmRep} type="clear"/>
+            <Button icon={<Icon name="settings-sharp" size={25} color="#38f"/>} title="" type="clear" onPress={x => setSettingsVisible(!settingsVisible)}/>
+          </View>
+
+          <View style={{ position: 'absolute', zIndex: 4, bottom: 0, right:20, left: 20, minHeight: (largePreview ? 110 : 30), justifyContent: "flex-start", alignItems: 'center'}}>
+            <TouchableOpacity style={{ height: '100%', aspectRatio: (largePreview ? 1.78 : undefined), width: (largePreview ? undefined : '100%')}} onPress={togglePreviewSize}>
+              <RGBSignalPreview rgbSignal={signalRGB}/>
+            </TouchableOpacity>
+          </View>
+
 
             {(settingsVisible ? <SettingsPopOver vidStdIdx={vidStdIdx} setVidStdIdx={setVidStdIdx} bitDepths={bitDepths} bitDepthIdx={bitDepthIdx} setBitDepthIdx={setBitDepthIdx} setSettingsVisible={setSettingsVisible} discreteSigRep={discreteSignalRepresentation} setDiscreteSigRep={setDiscreteSignalRepresentation}/> : <View/>)}
 
