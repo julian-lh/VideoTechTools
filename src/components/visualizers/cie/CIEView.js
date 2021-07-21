@@ -358,6 +358,7 @@ function Camera(props) {
 
     useEffect(() => {
       camera.zoom = initialZoom + props.zoomOffset;
+      //cam.current.setRotationFromAxisAngle( new THREE.Vector3(1.2, -0.20, -1), 0.4 );
       camera.updateProjectionMatrix();
     },[props.zoomOffset])
 
@@ -367,6 +368,7 @@ function Camera(props) {
       cam.current.updateMatrixWorld();
       cam.current.lookAt(0.5, 0.4, 0.4);
     })
+
     return <orthographicCamera ref={cam} zoom={initialZoom} near={0.0} {...props} />
   }
 
@@ -453,7 +455,7 @@ function Camera(props) {
             <Button title="X-Z" onPress={()=>setCamPos([0.5, 1.1, 0.4])} type="clear"/>
             <Button title="Z-Y" onPress={()=>setCamPos([1.1, 0.4, 0.4])} type="clear"/>
 
-            <Button title="3D" onPress={()=>{setCamPos([1.2, 1.0, 1.2]); setZoomOffset(0)}} type="clear"/>
+            <Button title="3D" onPress={()=>{setCamPos([0.2, - 0.2, 1.2]); setZoomOffset(0)}} type="clear"/>
 
           </View>
         </View>

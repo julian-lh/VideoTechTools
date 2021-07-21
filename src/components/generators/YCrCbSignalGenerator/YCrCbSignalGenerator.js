@@ -186,11 +186,11 @@ const TapButton = (props) => {
     const [value, setValueDirectly] = useState(0);
     const setValue = (value)  => setValueDirectly( clamp(value) );
 
-    const [red, setRedDirectly] = useState(0);
+    const [red, setRedDirectly] = useState(0.1);
     const setRed = (value)  => setRedDirectly( clamp(value) );
-    const [green, setGreenDirectly] = useState(0);
+    const [green, setGreenDirectly] = useState(0.1);
     const setGreen = (value)  => setGreenDirectly( clamp(value) );
-    const [blue, setBlueDirectly] = useState(0);
+    const [blue, setBlueDirectly] = useState(0.1);
     const setBlue = (value)  => setBlueDirectly( clamp(value) );
 
     /*
