@@ -14,7 +14,7 @@ export const RGBSignalPreview = ({ rgbSignal, YCrCbSignal = undefined, labelInde
     var desctiption = [];
     switch (labelIndex){
       case 1:
-        labelSignal = rgbSignal;
+        labelSignal = rgbSignal; //.map( x => x.map( y => y * 100 ) );
         desctiption = ["R", "G", "B"];
         break;
       case 2:

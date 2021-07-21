@@ -12,7 +12,6 @@ export default function VectorscopeScreen() {
     return (
       <View style={{ flex: 1}}>
         <VectorscopeView signalYCRCB={signalYCRCB}/>
-        <Text>Signal: {signalYCRCB[0][0].toString()}</Text>
         <YCrCbGenerator setSignal={(x) => setSignalYCRCB(x)}/>
       </View>
     );

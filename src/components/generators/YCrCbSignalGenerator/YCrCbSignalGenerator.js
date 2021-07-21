@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, ScrollView, TouchableOpacity} from 'react-native';
+import { StyleSheet, View, ScrollView, TouchableOpacity } from 'react-native';
 import { Button, Text, Slider } from 'react-native-elements';
 
 import { styles } from './YCrCbSignalGeneratorStyle';
 
 import { cvtRGBtoHSV, cvtHSVtoRGB } from '../../../calculation/ColorSpaceTransform';
 import { cvtSignalRGBtoYCRCB, upscaleSignalYCRCB, limiterComponentSignal, limiterRGBSignal} from '../../../calculation/ComponentSignal';
-import { generateRGBSignalFullColor,  generateRGBSignalGradient, generateRGBSignalBars, offsetSignalContrast, offsetSignalBrightness, offsetSignalGamma, generateRGB3dCoordinates } from '../../../calculation/SignalGenerator';
+import { generateRGBSignalFullColor, generateRGBSignalGradient, generateRGBSignalBars, offsetSignalContrast, offsetSignalBrightness, offsetSignalGamma, generateRGB3dCoordinates } from '../../../calculation/SignalGenerator';
 import { clamp } from '../../../calculation/Helpers';
 
 const ColorSelector = (props) => {
@@ -173,7 +173,7 @@ const TapButton = (props) => {
     //const [height, setHeight] = useState(1);
 
     const [pageID, setPageID] = useState(0);
-    const [generatorIdx, setGeneratorIdx] = useState(1);
+    const [generatorIdx, setGeneratorIdx] = useState(0);
 
     // prevent infinite conversion loops
     const [showingRgbControls, setShowingRgbControls] = useState(true);
@@ -181,16 +181,16 @@ const TapButton = (props) => {
     // COLOR-PICKER
     const [hue, setHueDirectly] = useState(0);
     const setHue = (value)  => setHueDirectly((value % 360 < 0) ? (360 - Math.abs(value) % 360) : value % 360);
-    const [saturation, setSaturationDirectly] = useState(0.5);
+    const [saturation, setSaturationDirectly] = useState(0);
     const setSaturation = (value)  => setSaturationDirectly( clamp(value) );
-    const [value, setValueDirectly] = useState(0.5);
+    const [value, setValueDirectly] = useState(0);
     const setValue = (value)  => setValueDirectly( clamp(value) );
 
-    const [red, setRedDirectly] = useState(0.5);
+    const [red, setRedDirectly] = useState(0);
     const setRed = (value)  => setRedDirectly( clamp(value) );
-    const [green, setGreenDirectly] = useState(0.5);
+    const [green, setGreenDirectly] = useState(0);
     const setGreen = (value)  => setGreenDirectly( clamp(value) );
-    const [blue, setBlueDirectly] = useState(0.5);
+    const [blue, setBlueDirectly] = useState(0);
     const setBlue = (value)  => setBlueDirectly( clamp(value) );
 
     /*

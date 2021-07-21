@@ -9,6 +9,8 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { RGBSignalPreview } from '../signalPreview/RGBSignalPreview';
 import { cvtSignalYCRCBtoRGB, cvtSignalRGBtoYCRCB, downscaleSignalYCRCB } from '../../../calculation/ComponentSignal';
 
+import { signalToWfmArray } from './WFMViewHelpers';
+
 const SphereColorful = (props) => {
     const mesh = useRef();
 
@@ -108,44 +110,56 @@ const WFMGrid = () => {
 }
 */
 
-const WFMPlot = ({signalYCRCB, signalRGB, representationID}) => {
+const WFMPlot = ({signalYCRCB, signalRGB, representationID, horizontalStretchFactor = 1.78}) => {
   const meshRef = useRef();
-
+  const amountSubdivisions = (representationID == 2 ? 1 : 3);
   const signal = (representationID == 0 ? signalRGB : signalYCRCB);
 
-  //signalYCRCB = [[[0.5,0,0],[0.1,0,0]]]
-
   const amountHorizontalPixels = signalYCRCB[0].length;
-  const pixelWidth = 1 / amountHorizontalPixels;
+  const pixelWidth = (( 1 / amountHorizontalPixels) / amountSubdivisions) * horizontalStretchFactor ;
 
-  // [xPos, signalwert, 0]
 
   const linePositions = useMemo(() => {
-    const lineArray = [];
-    for (var row = 0; row < signalYCRCB.length; row++){
-      for (var column = 0; column < signalYCRCB[row].length; column++) {
-        const x = column / amountHorizontalPixels ;
-        const y = signalYCRCB[row][column][0];
-        lineArray.push([x, y, 0]);
-      }
+    var lineArray = [];
+    switch (representationID){
+
+      case 2: //Luma
+        lineArray = lineArray.concat(signalToWfmArray(signal, 0, '#333', undefined, false, horizontalStretchFactor));
+        break;
+
+      case 1: //YCrCb
+        lineArray = lineArray.concat(signalToWfmArray(signal, 0, '#111', 0, false, horizontalStretchFactor));
+        lineArray = lineArray.concat(signalToWfmArray(signal, 1, '#f05', 1, true, horizontalStretchFactor));
+        lineArray = lineArray.concat(signalToWfmArray(signal, 2, '#50f', 2, true, horizontalStretchFactor));
+        break;
+
+      default: //RGB
+        lineArray = lineArray.concat(signalToWfmArray(signal, 0, '#f00', 0, false, horizontalStretchFactor));
+        lineArray = lineArray.concat(signalToWfmArray(signal, 1, '#0b0', 1, false, horizontalStretchFactor));
+        lineArray = lineArray.concat(signalToWfmArray(signal, 2, '#00f', 2, false, horizontalStretchFactor));
+        break;
     }
     return lineArray;
-  },[signalYCRCB]);
+  },[signal]);
 
   const points = [new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( pixelWidth, 0, 0 )];
   const geometry =  new THREE.BufferGeometry().setFromPoints( points );
-  const lineMaterial = new THREE.LineBasicMaterial( { color: '#393', linewidth: 2} );
 
   return(
     <>
-        {linePositions.map((pos, idx) => {return (<line ref={meshRef} position={pos} geometry={geometry} material={lineMaterial} name="lala" key={idx * 200}/>)})}
+        {linePositions.map((pos, idx) => {
+          return (
+            <line ref={meshRef} position={pos.slice(0,2)} geometry={geometry} name="lala" key={idx}>
+              <lineBasicMaterial color={pos[3]} linewidth={2}/>
+            </line>
+            )})
+        }
     </>
   )
 }
 
-const WFMGrid = () => {
+const WFMGrid = ({ horizontalStratchFactor = 1.78}) => {
   const meshRef = useRef();
-  const attributeRef = useRef();
 
   const positions = useMemo(() => {
       var pos = [];
@@ -154,10 +168,9 @@ const WFMGrid = () => {
       }
       return pos
   },[]);
-
   //const positions = new Array(10).map((v, i) => [0, (0.1 * i - 0.3), 0])
-
-  const points = [new THREE.Vector3( -0.1, 0, 0 ), new THREE.Vector3( 1.1, 0, 0 )];
+  const lineWidth = 1.1 * horizontalStratchFactor;
+  const points = [new THREE.Vector3( -0.1, 0, 0 ), new THREE.Vector3( lineWidth, 0, 0 )];
   const geometry =  new THREE.BufferGeometry().setFromPoints( points );
   const lineMaterial = new THREE.LineBasicMaterial( { color: '#333', linewidth: 0.1} );
 
@@ -264,14 +277,14 @@ function Camera(props) {
     const { setDefaultCamera } = useThree()
 
     const { camera, size: { width, height } } = useThree();
-    const initialZoom = Math.min(width/2, height/2);
+    const initialZoom = Math.min(width/2.3, height/2.3);
 
 
     useEffect(() => void setDefaultCamera(cam.current), [])
 
     useFrame(() => {
       cam.current.updateMatrixWorld();
-      cam.current.lookAt(0.5, 0.3, 0);
+      cam.current.lookAt(0.9, 0.3, 0);
     })
     return <orthographicCamera ref={cam} zoom={initialZoom} near={0.0} {...props} />
   }
@@ -304,12 +317,12 @@ export const WFMView = (props) => {
 
 //                 <WFMGrid />
 
+//           <Text>smallSignalYCRCB: {smallSignalYCRCB[0][0].map(x=>(" "+x.toFixed(3)))}</Text>
 
       return (
         <View style={{flex: 1}}>
-          <Text>smallSignalYCRCB: {smallSignalYCRCB[0][0].map(x=>(" "+x.toFixed(3)))}</Text>
           <Canvas style={{ zIndex: 0, flex: 1, backgroundColor: '#eee', minWidth: 20, minHeight: 20}}>
-              <Camera position={[0.5, 0.3, 1]} />
+              <Camera position={[0.9, 0.3, 1]} />
               <WFMGrid />
               <WFMPlot signalYCRCB={smallSignalYCRCB} signalRGB={signalRGB} representationID={wfmRepIdx}/>
           </Canvas>

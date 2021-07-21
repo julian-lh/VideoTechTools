@@ -88,7 +88,6 @@ const CIEPlot2 = ({ signalxyY, signalRGB }) => {
   useEffect(() => {
     const mesh = meshRef.current;
 
-
     for (let i = 0; i < numData; i++) {
 
       const xyY = flatSignalxyY[i];
