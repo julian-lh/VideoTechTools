@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
 import { Text} from 'react-native-elements';
-import { WFMView } from '../../components/visualizers/wfm/WFMView';//'../../components/displays/WFM/WFMView';
+import { WFMView } from '../../components/visualizers/wfm/WFMView';
 
 import { YCrCbGenerator } from '../../components/generators/YCrCbSignalGenerator/YCrCbSignalGenerator'
 
@@ -12,7 +12,7 @@ export default function WFMScreen() {
     // <Text>Signal: {signalYCRCB[0][0].toString()}</Text>
       return (
         <View style={{ flex: 1}}>
-            <WFMView signalYCRCB={signalYCRCB}/>
+            <WFMView signalYCRCB={signalYCRCB} withOverlays/>
             <YCrCbGenerator setSignal={(x) => setSignalYCRCB(x)}/>
         </View>
       );

@@ -205,13 +205,13 @@ function Camera(props) {
 
     useFrame(() => {
       cam.current.updateMatrixWorld();
-      cam.current.lookAt(0.2, 0, 0);
+      cam.current.lookAt(0, 0, 0);
     })
     return <orthographicCamera ref={cam} zoom={initialZoom} near={0.0} {...props} />
   }
 
 
-export const VectorscopeView = (props) => {
+export const VectorscopeView = ({ signalYCRCB, withOverlays = false }) => {
   const [largePreview, setLargePreview] = useState(false);
   const togglePreviewSize = () => setLargePreview(!largePreview);
   const [settingsVisible, setSettingsVisible] = useState(false);
@@ -230,7 +230,6 @@ export const VectorscopeView = (props) => {
 
 
   // convert signal
-  const signalYCRCB = props.signalYCRCB;
   const smallSignalYCRCB = downscaleSignalYCRCB(signalYCRCB, bitDepths[bitDepthIdx]);
   const signalRGB = cvtSignalYCRCBtoRGB(smallSignalYCRCB, videoStandards[vidStdIdx]);
 
@@ -239,26 +238,28 @@ export const VectorscopeView = (props) => {
     return (
       <View style={{flex: 1}}>
           <Canvas style={{ zIndex: 0, flex: 1, backgroundColor: '#eee', minWidth: 20, minHeight: 20}}>
-              <Camera position={[0.2, 0, 1]} />
+              <Camera position={[0, 0, 1]} />
               <VectorscopeBounds />
               <PeakSignalHexagon videoStandard={videoStandards[vidStdIdx]}/>
               {discreteSignalRepresentation ? smallSignalYCRCB.map( (x, idx1) =>  x.map( (y, idx2) => (<SphereColorful position={[y[2],y[1], 0]} RGB={signalRGB[idx1][idx2]} name={'box1'} key={(idx1 * 100) + idx2}/> ) ) ) : <SignalPlot smallSignalYCRCB={smallSignalYCRCB}/>}
           </Canvas>
 
+          {withOverlays ?
           <View style={{ position: 'absolute', zIndex: 1, top: 10, right:10, minWidth: 70, minHeight: 80, justifyContent: "flex-start", alignItems: "flex-end"}}>
             <TouchableOpacity style={{ minWidth: 20, minHeight:(largePreview ? 110 : 45), width: (largePreview ? "60%" : "20%"), aspectRatio: 1.78}} onPress={togglePreviewSize}>
               <RGBSignalPreview rgbSignal={signalRGB}/>
             </TouchableOpacity>
             <Button icon={<Icon name="settings-sharp" size={25} color="#38f"/>} title="" type="clear" onPress={x => setSettingsVisible(!settingsVisible)}/>
-          </View>
+          </View> : null }
 
-          {(settingsVisible ? <SettingsPopOver vidStdLabel={videoStandards[vidStdIdx]}
+          {(settingsVisible ?
+          <SettingsPopOver vidStdLabel={videoStandards[vidStdIdx]}
                                                 switchVideoStd={switchVideoStd}
                                                 bitDepthsLabel={bitDepths[bitDepthIdx]}
                                                 switchBitDepth={switchBitDepth}
                                                 setSettingsVisible={setSettingsVisible}
                                                 discreteSigRep={discreteSignalRepresentation}
-                                                setDiscreteSigRep={setDiscreteSignalRepresentation}/> : <View/>)}
+                                                setDiscreteSigRep={setDiscreteSignalRepresentation}/> : null)}
 
         </View>
     );

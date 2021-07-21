@@ -170,6 +170,7 @@ const CIEPlot = ({ signalxyY, signalRGB, dotSize = 0.01 }) => {
 
 
 const COS = (props) => {
+
     return(
         <axesHelper {...props}/>
     );
@@ -373,7 +374,7 @@ function Camera(props) {
   }
 
 
- export const CIEView = (props) => {
+ export const CIEView = ({ signalYCRCB, withOverlays = false }) => {
 
     const [camPos, setCamPos] = useState([0.5, 0.4, 1.1]);
     const [zoomOffset, setZoomOffset] = useState(0);
@@ -397,7 +398,7 @@ function Camera(props) {
     const switchBitDepth = () => setBitDepthIdx(1 - bitDepthIdx);
 
     // convert signal
-    const signalYCRCB = props.signalYCRCB;
+
     const smallSignalYCRCB = useMemo(() => downscaleSignalYCRCB(signalYCRCB, bitDepths[bitDepthIdx]), [signalYCRCB, bitDepthIdx]);
     const signalRGB = useMemo(() => cvtSignalYCRCBtoRGB(smallSignalYCRCB, videoStandards[vidStdIdx]), [smallSignalYCRCB, vidStdIdx]);
 
@@ -417,6 +418,7 @@ function Camera(props) {
             <Camera position={camPos} zoomOffset={zoomOffset}/>
             <COS />
             <CIEBounds />
+
             <GamutReferences visibleGamutBounds={visibleGamutBounds}/>
             <CIEPlot signalxyY={signalxyY} signalRGB={signalRGB} dotSize={dataDotSize}/>
           </Canvas>
@@ -439,8 +441,9 @@ function Camera(props) {
                                                 setlightBackground={setLightBackground}
                                                 showSignalDescription={showSignalDescription}
                                                 setShowSignalDescription={setShowSignalDescription}
-                                                setSettingsVisible={setSettingsVisible}/> : <View/>)}
+                                                setSettingsVisible={setSettingsVisible}/> : null)}
 
+          {withOverlays ? <>
           <View style={{ position: 'absolute', zIndex: 1, top: 10, right:10, minWidth: 70, minHeight: 80, justifyContent: "flex-start", alignItems: "flex-end"}}>
             <TouchableOpacity style={{ minWidth: 20, minHeight:(largePreview ? 110 : 45), width: (largePreview ? "60%" : "20%"), aspectRatio: 1.78}} onPress={togglePreviewSize}>
               <RGBSignalPreview rgbSignal={signalRGB}/>
@@ -456,8 +459,8 @@ function Camera(props) {
             <Button title="Z-Y" onPress={()=>setCamPos([1.1, 0.4, 0.4])} type="clear"/>
 
             <Button title="3D" onPress={()=>{setCamPos([0.2, - 0.2, 1.2]); setZoomOffset(0)}} type="clear"/>
-
           </View>
+          </> : null }
         </View>
 
       </View>

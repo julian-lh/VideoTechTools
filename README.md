@@ -72,6 +72,7 @@ VideoTechTools
 
 [Medium: Mit EsLint + Prettier Code Formatieren](https://edusutil.medium.com/eslint-with-prettier-settings-for-react-native-ce13d2aaf500)
 
+[AirBnB Styleguide](https://airbnb.io/javascript/react/#ordering)
 </br></br></br></br>
 
 ---

@@ -70,6 +70,27 @@ export function cvtSignalXYZtoxyY(signalXYZ){
     return signalXYZ.map( x => x.map( y => cvtXYZtoxyY(y) ));
 }
 
+
+// input: h in [0,360] and s,v in [0,1] - output: r,g,b in [0,1]
+export function cvtHSVtoRGB(hsv){
+    // https://stackoverflow.com/a/54024653/860099
+    const [h, s, v] = hsv;
+
+    let f= (n,k=(n+h/60)%6) => v - v*s*Math.max( Math.min(k,4-k,1), 0);
+    return [f(5),f(3),f(1)];
+}
+
+
+// input: r,g,b in [0,1], out: h in [0,360) and s,v in [0,1]
+export function cvtRGBtoHSV(rgb) {
+//https://stackoverflow.com/a/54070620/860099
+    const [r, g, b] = rgb;
+    let v=Math.max(r,g,b), c=v-Math.min(r,g,b);
+    let h= c && ((v==r) ? (g-b)/c : ((v==g) ? 2+(b-r)/c : 4+(r-g)/c));
+     return [60*(h<0?h+6:h), v&&c/v, v];
+}
+
+/*
 // In Anlehnung an: https://gist.github.com/mjackson/5311256
 export function cvtRGBtoHSV(rgb) {
     const r = rgb[0];
@@ -124,6 +145,7 @@ export function cvtHSVtoRGB(hsv) {
     }
     return rgb;
   }
+  */
 /*
 export function rgbToL(rgb_array, colorSpace = 'sRGB') {
     var mtx = new Array(3).fill(1);
