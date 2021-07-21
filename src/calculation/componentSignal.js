@@ -59,7 +59,7 @@ export function cvtYCRCBtoRGB(YCrCb, standard = "709") {
 export function upscaleYCRCB(YCrCb, bitDepth = 10) {
     const bitFactor = 2**(bitDepth-8);
 
-    // Rundung fuehrt zu Rundungsfehlern, ist aber in Standard so definiert
+    // Rundung fuehrt zu Rundungsfehlern, ist aber in Standard eigentlich vorgesehen
     //const dY = Math.round( (219 * YCrCb[0] + 16) * bitFactor);
     //const dCr = Math.round( (224 * YCrCb[1] + 128) * bitFactor);
     //const dCb = Math.round( (224 * YCrCb[2] + 128) * bitFactor);

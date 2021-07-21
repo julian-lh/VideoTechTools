@@ -92,10 +92,10 @@ export function generateRGBSignalGradient(startRGB, endRGB, width, height, direc
 
             // Gradient Signal
             if (direction == "horizontal"){
-				color = blendPixel(startRGB, endRGB, (column/width))
+				color = blendPixel(startRGB, endRGB, (column/(width-1)))
           	}
             else { //vertical
-				color = blendPixel(startRGB, endRGB, (row/height))
+				color = blendPixel(startRGB, endRGB, (row/(height-1)))
           	}
 
         	signal[row][column] = color;
@@ -133,7 +133,7 @@ export function generateYxy3dCoordinates(colorSpace = "709"){
 }
 
 
-
+/*
 // applies operation to every pixel of a 2D-signal-array
 export function modifySignalPixel(signal, operation) {
     const result = signal.map(operation);
@@ -144,4 +144,4 @@ export function modifySignalPixel(signal, operation) {
 export function modifySignalSubPixel(signal, operation, ...args) {
     const result = signal.map( x => x.map( y => operation(y, args)));
     return result;
-}
+}*/
