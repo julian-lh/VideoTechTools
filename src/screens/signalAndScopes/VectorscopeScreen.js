@@ -11,7 +11,7 @@ export default function VectorscopeScreen() {
 
     return (
       <View style={{ flex: 1}}>
-        <VectorscopeView signalYCRCB={signalYCRCB}/>
+        <VectorscopeView signalYCRCB={signalYCRCB} withOverlays/>
         <YCrCbGenerator setSignal={(x) => setSignalYCRCB(x)}/>
       </View>
     );

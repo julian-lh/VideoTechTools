@@ -2,14 +2,18 @@ import React, {useRef, useState, useEffect, useMemo } from 'react';
 import {  View, Text, TouchableOpacity } from 'react-native';
 
 import { Button  } from 'react-native-elements';
-import { Canvas, useFrame, useThree } from 'react-three-fiber';
+import { Canvas, useFrame, useThree, extend } from 'react-three-fiber';
 import * as THREE from 'three';
 import Icon from 'react-native-vector-icons/Ionicons';
+
+//import { Text as Text3D } from 'troika-three-text';
 
 import { RGBSignalPreview } from '../signalPreview/RGBSignalPreview';
 import { cvtSignalYCRCBtoRGB, cvtSignalRGBtoYCRCB, downscaleSignalYCRCB } from '../../../calculation/ComponentSignal';
 
 import { signalToWfmArray } from './WFMViewHelpers';
+
+//extend({ Text3D });
 
 const SphereColorful = (props) => {
     const mesh = useRef();
@@ -55,7 +59,6 @@ const SphereColorful = (props) => {
     );
 }
 
-
 const SettingsPopOver = (props) => {
     return(
       <View style={{left: 0, right: 0, top:0, backgroundColor: "#3338", position: 'absolute', zIndex: 2, alignItems: "center"}}>
@@ -80,35 +83,7 @@ const SettingsPopOver = (props) => {
     </View>
     );
   }
-/*
-const WFMGrid = () => {
-  const mesh = useRef();
 
-  const lines = useMemo(() => {
-    const lineAr = []
-    for (var y= -0.3; y <= 0.8; y += 0.1){
-      const points = [];
-      points.push( new THREE.Vector3( - 0.1, y, 0 ) );
-      points.push( new THREE.Vector3( 1, y, 0 ) );
-
-      const geometry = new THREE.BufferGeometry().setFromPoints( points );
-      var lineMaterial = new THREE.LineBasicMaterial( { color: 0x666655} );
-      if (y == 0) {
-          lineMaterial = new THREE.LineBasicMaterial( { color: 0xaaaa99, linewidth: 0.1} );
-      }
-      //const line = new THREE.Line( geometry, lineMaterial );
-      lineAr.push([geometry, lineMaterial]);
-    }
-    return lineAr;
-  }, [])
-
-  return(
-    <>
-      {lines.map((g, m) => {<line ref={mesh} geometry={g} material={m} />})}
-    </>
-  )
-}
-*/
 
 const WFMPlot = ({signalYCRCB, signalRGB, representationID, horizontalStretchFactor = 1.78}) => {
   const meshRef = useRef();
@@ -158,8 +133,32 @@ const WFMPlot = ({signalYCRCB, signalRGB, representationID, horizontalStretchFac
   )
 }
 
+/*
+
+const WFMTextLabels = () => {
+    const textRef = useRef();
+
+    const text =
+  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
+
+  return(
+      <text3D ref={textRef}
+        position={[1, 0, 0]}
+          rotation={[0,0,0,0]}
+          text={text}
+          font={"./Philosopher.woff"}
+          anchorX="center"
+          anchorY="middle"
+          color="#333"
+        >
+        <meshBasicMaterial attach="material" color="#111" />
+      </text3D>
+  )
+}*/
+
 const WFMGrid = ({ horizontalStratchFactor = 1.78}) => {
   const meshRef = useRef();
+
 
   const positions = useMemo(() => {
       var pos = [];
@@ -167,19 +166,18 @@ const WFMGrid = ({ horizontalStratchFactor = 1.78}) => {
         pos.push([0, y, 0]);
       }
       return pos
-  },[]);
+  });
+
   //const positions = new Array(10).map((v, i) => [0, (0.1 * i - 0.3), 0])
   const lineWidth = 1.1 * horizontalStratchFactor;
   const points = [new THREE.Vector3( -0.1, 0, 0 ), new THREE.Vector3( lineWidth, 0, 0 )];
   const geometry =  new THREE.BufferGeometry().setFromPoints( points );
-  const lineMaterial = new THREE.LineBasicMaterial( { color: '#333', linewidth: 0.1} );
+  const lineMaterial = new THREE.LineBasicMaterial( { color: '#444', linewidth: 0.1} );
+  const lineMaterial2 = new THREE.LineBasicMaterial( { color: '#222', linewidth: 1} );
 
   return(
     <>
-    {positions.map((pos) => {return (<line ref={meshRef} position={pos} geometry={geometry} material={lineMaterial} name="lala" key={pos[1]}/>)})}
-    <line ref={meshRef} position={[0,0,0]} geometry={geometry}  name="lala" key={34323}>
-      <lineBasicMaterial color="#333" linewidth={1} />
-    </line>
+    {positions.map((pos, idx) => {return (<line ref={meshRef} position={pos} geometry={geometry} material={((idx-3)%10 === 0 ? lineMaterial2 : lineMaterial)} name="lala" key={pos[1]}/>)})}
     </>
   )
 }
@@ -289,7 +287,7 @@ function Camera(props) {
     return <orthographicCamera ref={cam} zoom={initialZoom} near={0.0} {...props} />
   }
 
-export const WFMView = (props) => {
+export const WFMView = ({ signalYCRCB, withOverlays = false }) => {
     const [largePreview, setLargePreview] = useState(false);
     const togglePreviewSize = () => setLargePreview(!largePreview);
     const [settingsVisible, setSettingsVisible] = useState(false);
@@ -304,14 +302,13 @@ export const WFMView = (props) => {
 
     // settings
     const wfmReps = ["RGB", "YCrCb", "Luma"];
-    const [wfmRepIdx, setWfmRepIdx] = useState(1);
+    const [wfmRepIdx, setWfmRepIdx] = useState(0);
     const switchWfmRep = () => {wfmRepIdx < 2 ? setWfmRepIdx(wfmRepIdx + 1) : setWfmRepIdx(0)};
 
     const [discreteSignalRepresentation, setDiscreteSignalRepresentation] = useState(true);
 
 
     // convert signal
-    const signalYCRCB = props.signalYCRCB;
     const smallSignalYCRCB = downscaleSignalYCRCB(signalYCRCB, bitDepths[bitDepthIdx]);
     const signalRGB = cvtSignalYCRCBtoRGB(smallSignalYCRCB, videoStandards[vidStdIdx]);
 
@@ -328,15 +325,18 @@ export const WFMView = (props) => {
           </Canvas>
 
           <View style={{ position: 'absolute', zIndex: 1, top: 10, right:10, minWidth: 70, minHeight: 80, justifyContent: "flex-start", alignItems: "flex-end"}}>
-          <Button icon={<Icon name="settings-sharp" size={25} color="#38f"/>} title="" type="clear" onPress={x => setSettingsVisible(!settingsVisible)}/>
-          <Button title={wfmReps[wfmRepIdx]} onPress={switchWfmRep} type="clear"/>
+            {withOverlays ?
+            <Button icon={<Icon name="settings-sharp" size={25} color="#38f"/>} title="" type="clear" onPress={x => setSettingsVisible(!settingsVisible)}/>
+            : null }
+            <Button title={wfmReps[wfmRepIdx]} onPress={switchWfmRep} type="clear"/>
           </View>
 
+          {withOverlays ?
           <View style={{ position: 'absolute', zIndex: 1, bottom: 0, right:20, left: 20, minHeight: (largePreview ? 110 : 30), justifyContent: "flex-start", alignItems: 'center'}}>
             <TouchableOpacity style={{ height: '100%', aspectRatio: (largePreview ? 1.78 : undefined), width: (largePreview ? undefined : '100%')}} onPress={togglePreviewSize}>
               <RGBSignalPreview rgbSignal={signalRGB}/>
             </TouchableOpacity>
-          </View>
+          </View> : null }
 
 
             {(settingsVisible ? <SettingsPopOver vidStdLabel={videoStandards[vidStdIdx]}
