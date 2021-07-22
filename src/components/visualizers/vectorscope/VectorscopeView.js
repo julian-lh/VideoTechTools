@@ -7,6 +7,8 @@ import * as THREE from 'three';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import { RGBSignalPreview } from '../signalPreview/RGBSignalPreview';
+import { VideoStandardAlertView } from '../helpers/VideoStandardAlertView';
+
 import { cvtSignalYCRCBtoRGB, cvtSignalRGBtoYCRCB, downscaleSignalYCRCB } from '../../../calculation/ComponentSignal';
 
 
@@ -211,7 +213,7 @@ function Camera(props) {
   }
 
 
-export const VectorscopeView = ({ signalYCRCB, withOverlays = false }) => {
+export const VectorscopeView = ({ signalYCRCB, withOverlays = false, encodedVideoStandard = 1  }) => {
   const [largePreview, setLargePreview] = useState(false);
   const togglePreviewSize = () => setLargePreview(!largePreview);
   const [settingsVisible, setSettingsVisible] = useState(false);
@@ -243,6 +245,10 @@ export const VectorscopeView = ({ signalYCRCB, withOverlays = false }) => {
               <PeakSignalHexagon videoStandard={videoStandards[vidStdIdx]}/>
               {discreteSignalRepresentation ? smallSignalYCRCB.map( (x, idx1) =>  x.map( (y, idx2) => (<SphereColorful position={[y[2],y[1], 0]} RGB={signalRGB[idx1][idx2]} name={'box1'} key={(idx1 * 100) + idx2}/> ) ) ) : <SignalPlot smallSignalYCRCB={smallSignalYCRCB}/>}
           </Canvas>
+
+          <View style={{ position: 'absolute', zIndex: 1, top: 5, left:0, right: 0, padding: 10}}>
+            <VideoStandardAlertView signalStd={encodedVideoStandard} scopeStd={vidStdIdx} />
+          </View>
 
           {withOverlays ?
           <View style={{ position: 'absolute', zIndex: 1, top: 10, right:10, minWidth: 70, minHeight: 80, justifyContent: "flex-start", alignItems: "flex-end"}}>

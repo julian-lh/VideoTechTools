@@ -29,7 +29,7 @@ export default function SignalDisplayYCrCbScreen() {
       <View style={{ flex: 1}}>
         <RGBSignalPreview rgbSignal={signalRGB} YCrCbSignal={signalYCRCB} labelIndex={labelIdx}/>
         <Button title={labels[labelIdx]} onPress={switchLabelIdx} style={{alignSelf: 'flex-end', paddingEnd: 10}} type="clear"/>
-        <YCrCbGenerator setSignal={(x) => setSignalYCRCB(x)}/>
+        <YCrCbGenerator setSignal={setSignalYCRCB} setEncodingVideoStandard={setVidStdIdx}/>
       </View>
     );
   }

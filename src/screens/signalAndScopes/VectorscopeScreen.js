@@ -8,11 +8,12 @@ import { YCrCbGenerator } from '../../components/generators/YCrCbSignalGenerator
 
 export default function VectorscopeScreen() {
   const [signalYCRCB, setSignalYCRCB] = useState([[[100, 128, 128]]]);
+  const [vidStdIdx, setVidStdIdx] = useState(1);
 
     return (
       <View style={{ flex: 1}}>
-        <VectorscopeView signalYCRCB={signalYCRCB} withOverlays/>
-        <YCrCbGenerator setSignal={(x) => setSignalYCRCB(x)}/>
+        <VectorscopeView signalYCRCB={signalYCRCB} encodedVideoStandard={vidStdIdx} withOverlays/>
+        <YCrCbGenerator setSignal={setSignalYCRCB} setEncodingVideoStandard={setVidStdIdx}/>
       </View>
     );
   }
