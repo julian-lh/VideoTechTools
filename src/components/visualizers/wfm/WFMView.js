@@ -9,6 +9,8 @@ import Icon from 'react-native-vector-icons/Ionicons';
 //import { Text as Text3D } from 'troika-three-text';
 
 import { RGBSignalPreview } from '../signalPreview/RGBSignalPreview';
+import { VideoStandardAlertView } from '../helpers/VideoStandardAlertView';
+
 import { cvtSignalYCRCBtoRGB, cvtSignalRGBtoYCRCB, downscaleSignalYCRCB } from '../../../calculation/ComponentSignal';
 
 import { signalToWfmArray } from './WFMViewHelpers';
@@ -287,7 +289,7 @@ function Camera(props) {
     return <orthographicCamera ref={cam} zoom={initialZoom} near={0.0} {...props} />
   }
 
-export const WFMView = ({ signalYCRCB, withOverlays = false }) => {
+export const WFMView = ({ signalYCRCB, withOverlays = false,  encodedVideoStandard = 1  }) => {
     const [largePreview, setLargePreview] = useState(false);
     const togglePreviewSize = () => setLargePreview(!largePreview);
     const [settingsVisible, setSettingsVisible] = useState(false);
@@ -324,6 +326,10 @@ export const WFMView = ({ signalYCRCB, withOverlays = false }) => {
               <WFMPlot signalYCRCB={smallSignalYCRCB} signalRGB={signalRGB} representationID={wfmRepIdx}/>
           </Canvas>
 
+          <View style={{ position: 'absolute', zIndex: 1, top: 5, left:0, right: 0, padding: 10}}>
+            <VideoStandardAlertView signalStd={encodedVideoStandard} scopeStd={vidStdIdx} />
+          </View>
+
           <View style={{ position: 'absolute', zIndex: 1, top: 10, right:10, minWidth: 70, minHeight: 80, justifyContent: "flex-start", alignItems: "flex-end"}}>
             {withOverlays ?
             <Button icon={<Icon name="settings-sharp" size={25} color="#38f"/>} title="" type="clear" onPress={x => setSettingsVisible(!settingsVisible)}/>
@@ -332,7 +338,7 @@ export const WFMView = ({ signalYCRCB, withOverlays = false }) => {
           </View>
 
           {withOverlays ?
-          <View style={{ position: 'absolute', zIndex: 1, bottom: 0, right:20, left: 20, minHeight: (largePreview ? 110 : 30), justifyContent: "flex-start", alignItems: 'center'}}>
+          <View style={{ position: 'absolute', zIndex: 1, bottom: 10, right:20, left: 20, minHeight: (largePreview ? 110 : 30), justifyContent: "flex-start", alignItems: 'center'}}>
             <TouchableOpacity style={{ height: '100%', aspectRatio: (largePreview ? 1.78 : undefined), width: (largePreview ? undefined : '100%')}} onPress={togglePreviewSize}>
               <RGBSignalPreview rgbSignal={signalRGB}/>
             </TouchableOpacity>

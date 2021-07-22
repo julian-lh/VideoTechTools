@@ -11,6 +11,8 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { styles } from './CIEViewStyle';
 
 import { RGBSignalPreview } from '../signalPreview/RGBSignalPreview';
+import { VideoStandardAlertView } from '../helpers/VideoStandardAlertView';
+
 import gamutData from '../../../calculation/data/GamutData.json';
 import { cvtSignalRGBtoXYZ, cvtSignalXYZtoxyY, CIEBoundsValues } from '../../../calculation/ColorSpaceTransform';
 
@@ -374,7 +376,7 @@ function Camera(props) {
   }
 
 
- export const CIEView = ({ signalYCRCB, withOverlays = false }) => {
+ export const CIEView = ({ signalYCRCB, withOverlays = false, encodedVideoStandard = 1 }) => {
 
     const [camPos, setCamPos] = useState([0.5, 0.4, 1.1]);
     const [zoomOffset, setZoomOffset] = useState(0);
@@ -390,7 +392,7 @@ function Camera(props) {
     const [visibleGamutBounds, setVisibleGamutBounds] = useState(new Array(gamutData.length).fill(false));
 
     const videoStandards = ["601", "709", "2020"];
-    const [vidStdIdx, setVidStdIdx] = useState(1);
+    const [vidStdIdx, setVidStdIdx] = useState(encodedVideoStandard);
     const switchVideoStd = () => {vidStdIdx < videoStandards.length-1 ? setVidStdIdx(vidStdIdx + 1) : setVidStdIdx(0)};
 
     const bitDepths = (vidStdIdx == 2 ? [10, 12] : [10, 8]);
@@ -398,7 +400,6 @@ function Camera(props) {
     const switchBitDepth = () => setBitDepthIdx(1 - bitDepthIdx);
 
     // convert signal
-
     const smallSignalYCRCB = useMemo(() => downscaleSignalYCRCB(signalYCRCB, bitDepths[bitDepthIdx]), [signalYCRCB, bitDepthIdx]);
     const signalRGB = useMemo(() => cvtSignalYCRCBtoRGB(smallSignalYCRCB, videoStandards[vidStdIdx]), [smallSignalYCRCB, vidStdIdx]);
 
@@ -423,6 +424,9 @@ function Camera(props) {
             <CIEPlot signalxyY={signalxyY} signalRGB={signalRGB} dotSize={dataDotSize}/>
           </Canvas>
 
+          <View style={{ position: 'absolute', zIndex: 1, top: 5, left:0, right: 0, padding: 10}}>
+            <VideoStandardAlertView signalStd={encodedVideoStandard} scopeStd={vidStdIdx} />
+          </View>
 
           <View style={{ position: 'absolute', zIndex: 1, bottom: 30, padding: 10}}>
             <GamutLabels visibleGamutBounds={visibleGamutBounds}/>
@@ -458,7 +462,7 @@ function Camera(props) {
             <Button title="X-Z" onPress={()=>setCamPos([0.5, 1.1, 0.4])} type="clear"/>
             <Button title="Z-Y" onPress={()=>setCamPos([1.1, 0.4, 0.4])} type="clear"/>
 
-            <Button title="3D" onPress={()=>{setCamPos([0.2, - 0.2, 1.2]); setZoomOffset(0)}} type="clear"/>
+            <Button title="3D" onPress={()=>{setCamPos([0.5, - 0.2, 1.2]); setZoomOffset(0)}} type="clear"/>
           </View>
           </> : null }
         </View>

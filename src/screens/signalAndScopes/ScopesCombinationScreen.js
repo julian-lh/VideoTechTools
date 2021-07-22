@@ -39,7 +39,7 @@ export default function ScopesCombinationScreen() {
           <VectorscopeView signalYCRCB={signalYCRCB}/>
           <RGBSignalPreview rgbSignal={signalRGB} YCrCbSignal={signalYCRCB} labelIndex={labelIdx}/>
         </View>
-        <YCrCbGenerator style={{flex: 2}} setSignal={setSignalYCRCB}/>
+        <YCrCbGenerator setSignal={setSignalYCRCB} setEncodingVideoStandard={setVidStdIdx} showHideButton={true}/>
       </View>
     );
   }

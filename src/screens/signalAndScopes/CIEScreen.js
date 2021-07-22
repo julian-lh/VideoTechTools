@@ -7,11 +7,12 @@ import { YCrCbGenerator } from "../../components/generators/YCrCbSignalGenerator
 
 export default function CIEScreen() {
   const [signalYCRCB, setSignalYCRCB] = useState([[[100, 128, 128]]]);
+  const [vidStdIdx, setVidStdIdx] = useState(1);
 
   return (
     <View style={{ flex: 1 }}>
-      <CIEView signalYCRCB={signalYCRCB} withOverlays={true} />
-      <YCrCbGenerator setSignal={(x) => setSignalYCRCB(x)} />
+      <CIEView signalYCRCB={signalYCRCB} encodedVideoStandard={vidStdIdx} withOverlays={true}/>
+      <YCrCbGenerator setSignal={setSignalYCRCB} setEncodingVideoStandard={setVidStdIdx} showHideButton={true}/>
     </View>
   );
 }
