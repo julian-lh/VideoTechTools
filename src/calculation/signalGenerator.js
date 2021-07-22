@@ -37,9 +37,9 @@ export function generateRGBSignalFullColor(valueRGB, width, height){
     return signal;
 }
 
-export function generateRGBSignalBars(width = 8, height = 1, type = "100/100"){
+export function generateRGBSignalBars(width = 8, height = 1, type100 = true){
     var signal = new Array(height);
-
+    const maxC = (type100 ? 1 : 0.75);
     for (var row = 0; row < signal.length; row++) {
     	signal[row] = new Array(width);
 
@@ -51,17 +51,17 @@ export function generateRGBSignalBars(width = 8, height = 1, type = "100/100"){
             if (column < barWidth){
                 color = [1.0, 1.0, 1.0];
             }else if (column < barWidth * 2){
-                color = [1.0, 1.0, 0.0];
+                color = [maxC, maxC, 0.0];
             }else if (column < barWidth * 3){
-                color = [0.0, 1.0, 1.0];
+                color = [0.0, maxC, maxC];
             }else if (column < barWidth * 4){
-                color = [0.0, 1.0, 0.0];
+                color = [0.0, maxC, 0.0];
             }else if (column < barWidth * 5){
-                color = [1.0, 0.0, 1.0];
+                color = [maxC, 0.0, maxC];
             }else if (column < barWidth * 6){
-                color = [1.0, 0.0, 0.0];
+                color = [maxC, 0.0, 0.0];
             }else if (column < barWidth * 7){
-                color = [0.0, 0.0, 1.0];
+                color = [0.0, 0.0, maxC];
             }else {
                 color = [0.0, 0.0, 0.0];
             }

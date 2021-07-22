@@ -10,7 +10,18 @@ import { cvtSignalRGBtoYCRCB, upscaleSignalYCRCB, limiterComponentSignal, limite
 import { generateRGBSignalFullColor, generateRGBSignalGradient, generateRGBSignalBars, offsetSignalContrast, offsetSignalBrightness, offsetSignalGamma, generateRGB3dCoordinates } from '../../../calculation/SignalGenerator';
 import { clamp } from '../../../calculation/Helpers';
 
-
+const TapButton = (props) => {
+    return(
+        <View style={{flex: 1, minWidth: 50, maxWidth: 190, justifyContent: "space-evenly", alignItems: "center"}}>
+            <Text>{props.label}</Text>
+            <View style={{ backgroundColor: (props.color !== undefined ? props.color : "#ffffff"), flexDirection: "row", felx: 1, justifyContent: "space-evenly", alignItems: "center"}}>
+                <Button title=" - " onPress={()=>props.setValue(Math.round((props.currentValue - props.stepSize)*100)/100)} color={"black"} style={{flex: 1}}></Button>
+                <Text style={{flex: 1, textAlign: 'center', fontSize: 20}}>{props.currentValue.toFixed(2)}</Text>
+                <Button title=" + " onPress={()=>props.setValue(Math.round((props.currentValue + props.stepSize)*100)/100)} color={"black"} style={{flex: 1}}></Button>
+            </View>
+        </View>
+    );
+}
 const ColorSelector = (props) => {
     return (
         <View style={styles.inputElement}>
@@ -43,8 +54,29 @@ const ColorSelector2 = (props) => {
     );
 }
 
-const Gradient = ({rgb1, setRGB1, rgb2, setRGB2, directionHorizontal, toggleDirection}) => {
 
+const FullColor = ({red, setRed, green, setGreen, blue, setBlue, hue, setHue, sat, setSat, val, setVal, showRGB, toggleRgbHsv}) => {
+    return(
+        <View style={{ flex: 1, flexGrow: 1, justifyContent: 'center', alignItems: "center",}}>
+            <Button title={(showRGB ? "HSV" : "RGB")} onPress={toggleRgbHsv} style={{ paddingTop: 10 }}/>
+            {showRGB ?
+                <View style={{ flex: 1,  flexDirection: "column", justifyContent: 'space-around', alignItems: "center", padding: 10 }}>
+                    <TapButton label={"Rot"} currentValue={red} setValue={setRed} stepSize={0.1} color={"#fdd"}/>
+                    <TapButton label={"Grün"} currentValue={green} setValue={setGreen} stepSize={0.1} color={"#dfd"}/>
+                    <TapButton label={"Blau"} currentValue={blue} setValue={setBlue} stepSize={0.1} color={"#ddf"}/>
+                </View> :
+                <View style={{ flex: 1, flexDirection: "column", justifyContent: 'space-around', alignItems: "center", padding: 10}}>
+                    <TapButton label={"Hue"} currentValue={hue} setValue={setHue} stepSize={15}/>
+                    <TapButton label={"Saturation"} currentValue={sat} setValue={setSat} stepSize={0.1}/>
+                    <TapButton label={"Value"} currentValue={val} setValue={setVal} stepSize={0.1}/>
+                </View>}
+
+        </View>
+    )
+}
+
+
+const Gradient = ({rgb1, setRGB1, rgb2, setRGB2, directionHorizontal, toggleDirection}) => {
     return(
         <View>
             <Button title={directionHorizontal ? "horizontal" : "vertikal"} onPress={toggleDirection} style={{ padding: 10 }}/>
@@ -78,6 +110,13 @@ const ColorPad = ({setColor}) => {
 
         </View>
     )
+}
+
+
+const Bars = ({ useBars100, toggleBarsType }) => {
+    return(
+        <Button title={(useBars100 ? "100/100" : "100/75")} onPress={toggleBarsType} style={{ padding: 10 }} />
+        )
 }
 
 
@@ -152,18 +191,7 @@ const SignalPicker = (props) => {
 }
 //            <Picker RGB={RGB} newValue={(x) => setRGB(x)}/>
 
-const TapButton = (props) => {
-    return(
-        <View style={{flex: 1, minWidth: 50, maxWidth: 190, justifyContent: "space-evenly", alignItems: "center"}}>
-            <Text>{props.label}</Text>
-            <View style={{ backgroundColor: (props.color !== undefined ? props.color : "#ffffff"), flexDirection: "row", felx: 1, justifyContent: "space-evenly", alignItems: "center"}}>
-                <Button title=" - " onPress={()=>props.setValue(Math.round((props.currentValue - props.stepSize)*100)/100)} color={"black"} style={{flex: 1}}></Button>
-                <Text style={{flex: 1, textAlign: 'center', fontSize: 20}}>{props.currentValue.toFixed(2)}</Text>
-                <Button title=" + " onPress={()=>props.setValue(Math.round((props.currentValue + props.stepSize)*100)/100)} color={"black"} style={{flex: 1}}></Button>
-            </View>
-        </View>
-    );
-}
+
 
 
 
@@ -227,6 +255,8 @@ const TapButton = (props) => {
     var amountGradientPixelV =  (horizontalGradientDirection ? 1 : 8);
 
 
+    const [useBars100, setUseBars100] = useState(true);
+
     var signalRGB = [[[0, 0, 0]]];
 
     switch(generatorIdx) {
@@ -238,7 +268,7 @@ const TapButton = (props) => {
             signalRGB = generateRGBSignalGradient(gradientColor1, gradientColor2, amountGradientPixelH, amountGradientPixelV, horizontalGradientDirection);
             break;
         case 2:
-            signalRGB = generateRGBSignalBars(8, 1); //generateRGB3dCoordinates(); //
+            signalRGB = generateRGBSignalBars(8, 1, useBars100); //generateRGB3dCoordinates(); //
             break;
     }
 
@@ -268,7 +298,7 @@ const TapButton = (props) => {
 
     useEffect(() => {
         props.setSignal(signalYCRCB);
-   }, [red, green, blue, gradientColor1, gradientColor2, horizontalGradientDirection, generatorIdx, bitDepthIdx, vidStdIdx, exceedVideoLevels]);
+   }, [red, green, blue, gradientColor1, gradientColor2, horizontalGradientDirection, useBars100, generatorIdx, bitDepthIdx, vidStdIdx, exceedVideoLevels]);
 
     useEffect(() => {
         props.setSignal(signalYCRCB);
@@ -289,26 +319,24 @@ const TapButton = (props) => {
                 <Button title="Bars" onPress={()=>setGeneratorIdx(2)} titleStyle={{ color: (generatorIdx == 2 ? "orange" : "gray")}} type="clear"/>
             </View>
 
-            {generatorIdx === 0 ?
-            <Button title={(showingRgbControls ? "HSV" : "RGB")} onPress={x => setShowingRgbControls(!showingRgbControls)}/> : null}
 
             {generatorIdx === 0 ?
-                (showingRgbControls ?
-                    <View style={{ flex: 1,  flexDirection: "column", justifyContent: 'space-around', alignItems: "center", padding: 10 }}>
-                        <TapButton label={"R"} currentValue={red} setValue={setRed} stepSize={0.1} color={"#fdd"}/>
-                        <TapButton label={"G"} currentValue={green} setValue={setGreen} stepSize={0.1} color={"#dfd"}/>
-                        <TapButton label={"B"} currentValue={blue} setValue={setBlue} stepSize={0.1} color={"#ddf"}/>
-                    </View> :
-                    <View style={{ flex: 1, flexDirection: "column", justifyContent: 'space-around', alignItems: "center", padding: 10}}>
-                        <TapButton label={"H"} currentValue={hue} setValue={setHue} stepSize={15}/>
-                        <TapButton label={"S"} currentValue={saturation} setValue={setSaturation} stepSize={0.1}/>
-                        <TapButton label={"V"} currentValue={value} setValue={setValue} stepSize={0.1}/>
-                    </View>)
-            : null}
-            {generatorIdx ===1 ?
+            <FullColor red={red} setRed={setRed}
+                        green={green} setGreen={setGreen}
+                        blue={blue} setBlue={setBlue}
+                        hue={hue} setHue={setHue}
+                        sat={saturation} setSat={setSaturation}
+                        val={value} setVal={setValue}
+                        showRGB={showingRgbControls} toggleRgbHsv={() => setShowingRgbControls(!showingRgbControls)}
+            /> : null}
+
+            {generatorIdx === 1 ?
                 <Gradient rgb1={gradientColor1} setRGB1={setGradientColor1}  rgb2={gradientColor2} setRGB2={setGradientColor2} directionHorizontal={horizontalGradientDirection} toggleDirection={() => setHorizontalGradientDirection(!horizontalGradientDirection)} />
             : null}
 
+            {generatorIdx === 2 ?
+                <Bars useBars100={useBars100} toggleBarsType={() => setUseBars100(!useBars100)}/>
+            : null}
 
 
             <Text h3 style={{paddingTop: 20, paddingBottom: 10}}>Modifikation</Text>
