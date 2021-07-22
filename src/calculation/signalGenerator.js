@@ -81,7 +81,7 @@ function blendPixel(firstRGB, secondRGB, ratio = 0.5){
     return result;
 }
 
-export function generateRGBSignalGradient(startRGB, endRGB, width, height, direction = "horizontal"){
+export function generateRGBSignalGradient(startRGB, endRGB, width, height, directionHorizontal = true){
 	var signal = new Array(height);
 
     for (var row = 0; row < signal.length; row++) {
@@ -91,7 +91,7 @@ export function generateRGBSignalGradient(startRGB, endRGB, width, height, direc
         	var color = [0, 0, 0];
 
             // Gradient Signal
-            if (direction == "horizontal"){
+            if (directionHorizontal){
 				color = blendPixel(startRGB, endRGB, (column/(width-1)))
           	}
             else { //vertical

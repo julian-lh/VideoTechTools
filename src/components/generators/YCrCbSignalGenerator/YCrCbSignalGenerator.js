@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, ScrollView, TouchableOpacity } from 'react-native';
 import { Button, Text, Slider } from 'react-native-elements';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import { styles } from './YCrCbSignalGeneratorStyle';
 
@@ -8,6 +9,7 @@ import { cvtRGBtoHSV, cvtHSVtoRGB } from '../../../calculation/ColorSpaceTransfo
 import { cvtSignalRGBtoYCRCB, upscaleSignalYCRCB, limiterComponentSignal, limiterRGBSignal} from '../../../calculation/ComponentSignal';
 import { generateRGBSignalFullColor, generateRGBSignalGradient, generateRGBSignalBars, offsetSignalContrast, offsetSignalBrightness, offsetSignalGamma, generateRGB3dCoordinates } from '../../../calculation/SignalGenerator';
 import { clamp } from '../../../calculation/Helpers';
+
 
 const ColorSelector = (props) => {
     return (
@@ -41,6 +43,43 @@ const ColorSelector2 = (props) => {
     );
 }
 
+const Gradient = ({rgb1, setRGB1, rgb2, setRGB2, directionHorizontal, toggleDirection}) => {
+
+    return(
+        <View>
+            <Button title={directionHorizontal ? "horizontal" : "vertikal"} onPress={toggleDirection} style={{ padding: 10 }}/>
+            <View style={{  flexDirection: "row", justifyContent: 'space-around', alignItems: "center" }}>
+            <ColorPad setColor={setRGB1}/>
+            <Ionicons name={"arrow-forward"} size={30} color={"gray"} />
+            <ColorPad setColor={setRGB2}/>
+            </View>
+        </View>
+    )
+}
+
+const ColorPad = ({setColor}) => {
+    //const gradientColors = [[1, 0, 0 ], [1, 1, 0], [0, 1, 0], [0, 1, 1], [0, 0, 1], [1, 0, 1], [0, 0, 0], [1, 1, 1]];
+    const buttonSize = 40;
+    return(
+        <View style={{  flexDirection: "row", justifyContent: 'space-around', alignItems: "center", paddingHorizontal: 10 }}>
+            <View>
+                <Button title={""} onPress={() => setColor([1, 0, 0])} buttonStyle={{ backgroundColor: "#f00", height: buttonSize, width: buttonSize }} />
+                <Button title={""} onPress={() => setColor([1, 1, 0])} buttonStyle={{ backgroundColor: "#ff0", height: buttonSize, width: buttonSize }} />
+                <Button title={""} onPress={() => setColor([0, 1, 0])} buttonStyle={{ backgroundColor: "#0f0", height: buttonSize, width: buttonSize }} />
+                <Button title={""} onPress={() => setColor([0, 0, 0])} buttonStyle={{ backgroundColor: "#000", height: buttonSize, width: buttonSize }} />
+            </View>
+            <View>
+                <Button title={""} onPress={() => setColor([1, 0, 1])} buttonStyle={{ backgroundColor: "#f0f", height: buttonSize, width: buttonSize }} />
+                <Button title={""} onPress={() => setColor([0, 0, 1])} buttonStyle={{ backgroundColor: "#00f", height: buttonSize, width: buttonSize }} />
+                <Button title={""} onPress={() => setColor([0, 1, 1])} buttonStyle={{ backgroundColor: "#0ff", height: buttonSize, width: buttonSize }} />
+                <Button title={""} onPress={() => setColor([1, 1, 1])} buttonStyle={{ backgroundColor: "#fff", height: buttonSize, width: buttonSize }} />
+
+            </View>
+
+        </View>
+    )
+}
+
 
 const RGBPicker = (props) => {
     return(
@@ -69,37 +108,6 @@ const SignalPreview = (props) => {
         </View>
       );
 }
-
-
-/*
-export class BtnGroup extends PureComponent {
-    // Quelle https://www.sitepoint.com/community/t/react-native-elements-button-group/366392
-    constructor() {
-      super()
-      this.state = {
-        selectedIndex: 0
-      }
-      this.updateIndex = this.updateIndex.bind(this)
-    }
-
-    updateIndex(selectedIndex) {
-      this.setState({ selectedIndex })
-    }
-
-    render() {
-      const buttons = ['Y', 'Pr/Pb']
-      const { selectedIndex } = this.state
-
-      return (
-        <ButtonGroup
-          onPress={this.updateIndex}
-          selectedIndex={selectedIndex}
-          buttons={buttons}
-          //containerStyle={{ height: 45, width: 200 }}
-        />
-      )
-    }
-  }*/
 
 
 const SignalPicker = (props) => {
@@ -169,16 +177,13 @@ const TapButton = (props) => {
     const [bitDepthIdx, setBitDepthIdx] = useState(0);
     const switchBitDepth = () => setBitDepthIdx(1 - bitDepthIdx);
 
-    //const [width, setWidth] = useState(8);
-    //const [height, setHeight] = useState(1);
-
     const [pageID, setPageID] = useState(0);
     const [generatorIdx, setGeneratorIdx] = useState(0);
 
     // prevent infinite conversion loops
     const [showingRgbControls, setShowingRgbControls] = useState(true);
 
-    // COLOR-PICKER
+    // COLOR-PICKER Single Color
     const [hue, setHueDirectly] = useState(0);
     const setHue = (value)  => setHueDirectly((value % 360 < 0) ? (360 - Math.abs(value) % 360) : value % 360);
     const [saturation, setSaturationDirectly] = useState(0);
@@ -193,21 +198,6 @@ const TapButton = (props) => {
     const [blue, setBlueDirectly] = useState(0.1);
     const setBlue = (value)  => setBlueDirectly( clamp(value) );
 
-    /*
-    const updateHSV = () => {
-        const [h, s, v] = cvtRGBtoHSV([red, green, blue]);
-        setHueDirectly(h);
-        setSaturationDirectly(s);
-        setValueDirectly(v);
-    }
-    const updateRGB = () => {
-        const [r, g, b] = cvtHSVtoRGB([hue, saturation, value]);
-        setRedDirectly(r);
-        setGreenDirectly(g);
-        setBlueDirectly(b);
-    }*/
-
-    //bei Veränderung direkt in rgb umrechnen
 
     useEffect(() => {
         if (!showingRgbControls){
@@ -227,6 +217,16 @@ const TapButton = (props) => {
         }
     }, [red, green, blue]);
 
+
+    // Gradient Colors
+    const [gradientColor1, setGradientColor1] = useState([1, 0, 1]);
+    const [gradientColor2, setGradientColor2] = useState([0, 1, 0]);
+
+    const [horizontalGradientDirection, setHorizontalGradientDirection] = useState(true);
+    var amountGradientPixelH =  (horizontalGradientDirection ? 8 : 1);
+    var amountGradientPixelV =  (horizontalGradientDirection ? 1 : 8);
+
+
     var signalRGB = [[[0, 0, 0]]];
 
     switch(generatorIdx) {
@@ -235,26 +235,26 @@ const TapButton = (props) => {
             signalRGB = generateRGBSignalFullColor([red, green, blue], 1, 1);
             break;
         case 1:
-            signalRGB = generateRGBSignalGradient([red, green, blue],[1, 1, 1], 8, 1, "horizontal");
+            signalRGB = generateRGBSignalGradient(gradientColor1, gradientColor2, amountGradientPixelH, amountGradientPixelV, horizontalGradientDirection);
             break;
         case 2:
             signalRGB = generateRGBSignalBars(8, 1); //generateRGB3dCoordinates(); //
             break;
     }
 
+    // Blendenschieber
     const [fStopOffset, setFStopOffset] = useState(1); //[0...2]
 
     const [contrastOffset, setContrastOffset] = useState(1); //[0...2]
     const [brightnessOffset, setBrightnessOffset] = useState(0); //[-2...2]
     const [gammaOffset, setGammaOffset] = useState(1); //[-3...3]
 
-    // Blendenschieber
+
 
     // Überpegel erlauben
     const [exceedVideoLevels, setExceedVideoLevels] = useState(false);
 
-    // Modifizieren
-        // Operationen nur anwenden wenn verwendet
+    // Modifizieren (Operationen nur anwenden wenn nicht neutral)
     signalRGB = (contrastOffset != 1 ? offsetSignalContrast(signalRGB, contrastOffset) : signalRGB);
     signalRGB = (brightnessOffset != 0 ? offsetSignalBrightness(signalRGB, brightnessOffset) : signalRGB);
     signalRGB = (gammaOffset != 1 ? offsetSignalGamma(signalRGB, gammaOffset) : signalRGB);
@@ -262,14 +262,13 @@ const TapButton = (props) => {
     signalRGB = exceedVideoLevels ?  signalRGB : limiterRGBSignal(signalRGB);
 
     // RGB -> YCrCb
-
     const signalSmallYCRCB = cvtSignalRGBtoYCRCB(signalRGB, videoStandards[vidStdIdx]);
     var signalYCRCB = upscaleSignalYCRCB(signalSmallYCRCB, bitDepths[bitDepthIdx]);
     signalYCRCB = limiterComponentSignal(signalYCRCB, bitDepths[bitDepthIdx], exceedVideoLevels);
 
     useEffect(() => {
         props.setSignal(signalYCRCB);
-   }, [red, green, blue, generatorIdx, bitDepthIdx, vidStdIdx, exceedVideoLevels]);
+   }, [red, green, blue, gradientColor1, gradientColor2, horizontalGradientDirection, generatorIdx, bitDepthIdx, vidStdIdx, exceedVideoLevels]);
 
     useEffect(() => {
         props.setSignal(signalYCRCB);
@@ -289,9 +288,11 @@ const TapButton = (props) => {
                 <Button title="Verlauf" onPress={()=>setGeneratorIdx(1)} titleStyle={{ color: (generatorIdx == 1 ? "orange" : "gray")}} type="clear"/>
                 <Button title="Bars" onPress={()=>setGeneratorIdx(2)} titleStyle={{ color: (generatorIdx == 2 ? "orange" : "gray")}} type="clear"/>
             </View>
-            <Button title={(showingRgbControls ? "HSV" : "RGB")} onPress={x => setShowingRgbControls(!showingRgbControls)}></Button>
 
-            {generatorIdx < 2 ?
+            {generatorIdx === 0 ?
+            <Button title={(showingRgbControls ? "HSV" : "RGB")} onPress={x => setShowingRgbControls(!showingRgbControls)}/> : null}
+
+            {generatorIdx === 0 ?
                 (showingRgbControls ?
                     <View style={{ flex: 1,  flexDirection: "column", justifyContent: 'space-around', alignItems: "center", padding: 10 }}>
                         <TapButton label={"R"} currentValue={red} setValue={setRed} stepSize={0.1} color={"#fdd"}/>
@@ -303,7 +304,10 @@ const TapButton = (props) => {
                         <TapButton label={"S"} currentValue={saturation} setValue={setSaturation} stepSize={0.1}/>
                         <TapButton label={"V"} currentValue={value} setValue={setValue} stepSize={0.1}/>
                     </View>)
-            : <View/>}
+            : null}
+            {generatorIdx ===1 ?
+                <Gradient rgb1={gradientColor1} setRGB1={setGradientColor1}  rgb2={gradientColor2} setRGB2={setGradientColor2} directionHorizontal={horizontalGradientDirection} toggleDirection={() => setHorizontalGradientDirection(!horizontalGradientDirection)} />
+            : null}
 
 
 
@@ -320,7 +324,9 @@ const TapButton = (props) => {
 
       </View>
     );
-  }/*
+  }
+
+  /*
   {generatorIdx > 0 ? <View style={{ width: "100%", flexDirection: "row", justifyContent: 'space-evenly', alignItems: "center"}}>
   <View style={{ flex: 1, flexDirection: "column", justifyContent: 'space-around', alignItems: "center", padding: 10}}>
       <TapButton label={"H"} currentValue={hue} setValue={setHue} stepSize={30}/>
