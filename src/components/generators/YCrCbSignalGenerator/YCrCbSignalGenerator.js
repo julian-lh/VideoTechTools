@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, ScrollView } from 'react-native';
-import { Button, Text, Slider } from 'react-native-elements';
+import { Button, Text, Slider, ButtonGroup } from 'react-native-elements';
 
 import { styles } from './YCrCbSignalGeneratorStyle';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import { TapButton } from './Subviews/TapButton';
+import { TapButton, BtnGroup } from './Subviews/TapButton';
 import { FullColorSelector, GradientSelector, BarsSelector } from './Subviews/SelectorViews'
 
 import { cvtRGBtoHSV, cvtHSVtoRGB } from '../../../calculation/ColorSpaceTransform';
@@ -29,9 +29,9 @@ const Generator = ({generatorIdx, setGeneratorIdx,
     return(
         <View style={{ flex: 1, justifyContent: 'center', alignItems: "center" }}>
             <View style={{ backgroundColor: "#dedede", width: "90%", flexDirection: "row", justifyContent: 'space-around', padding: 10 }}>
-                <Button title="Einfarbig" onPress={()=>setGeneratorIdx(0)} titleStyle={{ color: (generatorIdx == 0 ? "orange" : "gray")}} type="clear"/>
-                <Button title="Verlauf" onPress={()=>setGeneratorIdx(1)} titleStyle={{ color: (generatorIdx == 1 ? "orange" : "gray")}} type="clear"/>
-                <Button title="Bars" onPress={()=>setGeneratorIdx(2)} titleStyle={{ color: (generatorIdx == 2 ? "orange" : "gray")}} type="clear"/>
+                <Button title="Einfarbig" onPress={()=>setGeneratorIdx(0)} titleStyle={{ color: (generatorIdx == 0 ? "black" : "gray")}} type="clear"/>
+                <Button title="Verlauf" onPress={()=>setGeneratorIdx(1)} titleStyle={{ color: (generatorIdx == 1 ? "black" : "gray")}} type="clear"/>
+                <Button title="Bars" onPress={()=>setGeneratorIdx(2)} titleStyle={{ color: (generatorIdx == 2 ? "black" : "gray")}} type="clear"/>
             </View>
 
 
@@ -157,7 +157,6 @@ const Corrector = ({contrastOffset, setContrastOffset, gammaOffset, setGammaOffs
             break;
     }
 
-
     const [fStopOffset, setFStopOffset] = useState(0); //[0...2]
 
     const [contrastOffset, setContrastOffset] = useState(1); //[0...2]
@@ -189,19 +188,15 @@ const Corrector = ({contrastOffset, setContrastOffset, gammaOffset, setGammaOffs
         setEncodingVideoStandard(vidStdIdx);
     },[contrastOffset, gammaOffset, brightnessOffset, generatorIdx, exceedVideoLevels, bitDepthIdx, vidStdIdx]);
 
-    //            <Button title="Signal" onPress={()=>setPageID(0)} color={ (pageID == 0 ? "orange" : "gray")}></Button>
-    //            <Button title="Modifikation" onPress={()=>setPageID(1)} color={(pageID == 1 ? "orange" : "gray")}></Button>
-
-
-
+//            <Button title="Generator" onPress={()=>setPageID(0)} buttonStyle={{ backgroundColor: (pageID == 0 ? "orange" : "gray")}} disabled={pageID == 0} />
+//             <Button title="Corrector" onPress={()=>setPageID(1)} buttonStyle={{ backgroundColor: (pageID == 1 ? "orange" : "gray")}} disabled={pageID == 1} />
+//, justifyContent: 'space-around', alignItems: "center", paddingHorizontal: 10, paddingTop: 4
     return (
       <View style={{ flex: (hideGeneratorView ? 0 : 1), alignItems: "center"}}>
-        <View style={{ backgroundColor: 'gray', width: '100%', flexDirection: "row", justifyContent: 'space-around', alignItems: "center", paddingHorizontal: 10, paddingTop: 4  }}>
-            {showHideButton ? <Button title=""  icon={<Ionicons name={hideGeneratorView? "arrow-up": "arrow-down"} size={15} color="white"/>} onPress={()=>setHideGeneratorView(!hideGeneratorView)} titleStyle={{ color: '#fff'}} type="clear"/> : null}
-            <Button title="Signal" onPress={()=>setPageID(0)} buttonStyle={{ backgroundColor: (pageID == 0 ? "orange" : "gray")}} disabled={pageID == 0} />
-            <Button title="Corrector" onPress={()=>setPageID(1)} buttonStyle={{ backgroundColor: (pageID == 1 ? "orange" : "gray")}} disabled={pageID == 1} />
+        <View style={{ backgroundColor: "#dedede",  width: '100%', flexDirection: "row",  alignItems: "center", paddingTop: 0, marginTop: 0 }}>
+            {showHideButton ? <Button title=""  icon={<Ionicons name={hideGeneratorView? "arrow-up": "arrow-down"} size={15} color="gray"/>} onPress={()=>setHideGeneratorView(!hideGeneratorView)} titleStyle={{ color: '#fff'}} type="clear"/> : null}
+            <ButtonGroup onPress={setPageID} selectedIndex={pageID} buttons={["GENERATOR", "CORRECTOR"]} containerStyle={{ marginVertical: 0, marginHorizontal: 0, flex: 1 }} disabled={hideGeneratorView} selectedButtonStyle={{ backgroundColor: "#dedede" }} selectedTextStyle={{ color: "black" }} innerBorderStyle={{ width: 0 }}  buttonContainerStyle={{ backgroundColor: "white"}} textStyle={{ fontSize: 15 }}/>
         </View>
-
         {hideGeneratorView == false ?
         <ScrollView width="100%" contentContainerStyle={{ flexGrow: 1, justifyContent: 'center', alignItems: "center"}} style={{ backgroundColor: "#dedede" }}>
 
@@ -227,8 +222,8 @@ const Corrector = ({contrastOffset, setContrastOffset, gammaOffset, setGammaOffs
             />}
 
             <Text h3 style={{paddingTop: 20, paddingBottom: 10}}>Videostandard</Text>
-            <Button title={"Rec." + videoStandards[vidStdIdx]} onPress={switchVidStd}type="clear"/>
-            <Button title={bitDepths[bitDepthIdx] + " bit"} onPress={switchBitDepth}type="clear"/>
+            <Button title={"Rec." + videoStandards[vidStdIdx]} onPress={switchVidStd} type="clear"/>
+            <Button title={bitDepths[bitDepthIdx] + " bit"} onPress={switchBitDepth} type="clear"/>
             <Button title={(exceedVideoLevels ? "mit Überpegel" : "ohne Überpegel")} onPress={() => setExceedVideoLevels(!exceedVideoLevels)} type="clear"/>
         </ScrollView>
                 : null }
