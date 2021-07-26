@@ -105,11 +105,11 @@ const Corrector = ({contrastOffset, setContrastOffset, gammaOffset, setGammaOffs
     const [value, setValueDirectly] = useState(0);
     const setValue = (value)  => setValueDirectly( clamp(value) );
 
-    const [red, setRedDirectly] = useState(0.1);
+    const [red, setRedDirectly] = useState(0.0);
     const setRed = (value)  => setRedDirectly( clamp(value) );
-    const [green, setGreenDirectly] = useState(0.1);
+    const [green, setGreenDirectly] = useState(0.0);
     const setGreen = (value)  => setGreenDirectly( clamp(value) );
-    const [blue, setBlueDirectly] = useState(0.1);
+    const [blue, setBlueDirectly] = useState(0.0);
     const setBlue = (value)  => setBlueDirectly( clamp(value) );
 
     // prevent infinite conversion loops
@@ -194,7 +194,7 @@ const Corrector = ({contrastOffset, setContrastOffset, gammaOffset, setGammaOffs
     return (
       <View style={{ flex: (hideGeneratorView ? 0 : 1), alignItems: "center"}}>
         <View style={{ backgroundColor: "#dedede",  width: '100%', flexDirection: "row",  alignItems: "center", paddingTop: 0, marginTop: 0 }}>
-            {showHideButton ? <Button title=""  icon={<Ionicons name={hideGeneratorView? "arrow-up": "arrow-down"} size={15} color="gray"/>} onPress={()=>setHideGeneratorView(!hideGeneratorView)} titleStyle={{ color: '#fff'}} type="clear"/> : null}
+            {showHideButton ? <Button title=""  icon={<Ionicons name={hideGeneratorView? "arrow-up": "arrow-down"} size={15} color="gray" />} onPress={()=>setHideGeneratorView(!hideGeneratorView)} titleStyle={{ color: '#fff'}} type="clear"/> : null}
             <ButtonGroup onPress={setPageID} selectedIndex={pageID} buttons={["GENERATOR", "CORRECTOR"]} containerStyle={{ marginVertical: 0, marginHorizontal: 0, flex: 1 }} disabled={hideGeneratorView} selectedButtonStyle={{ backgroundColor: "#dedede" }} selectedTextStyle={{ color: "black" }} innerBorderStyle={{ width: 0 }}  buttonContainerStyle={{ backgroundColor: "white"}} textStyle={{ fontSize: 15 }}/>
         </View>
         {hideGeneratorView == false ?

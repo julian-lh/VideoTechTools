@@ -32,7 +32,7 @@ export const FullColorSelector = ({red, setRed, green, setGreen, blue, setBlue, 
 export const GradientSelector = ({rgb1, setRGB1, rgb2, setRGB2, directionHorizontal, toggleDirection}) => {
     return(
         <View>
-            <Button title={directionHorizontal ? "horizontal" : "vertikal"} onPress={toggleDirection} style={{ padding: 10 }} titleStyle={{ color: "black"}} type={"outline"}/>
+            <Button title={(directionHorizontal ? "horizontal" : "vertikal")} onPress={toggleDirection}  titleStyle={{ color: "black"}} containerStyle={{ padding: 5 }} type={"outline"}/>
             <View style={{  flexDirection: "row", justifyContent: 'space-around', alignItems: "center" }}>
             <ColorPad setColor={setRGB1}/>
             <Ionicons name={"arrow-forward"} size={30} color={"gray"} />

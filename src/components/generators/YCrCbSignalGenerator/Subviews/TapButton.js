@@ -5,11 +5,11 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 
 
-export const TapButton = ({label, currentValue, setValue, stepSize, color=undefined, stepSize2=undefined }) => {
+export const TapButton = ({label, currentValue, setValue, stepSize, color=undefined, stepSize2=undefined, direction="row"}) => {
     return(
         <View style={{flex: 1, minWidth: 50, maxWidth: (stepSize2 !== undefined ? 240 : 180), justifyContent: "space-evenly", alignItems: "center", paddingTop: 5}}>
-            <Text>{label}</Text>
-            <View style={{ backgroundColor: (color !== undefined ? color : "#ffffff"), flexDirection: "row", felx: 1, justifyContent: "space-evenly", alignItems: "center"}}>
+            <Text style={{paddingBottom: 5}}>{label}</Text>
+            <View style={{ backgroundColor: (color !== undefined ? color : "#ffffff"), flexDirection: direction, felx: 1, justifyContent: "space-evenly", alignItems: "center"}}>
 
                 {stepSize2 !== undefined ?
                     <Button title=" -- "  onPress={() => setValue(Math.round((currentValue - stepSize2)*100)/100)} titleStyle={{ color: "black"}} type={"clear"}></Button>
