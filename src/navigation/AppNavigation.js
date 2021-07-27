@@ -32,7 +32,6 @@ export default function Navigation() {
       <NavigationContainer>
           <Drawer.Navigator
                 drawerStyle={{
-
                     maxWidth: 240,
                     paddingTop: "40%"
                     }}
@@ -82,7 +81,7 @@ export default function Navigation() {
 
               <Drawer.Screen name="WFM" component={StackWrap_WFMScreen} />
               <Drawer.Screen name="Vektorskop" component={StackWrap_VectorscopeScreen} />
-              <Drawer.Screen name="CIE xy 1931" component={StackWrap_CIEScreen} />
+              <Drawer.Screen name="CIE-Normfarbtafel" component={StackWrap_CIEScreen} />
               <Drawer.Screen name="Komponentensignal" component={StackWrap_SignalDisplayYCrCbScreen} />
               <Drawer.Screen name="Scopes Übersicht" component={StackWrap_ScopesCombinationScreen} />
 

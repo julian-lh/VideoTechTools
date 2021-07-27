@@ -8,8 +8,8 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 //import { Text as Text3D } from 'troika-three-text';
 
-import { RGBSignalPreview } from '../visualizers/signalPreview/RGBSignalPreview';
-import { VideoStandardAlertView } from '../visualizers/helpers/VideoStandardAlertView';
+import { RGBSignalPreview } from '../signalPreview/RGBSignalPreview';
+import { VideoStandardAlertView } from '../helpers/VideoStandardAlertView';
 
 import { cvtSignalYCRCBtoRGB, cvtSignalRGBtoYCRCB, downscaleSignalYCRCB } from '../../calculations/ComponentSignal';
 

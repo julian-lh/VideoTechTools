@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import { View } from 'react-native';
 import { Text } from 'react-native-elements';
 
-import { RGBSignalPreview } from '../../components/visualizers/signalPreview/RGBSignalPreview';
-import { CIEView } from '../../components/visualizers/cie/CIEView';
+import { RGBSignalPreview } from '../../components/signalPreview/RGBSignalPreview';
+import { CIEView } from '../../components/cie/CIEView';
 import { YCrCbGenerator } from '../../components/generators/YCrCbSignalGenerator/YCrCbSignalGenerator'
-import { VectorscopeView } from '../../components/visualizers/vectorscope/VectorscopeView';
-import { WFMView } from '../../components/visualizers/wfm/WFMView';
+import { VectorscopeView } from '../../components/vectorscope/VectorscopeView';
+import { WFMView } from '../../components/wfm/WFMView';
 
-import { cvtSignalYCRCBtoRGB, cvtSignalRGBtoYCRCB, downscaleSignalYCRCB } from '../../calculation/ComponentSignal';
+import { cvtSignalYCRCBtoRGB, cvtSignalRGBtoYCRCB, downscaleSignalYCRCB } from '../../calculations/ComponentSignal';
 
 
 export default function ScopesCombinationScreen() {

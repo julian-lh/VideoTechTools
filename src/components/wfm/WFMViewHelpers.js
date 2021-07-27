@@ -4,6 +4,7 @@ export function signalToWfmArray(signalArray, signalIdx, hexColorString = "#555"
     const lineArray = [];
     var subdivisionOffset = 0;
     var hSubdivisionSqueezeFktr = 1;
+
     if (subdivisionPosition !== undefined){
         subdivisionOffset = subdivisionPosition / 3;
         hSubdivisionSqueezeFktr = 0.3;

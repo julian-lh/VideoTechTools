@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { View } from 'react-native';
 import { Text, Button } from 'react-native-elements';
 
-import { RGBSignalPreview } from '../../components/visualizers/signalPreview/RGBSignalPreview';
+import { RGBSignalPreview } from '../../components/signalPreview/RGBSignalPreview';
 import { YCrCbGenerator } from '../../components/generators/YCrCbSignalGenerator/YCrCbSignalGenerator'
-import { cvtSignalYCRCBtoRGB, cvtSignalRGBtoYCRCB, downscaleSignalYCRCB } from '../../calculation/ComponentSignal';
+import { cvtSignalYCRCBtoRGB, cvtSignalRGBtoYCRCB, downscaleSignalYCRCB } from '../../calculations/ComponentSignal';
 
 
 export default function SignalDisplayYCrCbScreen() {

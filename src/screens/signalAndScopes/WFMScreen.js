@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
 import { Text} from 'react-native-elements';
-import { WFMView } from '../../components/visualizers/wfm/WFMView';
+import { WFMView } from '../../components/wfm/WFMView';
 
 import { YCrCbGenerator } from '../../components/generators/YCrCbSignalGenerator/YCrCbSignalGenerator'
 

@@ -13,10 +13,11 @@ import { styles } from './CIEViewStyle';
 import { RGBSignalPreview } from '../signalPreview/RGBSignalPreview';
 import { VideoStandardAlertView } from '../helpers/VideoStandardAlertView';
 
-import gamutData from '../../../calculation/data/GamutData.json';
-import { cvtSignalRGBtoXYZ, cvtSignalXYZtoxyY, CIEBoundsValues } from '../../../calculation/ColorSpaceTransform';
+import gamutData from '../../calculations/data/GamutData.json';
+import { cvtSignalRGBtoXYZ, cvtSignalXYZtoxyY, CIEBoundsValues } from '../../calculations/ColorSpaceTransform';
+import { offsetSignalGamma } from '../../calculations/SignalGenerator';
 
-import { cvtSignalYCRCBtoRGB, downscaleSignalYCRCB } from '../../../calculation/ComponentSignal';
+import { cvtSignalYCRCBtoRGB, downscaleSignalYCRCB } from '../../calculations/ComponentSignal';
 import { ScrollView } from 'react-native-gesture-handler';
 
 
@@ -399,9 +400,12 @@ function Camera(props) {
     const [bitDepthIdx, setBitDepthIdx] = useState(0);
     const switchBitDepth = () => setBitDepthIdx(1 - bitDepthIdx);
 
+
     // convert signal
     const smallSignalYCRCB = useMemo(() => downscaleSignalYCRCB(signalYCRCB, bitDepths[bitDepthIdx]), [signalYCRCB, bitDepthIdx]);
     const signalRGB = useMemo(() => cvtSignalYCRCBtoRGB(smallSignalYCRCB, videoStandards[vidStdIdx]), [smallSignalYCRCB, vidStdIdx]);
+
+    //const signalRGBlinear = useMemo(() =>  offsetSignalGamma(signalRGB, 0.42), [signalRGB, vidStdIdx]);
 
     const signalXYZ = useMemo(() => cvtSignalRGBtoXYZ(signalRGB, videoStandards[vidStdIdx]), [signalRGB, vidStdIdx]);
     const signalxyY = useMemo(() => cvtSignalXYZtoxyY(signalXYZ), [signalXYZ]);
