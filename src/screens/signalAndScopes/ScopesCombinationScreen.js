@@ -4,7 +4,7 @@ import { Text } from 'react-native-elements';
 
 import { RGBSignalPreview } from '../../components/signalPreview/RGBSignalPreview';
 import { CIEView } from '../../components/cie/CIEView';
-import { YCrCbGenerator } from '../../components/generators/YCrCbSignalGenerator/YCrCbSignalGenerator'
+import { YCrCbGenerator } from '../../components/signalGenerator/SignalGenerator'
 import { VectorscopeView } from '../../components/vectorscope/VectorscopeView';
 import { WFMView } from '../../components/wfm/WFMView';
 

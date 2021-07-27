@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { Text } from 'react-native-elements';
 
 import { VectorscopeView } from '../../components/vectorscope/VectorscopeView';
-import { YCrCbGenerator } from '../../components/generators/YCrCbSignalGenerator/YCrCbSignalGenerator'
+import { YCrCbGenerator } from '../../components/signalGenerator/SignalGenerator'
 
 
 export default function VectorscopeScreen() {
