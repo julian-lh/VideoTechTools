@@ -9,10 +9,11 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { TapButton, BtnGroup } from './Subviews/TapButton';
 import { FullColorSelector, GradientSelector, BarsSelector } from './Subviews/SelectorViews'
 
-import { cvtRGBtoHSV, cvtHSVtoRGB } from '../../../calculation/ColorSpaceTransform';
-import { cvtSignalRGBtoYCRCB, upscaleSignalYCRCB, limiterComponentSignal, limiterRGBSignal} from '../../../calculation/ComponentSignal';
-import { generateRGBSignalFullColor, generateRGBSignalGradient, generateRGBSignalBars, offsetSignalContrast, offsetSignalBrightness, offsetSignalGamma, generateRGB3dCoordinates } from '../../../calculation/SignalGenerator';
-import { clamp } from '../../../calculation/Helpers';
+import { cvtRGBtoHSV, cvtHSVtoRGB } from '../../../calculations/ColorSpaceTransform';
+import { cvtSignalRGBtoYCRCB, upscaleSignalYCRCB, limiterComponentSignal, limiterRGBSignal} from '../../../calculations/ComponentSignal';
+import { generateRGBSignalFullColor, generateRGBSignalGradient, generateRGBSignalBars, offsetSignalContrast, offsetSignalBrightness, offsetSignalGamma, generateRGB3dCoordinates } from '../../../calculations/SignalGenerator';
+
+import { clamp } from '../../../calculations/Helpers';
 
 
 const Generator = ({generatorIdx, setGeneratorIdx,
@@ -178,6 +179,7 @@ const Corrector = ({contrastOffset, setContrastOffset, gammaOffset, setGammaOffs
     var signalYCRCB = upscaleSignalYCRCB(signalSmallYCRCB, bitDepths[bitDepthIdx]);
     signalYCRCB = limiterComponentSignal(signalYCRCB, bitDepths[bitDepthIdx], exceedVideoLevels);
 
+
     // Trigger recalculation of signal when values change
     useEffect(() => {
         setSignal(signalYCRCB);
@@ -188,9 +190,7 @@ const Corrector = ({contrastOffset, setContrastOffset, gammaOffset, setGammaOffs
         setEncodingVideoStandard(vidStdIdx);
     },[contrastOffset, gammaOffset, brightnessOffset, generatorIdx, exceedVideoLevels, bitDepthIdx, vidStdIdx]);
 
-//            <Button title="Generator" onPress={()=>setPageID(0)} buttonStyle={{ backgroundColor: (pageID == 0 ? "orange" : "gray")}} disabled={pageID == 0} />
-//             <Button title="Corrector" onPress={()=>setPageID(1)} buttonStyle={{ backgroundColor: (pageID == 1 ? "orange" : "gray")}} disabled={pageID == 1} />
-//, justifyContent: 'space-around', alignItems: "center", paddingHorizontal: 10, paddingTop: 4
+
     return (
       <View style={{ flex: (hideGeneratorView ? 0 : 1), alignItems: "center"}}>
         <View style={{ backgroundColor: "#dedede",  width: '100%', flexDirection: "row",  alignItems: "center", paddingTop: 0, marginTop: 0 }}>

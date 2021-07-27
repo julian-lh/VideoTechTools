@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View } from 'react-native';
 import { Text } from 'react-native-elements';
 
-import { VectorscopeView } from '../../components/visualizers/vectorscope/VectorscopeView';
+import { VectorscopeView } from '../../components/vectorscope/VectorscopeView';
 import { YCrCbGenerator } from '../../components/generators/YCrCbSignalGenerator/YCrCbSignalGenerator'
 
 

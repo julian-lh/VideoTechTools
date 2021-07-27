@@ -28,7 +28,6 @@ export function offsetSignalGamma(signalRGB, gamma = 1, maxValue = 1) {
 
 
 export function generateRGBSignalFullColor(valueRGB, width, height){
-
     var signal = new Array(height);
 
     for (var row = 0; row < signal.length; row++) {
@@ -40,10 +39,10 @@ export function generateRGBSignalFullColor(valueRGB, width, height){
 export function generateRGBSignalBars(width = 8, height = 1, type100 = true){
     var signal = new Array(height);
     const maxC = (type100 ? 1 : 0.75);
+
     for (var row = 0; row < signal.length; row++) {
     	signal[row] = new Array(width);
 
-    	// ITU 100/100 Bars
     	for (var column = 0; column < signal[row].length; column++) {
 
             const barWidth = width/8;
@@ -65,7 +64,6 @@ export function generateRGBSignalBars(width = 8, height = 1, type100 = true){
             }else {
                 color = [0.0, 0.0, 0.0];
             }
-
             signal[row][column] = color;
         }
     }
@@ -81,7 +79,7 @@ function blendPixel(firstRGB, secondRGB, ratio = 0.5){
     return result;
 }
 
-export function generateRGBSignalGradient(startRGB, endRGB, width, height, directionHorizontal = true){
+export function generateRGBSignalGradient(startRGB, endRGB, width, height, directionHorizontal=true){
 	var signal = new Array(height);
 
     for (var row = 0; row < signal.length; row++) {
@@ -90,11 +88,10 @@ export function generateRGBSignalGradient(startRGB, endRGB, width, height, direc
     	for (var column = 0; column < signal[row].length; column++) {
         	var color = [0, 0, 0];
 
-            // Gradient Signal
             if (directionHorizontal){
 				color = blendPixel(startRGB, endRGB, (column/(width-1)))
           	}
-            else { //vertical
+            else {
 				color = blendPixel(startRGB, endRGB, (row/(height-1)))
           	}
 

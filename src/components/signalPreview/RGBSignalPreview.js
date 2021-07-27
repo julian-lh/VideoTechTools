@@ -4,8 +4,8 @@ import { View, Text } from 'react-native';
 
 import { StyleSheet} from 'react-native';
 
-import { clamp } from '../../../calculation/Helpers'
-
+//import { clamp } from '../../calculations/Helpers'
+import { clamp } from '../../calculations/Helpers'
 
 export const RGBSignalPreview = ({ rgbSignal, YCrCbSignal = undefined, labelIndex = 0}) => {
     //Anlehnung: https://www.digitalocean.com/community/conceptual_articles/understanding-how-to-render-arrays-in-react
@@ -28,12 +28,12 @@ export const RGBSignalPreview = ({ rgbSignal, YCrCbSignal = undefined, labelInde
 
     return(
       <View style={styles.outerContainer}>
+
         {rgbSignal.map( (x, idx1) => {
           return(
             <View
               style={styles.rowContainer}
-              key={idx1}>{
-                  x.map( (y, idx2) => {
+              key={idx1}>{ x.map( (y, idx2) => {
                     return(
                       <View
                         style={styles.columnElement}
@@ -42,11 +42,12 @@ export const RGBSignalPreview = ({ rgbSignal, YCrCbSignal = undefined, labelInde
                          {labelIndex > 0 ?
                             <Text style={styles.label, {color: rgbToComplColorString(y)}}>{
                               labelSignal[idx1][idx2].map( (v, i) => (" " + desctiption[i] + ":" + v.toFixed(1))) }
-                            </Text> : <View/>}
+                            </Text> : null}
                         </View>
                       )})}
             </View>)})
         }
+
       </View>
     )
   }
