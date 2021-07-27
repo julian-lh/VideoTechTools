@@ -7,7 +7,9 @@ import { styles } from './SignalGeneratorStyle';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import { TapButton } from './Subviews/TapButton';
-import { FullColorGenerator, GradientGenerator, BarsGenerator} from './Subviews/SelectorViews'
+import { BarsGenerator} from './Subviews/BarsGenerator';
+import { FullColorGenerator } from './Subviews/FullColorGenerator';
+import { GradientGenerator } from './Subviews/GradientGenerator';
 
 import { cvtSignalRGBtoYCRCB, upscaleSignalYCRCB, limiterComponentSignal, limiterRGBSignal} from '../../calculations/ComponentSignal';
 import { offsetSignalContrast, offsetSignalBrightness, offsetSignalGamma } from '../../calculations/SignalGenerator';
@@ -21,15 +23,22 @@ const Generator = ({ setRgbSignal, fStopOffset, setFStopOffset }) => {
     return(
         <View style={{ flex: 1, justifyContent: 'center', alignItems: "center" }}>
             <View style={{ backgroundColor: "#dedede", width: "90%", flexDirection: "row", justifyContent: 'space-around', padding: 10 }}>
-                <Button title="Einfarbig" onPress={()=>setGeneratorIdx(0)} titleStyle={{ color: (generatorIdx == 0 ? "black" : "gray")}} type="clear"/>
-                <Button title="Verlauf" onPress={()=>setGeneratorIdx(1)} titleStyle={{ color: (generatorIdx == 1 ? "black" : "gray")}} type="clear"/>
-                <Button title="Bars" onPress={()=>setGeneratorIdx(2)} titleStyle={{ color: (generatorIdx == 2 ? "black" : "gray")}} type="clear"/>
+                <Button title="Einfarbig"
+                        onPress={()=>setGeneratorIdx(0)}
+                        titleStyle={{ color: (generatorIdx == 0 ? "black" : "gray")}}
+                        type="clear"/>
+                <Button title="Verlauf"
+                        onPress={()=>setGeneratorIdx(1)}
+                        titleStyle={{ color: (generatorIdx == 1 ? "black" : "gray")}}
+                        type="clear"/>
+                <Button title="Bars"
+                        onPress={()=>setGeneratorIdx(2)}
+                        titleStyle={{ color: (generatorIdx == 2 ? "black" : "gray")}}
+                        type="clear"/>
             </View>
 
             {generatorIdx === 0 ? <FullColorGenerator setRgbSignal={setRgbSignal} /> : null}
-
             {generatorIdx === 1 ? <GradientGenerator setRgbSignal={setRgbSignal} /> : null}
-
             {generatorIdx === 2 ? <BarsGenerator setRgbSignal={setRgbSignal} /> : null}
 
             <TapButton label={"Blenden Offset"} currentValue={fStopOffset} setValue={setFStopOffset} stepSize={0.05}/>
@@ -131,7 +140,7 @@ const Corrector = ({contrastOffset, setContrastOffset, gammaOffset, setGammaOffs
             <Text h3 style={{paddingTop: 20, paddingBottom: 10}}>Videostandard</Text>
             <Button title={"Rec." + videoStandards[vidStdIdx]} onPress={switchVidStd} type="clear"/>
             <Button title={bitDepths[bitDepthIdx] + " bit"} onPress={switchBitDepth} type="clear"/>
-            <Button title={(exceedVideoLevels ? "mit Überpegel" : "ohne Überpegel")} onPress={() => setExceedVideoLevels(!exceedVideoLevels)} type="clear"/>
+            <Button title={(exceedVideoLevels ? "mit Unter- & Überpegel" : "ohne Unter- & Überpegel")} onPress={() => setExceedVideoLevels(!exceedVideoLevels)} type="clear"/>
         </ScrollView>
                 : null }
       </View>
