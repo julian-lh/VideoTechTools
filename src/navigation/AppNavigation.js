@@ -19,7 +19,7 @@ import CIEScreen from '../screens/signalAndScopes/CIEScreen';
 import VectorscopeScreen from '../screens/signalAndScopes/VectorscopeScreen';
 import WFMScreen from '../screens/signalAndScopes/WFMScreen';
 import ScopesCombinationScreen from '../screens/signalAndScopes/ScopesCombinationScreen';
-import SignalDisplayYCrCbScreen from '../screens/signalAndScopes/SignalDisplayYCrCbScreen';
+import SignalDisplayYCrCbScreen from '../screens/signalAndScopes/SignalPreviewScreen';
 
 //<StatusBar style="auto" />
 // drawer test

@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { Text, Button } from 'react-native-elements';
 
 import { RGBSignalPreview } from '../../components/signalPreview/RGBSignalPreview';
-import { YCrCbGenerator } from '../../components/generators/YCrCbSignalGenerator/YCrCbSignalGenerator'
+import { YCrCbGenerator } from '../../components/signalGenerator/SignalGenerator'
 import { cvtSignalYCRCBtoRGB, cvtSignalRGBtoYCRCB, downscaleSignalYCRCB } from '../../calculations/ComponentSignal';
 
 

@@ -2,18 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, ScrollView } from 'react-native';
 import { Button, Text, Slider, ButtonGroup } from 'react-native-elements';
 
-import { styles } from './YCrCbSignalGeneratorStyle';
+import { styles } from './SignalGeneratorStyle';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import { TapButton, BtnGroup } from './Subviews/TapButton';
 import { FullColorSelector, GradientSelector, BarsSelector } from './Subviews/SelectorViews'
 
-import { cvtRGBtoHSV, cvtHSVtoRGB } from '../../../calculations/ColorSpaceTransform';
-import { cvtSignalRGBtoYCRCB, upscaleSignalYCRCB, limiterComponentSignal, limiterRGBSignal} from '../../../calculations/ComponentSignal';
-import { generateRGBSignalFullColor, generateRGBSignalGradient, generateRGBSignalBars, offsetSignalContrast, offsetSignalBrightness, offsetSignalGamma, generateRGB3dCoordinates } from '../../../calculations/SignalGenerator';
+import { cvtRGBtoHSV, cvtHSVtoRGB } from '../../calculations/ColorSpaceTransform';
+import { cvtSignalRGBtoYCRCB, upscaleSignalYCRCB, limiterComponentSignal, limiterRGBSignal} from '../../calculations/ComponentSignal';
+import { generateRGBSignalFullColor, generateRGBSignalGradient, generateRGBSignalBars, offsetSignalContrast, offsetSignalBrightness, offsetSignalGamma, generateRGB3dCoordinates } from '../../calculations/SignalGenerator';
 
-import { clamp } from '../../../calculations/Helpers';
+import { clamp } from '../../calculations/Helpers';
 
 
 const Generator = ({generatorIdx, setGeneratorIdx,

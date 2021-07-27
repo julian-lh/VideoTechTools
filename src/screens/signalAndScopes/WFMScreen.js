@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { Text} from 'react-native-elements';
 import { WFMView } from '../../components/wfm/WFMView';
 
-import { YCrCbGenerator } from '../../components/generators/YCrCbSignalGenerator/YCrCbSignalGenerator'
+import { YCrCbGenerator } from '../../components/signalGenerator/SignalGenerator'
 
 
 export default function WFMScreen() {
