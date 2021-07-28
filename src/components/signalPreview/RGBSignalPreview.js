@@ -5,7 +5,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import { rgbToComplementary, rgbToHex, rgbToString, rgbToComplColorString } from '../../calculations/Helpers'
 
 
-const PixelRepresentative = ({ labelIndex, labelSignal, idx1, idx2, rgb }) => {
+const PixelRepresentative = ({ labelIndex, labelSignal, signalDescription, idx1, idx2, rgb }) => {
 
   //const color = rgbToHex(rgbToComplementary(rgb));
   const color = rgbToComplColorString(rgb);
@@ -18,7 +18,7 @@ const PixelRepresentative = ({ labelIndex, labelSignal, idx1, idx2, rgb }) => {
           {labelIndex > 0 ? (
               <Text style={(styles.label, { color: color })}>
                   {labelSignal[idx1][idx2].map(
-                      (v, i) => " " + desctiption[i] + ":" + v.toFixed(1)
+                      (v, i) => " " + signalDescription[i] + ":" + v.toFixed(1)
                   )}
               </Text>
           ) : null}
@@ -55,6 +55,7 @@ export const RGBSignalPreview = ({ rgbSignal, YCrCbSignal = undefined, labelInde
                                 <PixelRepresentative
                                     labelIndex={labelIndex}
                                     labelSignal={labelSignal}
+                                    signalDescription={desctiption}
                                     idx1={idx1}
                                     idx2={idx2}
                                     rgb={y}

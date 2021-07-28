@@ -20,7 +20,10 @@ $ npm install <Add module name here>
 ```
 
 ## Schnelleinstieg
-
+### Durchreichen von Daten
+- Eltern nach Kind: Mittels props an child view.
+- Kind nach Eltern: Mittels nach unten durchgereichter set()-Funktion
+  (https://www.pluralsight.com/guides/how-to-pass-data-between-react-components)
 ...
 
 ## Aufbau der Software

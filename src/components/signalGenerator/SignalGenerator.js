@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useLayoutEffect, useMemo } from 'react';
 import { View, ScrollView } from 'react-native';
 import { Button, Text, Slider } from 'react-native-elements';
 
@@ -39,7 +39,7 @@ const Generator = ({ setRgbSignal, fStopOffset, setFStopOffset }) => {
             {generatorIdx === 0 ? <FullColorGenerator setRgbSignal={setRgbSignal} /> : null}
             {generatorIdx === 1 ? <GradientGenerator setRgbSignal={setRgbSignal} /> : null}
             {generatorIdx === 2 ? <BarsGenerator setRgbSignal={setRgbSignal} /> : null}
-
+            
             <TapButton label={"Blenden Offset"} currentValue={fStopOffset} setValue={setFStopOffset} stepSize={0.05}/>
         </View>
     )
@@ -109,7 +109,7 @@ const Corrector = ({contrastOffset, setContrastOffset, gammaOffset, setGammaOffs
 
 
     // Trigger recalculation of signal when values change
-    useEffect(() => {
+    useLayoutEffect(() => {
         setSignal(signalYCRCB);
         setEncodingVideoStandard(vidStdIdx);
     },[signalRGB, fStopOffset, contrastOffset, gammaOffset, brightnessOffset, exceedVideoLevels, bitDepthIdx, vidStdIdx]);
