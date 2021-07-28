@@ -1,41 +1,28 @@
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
-  container: {
+
+  generatorContainer: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
     justifyContent: 'center',
+    alignItems: "center"
   },
-  colorPicker: {
-      flex: 1,
-      backgroundColor: '#ddd',
-      maxHeight: 150
+  generatorSignalsContainer: {
+    backgroundColor: "#dedede",
+    width: "90%",
+    flexDirection: "row",
+    justifyContent: 'space-around',
+    padding: 10 },
+
+  scrollView: {
+    backgroundColor: "#dedede"
+  },
+  scrollViewContainer: {
+    justifyContent: 'center',
+    alignItems: "center"
   },
 
 
-  inputElement: {
-      flex: 1,
-      flexDirection: "row",
-      flexWrap: "wrap",
-      alignItems: 'center',
-      paddingHorizontal: 20
-    },
-    inputElementLabel: {
-      fontSize: 20,
-    },
-    inputElementButtons: {
-      padding: 5,
-      width: 40
-    },
-    inputElementSlider:{
-      flex: 1,
-      width: 200
-    },
-    inputElementSliderThumb:{
-      width: 20,
-      height: 20
-    },
 });
 
 

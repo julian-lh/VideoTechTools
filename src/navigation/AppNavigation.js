@@ -1,7 +1,6 @@
 // icons von https://oblador.github.io/react-native-vector-icons/
 
 import * as React from 'react';
-import { Text, View} from 'react-native';
 import { Button } from 'react-native-elements';
 import { NavigationContainer } from '@react-navigation/native';
 
@@ -10,19 +9,12 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-//import AbbildungScreen from '../screens/z_others/Abbildung/AbbildungScreen'
-//import AbtastungScreen from '../screens/z_others/Abtastung/AbtastungScreen'
-//import MessungScreen from '../screens/z_others/Messung/MessungScreen'
-//import SignalpegelScreen from '../screens/z_others/Signalpegel/SignalpegelScreen'
-
 import CIEScreen from '../screens/signalAndScopes/CIEScreen';
 import VectorscopeScreen from '../screens/signalAndScopes/VectorscopeScreen';
 import WFMScreen from '../screens/signalAndScopes/WFMScreen';
 import ScopesCombinationScreen from '../screens/signalAndScopes/ScopesCombinationScreen';
 import SignalDisplayYCrCbScreen from '../screens/signalAndScopes/SignalPreviewScreen';
 
-//<StatusBar style="auto" />
-// drawer test
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -90,8 +82,8 @@ export default function Navigation() {
     );
   }
 
-  // TODO: Muss eleganter geloest werden
 
+  // TODO: There must be a more elegant way
 
   function StackWrap_CIEScreen({ navigation }) {
     return (
@@ -147,79 +139,3 @@ export default function Navigation() {
       </Stack.Navigator>
     );
   }
-
-
-  /*
-  // ------------------ Sonstige ------------------
-
-
-                    // case "Abbildung":
-                    //     iconName = focused
-                    //     ? 'image'
-                    //     : 'image-outline';
-                    //     break;
-                    // case "Abtastung":
-                    //     iconName = focused
-                    //     ? 'analytics'
-                    //     : 'analytics-outline';
-                    //     break;
-                    // case "Messung":
-                    //     iconName = focused
-                    //     ? 'pulse'
-                    //     : 'pulse-outline';
-                    //     break;
-                    // case "Signalpegel":
-                    //     iconName = focused
-                    //     ? 'sunny'
-                    //     : 'sunny-outline';
-                    //     break;
-
-
-  //<Drawer.Screen name="Abbildung" component={StackWrap_AbbildungScreen} />
-  //<Drawer.Screen name="Abtastung" component={StackWrap_AbtastungScreen} />
-  //<Drawer.Screen name="Messung" component={StackWrap_MessungScreen} />
-  //<Drawer.Screen name="Signalpegel" component={StackWrap_SignalpegelScreen} />
-  function StackWrap_AbbildungScreen({ navigation }) {
-    return (
-      <Stack.Navigator>
-        <Stack.Screen name= {"AbbildungScreen"} component={AbbildungScreen} options={{
-            headerTitle: "Abbildung",
-          headerLeft: () => <Button icon={<Ionicons name="menu" size={25} color="gray" />} onPress={() => navigation.toggleDrawer()} type="clear"/>
-        }}/>
-      </Stack.Navigator>
-    );
-  }
-
-  function StackWrap_AbtastungScreen({ navigation }) {
-    return (
-      <Stack.Navigator>
-        <Stack.Screen name= {"AbtastungScreen"} component={AbtastungScreen} options={{
-            headerTitle: "Abtastung",
-          headerLeft: () => <Button icon={<Ionicons name="menu" size={25} color="gray" />} onPress={() => navigation.toggleDrawer()} type="clear"/>
-        }}/>
-      </Stack.Navigator>
-    );
-  }
-
-  function StackWrap_MessungScreen({ navigation }) {
-    return (
-      <Stack.Navigator>
-        <Stack.Screen name= {"MessungScreen"} component={MessungScreen} options={{
-            headerTitle: "Messung",
-          headerLeft: () => <Button icon={<Ionicons name="menu" size={25} color="gray" />} onPress={() => navigation.toggleDrawer()} type="clear"/>
-        }}/>
-      </Stack.Navigator>
-    );
-  }
-
-  function StackWrap_SignalpegelScreen({ navigation }) {
-    return (
-      <Stack.Navigator>
-        <Stack.Screen name= {"SignalpegelScreen"} component={SignalpegelScreen} options={{
-            headerTitle: "Signalpegel",
-          headerLeft: () => <Button icon={<Ionicons name="menu" size={25} color="gray" />} onPress={() => navigation.toggleDrawer()} type="clear"/>
-        }}/>
-      </Stack.Navigator>
-    );
-  }
-*/

@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { StyleSheet, View, ScrollView } from 'react-native';
-import { Button, Text, Slider, ButtonGroup } from 'react-native-elements';
+import { View, ScrollView } from 'react-native';
+import { Button, Text, Slider } from 'react-native-elements';
 
 import { styles } from './SignalGeneratorStyle';
 
-import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import { TapButton } from './Subviews/TapButton';
+import { TapButton, PageBar } from './Subviews/CustomButtons';
 import { BarsGenerator} from './Subviews/BarsGenerator';
 import { FullColorGenerator } from './Subviews/FullColorGenerator';
 import { GradientGenerator } from './Subviews/GradientGenerator';
@@ -21,8 +20,8 @@ const Generator = ({ setRgbSignal, fStopOffset, setFStopOffset }) => {
     const [generatorIdx, setGeneratorIdx] = useState(0);
 
     return(
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: "center" }}>
-            <View style={{ backgroundColor: "#dedede", width: "90%", flexDirection: "row", justifyContent: 'space-around', padding: 10 }}>
+        <View style={styles.generatorContainer}>
+            <View style={styles.generatorSignalsContainer}>
                 <Button title="Einfarbig"
                         onPress={()=>setGeneratorIdx(0)}
                         titleStyle={{ color: (generatorIdx == 0 ? "black" : "gray")}}
@@ -42,7 +41,6 @@ const Generator = ({ setRgbSignal, fStopOffset, setFStopOffset }) => {
             {generatorIdx === 2 ? <BarsGenerator setRgbSignal={setRgbSignal} /> : null}
 
             <TapButton label={"Blenden Offset"} currentValue={fStopOffset} setValue={setFStopOffset} stepSize={0.05}/>
-
         </View>
     )
 }
@@ -67,9 +65,10 @@ const Corrector = ({contrastOffset, setContrastOffset, gammaOffset, setGammaOffs
 }
 
 
- export const YCrCbGenerator = ({setSignal, setEncodingVideoStandard, showHideButton = false}) => {
 
-    const [hideGeneratorView, setHideGeneratorView] = useState(false);
+ export const SignalGenerator = ({setSignal, setEncodingVideoStandard, showHideButton = false}) => {
+
+    const [hideSignalGenerator, setHideSignalGenerator] = useState(false);
     const [pageID, setPageID] = useState(0);
 
     const videoStandards = ["601", "709", "2020"];
@@ -81,6 +80,7 @@ const Corrector = ({contrastOffset, setContrastOffset, gammaOffset, setGammaOffs
     const switchBitDepth = () => setBitDepthIdx(1 - bitDepthIdx);
 
     const [exceedVideoLevels, setExceedVideoLevels] = useState(false);
+
 
     const [signalRGB, setSignalRGB] = useState( [[[0, 0, 0]]] );
 
@@ -112,25 +112,29 @@ const Corrector = ({contrastOffset, setContrastOffset, gammaOffset, setGammaOffs
     useEffect(() => {
         setSignal(signalYCRCB);
         setEncodingVideoStandard(vidStdIdx);
-   }, [signalRGB]);
-
-    useEffect(() => {
-        setSignal(signalYCRCB);
-        setEncodingVideoStandard(vidStdIdx);
-    },[fStopOffset, contrastOffset, gammaOffset, brightnessOffset, exceedVideoLevels, bitDepthIdx, vidStdIdx]);
+    },[signalRGB, fStopOffset, contrastOffset, gammaOffset, brightnessOffset, exceedVideoLevels, bitDepthIdx, vidStdIdx]);
 
 
     return (
-      <View style={{ flex: (hideGeneratorView ? 0 : 1), alignItems: "center"}}>
-        <View style={{ backgroundColor: "#dedede",  width: '100%', flexDirection: "row",  alignItems: "center", paddingTop: 0, marginTop: 0 }}>
-            {showHideButton ? <Button title=""  icon={<Ionicons name={hideGeneratorView? "arrow-up": "arrow-down"} size={15} color="gray" />} onPress={()=>setHideGeneratorView(!hideGeneratorView)} titleStyle={{ color: '#fff'}} type="clear"/> : null}
-            <ButtonGroup onPress={setPageID} selectedIndex={pageID} buttons={["GENERATOR", "CORRECTOR"]} containerStyle={{ marginVertical: 0, marginHorizontal: 0, flex: 1 }} disabled={hideGeneratorView} selectedButtonStyle={{ backgroundColor: "#dedede" }} selectedTextStyle={{ color: "black" }} innerBorderStyle={{ width: 0 }}  buttonContainerStyle={{ backgroundColor: "white"}} textStyle={{ fontSize: 15 }}/>
-        </View>
-        {hideGeneratorView == false ?
-        <ScrollView width="100%" contentContainerStyle={{ flexGrow: 1, justifyContent: 'center', alignItems: "center"}} style={{ backgroundColor: "#dedede" }}>
+      <View style={{ flex: (hideSignalGenerator ? 0 : 1), alignItems: "center"}}>
+
+        <PageBar pageID={pageID}
+                setPageID={setPageID}
+                showHideButton={showHideButton}
+                hideSignalGenerator={hideSignalGenerator}
+                setHideSignalGenerator={setHideSignalGenerator} />
+
+
+        {hideSignalGenerator == false ?
+        <ScrollView width="100%"
+                    contentContainerStyle={styles.scrollViewContainer}
+                    style={styles.scrollView}>
 
             {pageID == 0 ?
-            <Generator rgbSignal={signalRGB} setRgbSignal={setSignalRGB} fStopOffset={fStopOffset} setFStopOffset={setFStopOffset} />
+            <Generator rgbSignal={signalRGB}
+                        setRgbSignal={setSignalRGB}
+                        fStopOffset={fStopOffset}
+                        setFStopOffset={setFStopOffset} />
             :
             <Corrector contrastOffset={contrastOffset} setContrastOffset={setContrastOffset}
                         gammaOffset={gammaOffset} setGammaOffset={setGammaOffset}
@@ -140,7 +144,9 @@ const Corrector = ({contrastOffset, setContrastOffset, gammaOffset, setGammaOffs
             <Text h3 style={{paddingTop: 20, paddingBottom: 10}}>Videostandard</Text>
             <Button title={"Rec." + videoStandards[vidStdIdx]} onPress={switchVidStd} type="clear"/>
             <Button title={bitDepths[bitDepthIdx] + " bit"} onPress={switchBitDepth} type="clear"/>
-            <Button title={(exceedVideoLevels ? "mit Unter- & Überpegel" : "ohne Unter- & Überpegel")} onPress={() => setExceedVideoLevels(!exceedVideoLevels)} type="clear"/>
+            <Button title={(exceedVideoLevels ? "mit Unter- & Überpegel" : "ohne Unter- & Überpegel")}
+                    onPress={() => setExceedVideoLevels(!exceedVideoLevels)}
+                    type="clear"/>
         </ScrollView>
                 : null }
       </View>

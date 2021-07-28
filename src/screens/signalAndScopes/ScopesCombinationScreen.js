@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
-import { Text } from 'react-native-elements';
 
 import { RGBSignalPreview } from '../../components/signalPreview/RGBSignalPreview';
 import { CIEView } from '../../components/cie/CIEView';
-import { YCrCbGenerator } from '../../components/signalGenerator/SignalGenerator'
+import { SignalGenerator } from '../../components/signalGenerator/SignalGenerator'
 import { VectorscopeView } from '../../components/vectorscope/VectorscopeView';
 import { WFMView } from '../../components/wfm/WFMView';
 
-import { cvtSignalYCRCBtoRGB, cvtSignalRGBtoYCRCB, downscaleSignalYCRCB } from '../../calculations/ComponentSignal';
+import { cvtSignalYCRCBtoRGB, downscaleSignalYCRCB } from '../../calculations/ComponentSignal';
 
 
 export default function ScopesCombinationScreen() {
@@ -39,7 +38,7 @@ export default function ScopesCombinationScreen() {
           <VectorscopeView signalYCRCB={signalYCRCB}/>
           <RGBSignalPreview rgbSignal={signalRGB} YCrCbSignal={signalYCRCB} labelIndex={labelIdx}/>
         </View>
-        <YCrCbGenerator setSignal={setSignalYCRCB} setEncodingVideoStandard={setVidStdIdx} showHideButton={true}/>
+        <SignalGenerator setSignal={setSignalYCRCB} setEncodingVideoStandard={setVidStdIdx} showHideButton={true}/>
       </View>
     );
   }

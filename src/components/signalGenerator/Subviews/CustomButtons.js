@@ -1,8 +1,9 @@
 import React from 'react';
 import { View } from 'react-native';
-import { Button, Text } from 'react-native-elements';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import { Button, Text, ButtonGroup } from 'react-native-elements';
+import { StyleSheet } from 'react-native';
 
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 
 export const TapButton = ({label, currentValue, setValue, stepSize, color=undefined, stepSize2=undefined, direction="row"}) => {
@@ -28,21 +29,40 @@ export const TapButton = ({label, currentValue, setValue, stepSize, color=undefi
     );
 }
 
-const BtnIcn = ({ typeIdx = 1 }) => {
-    const icons = ["play-back-circle-outline", "caret-back-circle-outline", "caret-forward-circle-outline", "play-forward-circle-outline"];
+export const PageBar = ({ pageID, setPageID, showHideButton, hideSignalGenerator, setHideSignalGenerator}) => {
     return(
-        <Ionicons name={icons[3]} size={30} color={"gray"} />
+        <View style={styles.pageBarContainer}>
+            {showHideButton ?
+            <Button title=""
+                    icon={<Ionicons name={hideSignalGenerator? "arrow-up": "arrow-down"} size={15} color="gray" />}
+                    onPress={()=>setHideSignalGenerator(!hideSignalGenerator)}
+                    titleStyle={{ color: '#fff'}}
+                    type="clear"/> : null}
+
+            <ButtonGroup onPress={setPageID}
+                        selectedIndex={pageID}
+                        buttons={["GENERATOR", "CORRECTOR"]}
+                        containerStyle={{ marginVertical: 0, marginHorizontal: 0, flex: 1 }}
+                        disabled={hideSignalGenerator}
+                        selectedButtonStyle={{ backgroundColor: "#dedede" }}
+                        selectedTextStyle={{ color: "black" }}
+                        innerBorderStyle={{ width: 0 }}
+                        buttonContainerStyle={{ backgroundColor: "white"}}
+                        textStyle={{ fontSize: 15 }}/>
+        </View>
     )
 }
 
-/*
-export const BtnGroup = ({ buttonsArray, selectedIdx, setSelectedIdx }) => {
 
-    return(
-      <ButtonGroup
-          onPress={setSelectedIdx}
-          selectedIndex={selectedIdx}
-          buttons={buttonsArray}
-        />
-    );
-  }*/
+const styles = StyleSheet.create({
+
+    pageBarContainer:{
+      backgroundColor: "#dedede",
+      width: '100%',
+      flexDirection: "row",
+      alignItems: "center",
+      paddingTop: 0,
+      marginTop: 0
+    }
+
+  });

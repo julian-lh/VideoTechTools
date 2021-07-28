@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { Text, Button } from 'react-native-elements';
 
 import { RGBSignalPreview } from '../../components/signalPreview/RGBSignalPreview';
-import { YCrCbGenerator } from '../../components/signalGenerator/SignalGenerator'
+import { SignalGenerator } from '../../components/signalGenerator/SignalGenerator'
 import { cvtSignalYCRCBtoRGB, cvtSignalRGBtoYCRCB, downscaleSignalYCRCB } from '../../calculations/ComponentSignal';
 
 
@@ -29,7 +29,7 @@ export default function SignalDisplayYCrCbScreen() {
       <View style={{ flex: 1}}>
         <RGBSignalPreview rgbSignal={signalRGB} YCrCbSignal={signalYCRCB} labelIndex={labelIdx}/>
         <Button title={labels[labelIdx]} onPress={switchLabelIdx} style={{alignSelf: 'flex-end', paddingEnd: 10}} type="clear"/>
-        <YCrCbGenerator setSignal={setSignalYCRCB} setEncodingVideoStandard={setVidStdIdx}/>
+        <SignalGenerator setSignal={setSignalYCRCB} setEncodingVideoStandard={setVidStdIdx}/>
       </View>
     );
   }

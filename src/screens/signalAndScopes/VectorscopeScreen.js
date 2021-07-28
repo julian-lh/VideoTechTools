@@ -1,21 +1,24 @@
-import React, { useState } from 'react';
-import { View } from 'react-native';
-import { Text } from 'react-native-elements';
+import React, { useState } from "react";
+import { View } from "react-native";
 
-import { VectorscopeView } from '../../components/vectorscope/VectorscopeView';
-import { YCrCbGenerator } from '../../components/signalGenerator/SignalGenerator'
-
+import { VectorscopeView } from "../../components/vectorscope/VectorscopeView";
+import { SignalGenerator } from "../../components/signalGenerator/SignalGenerator";
 
 export default function VectorscopeScreen() {
-  const [signalYCRCB, setSignalYCRCB] = useState([[[100, 128, 128]]]);
-  const [vidStdIdx, setVidStdIdx] = useState(1);
+    const [signalYCRCB, setSignalYCRCB] = useState([[[100, 128, 128]]]);
+    const [vidStdIdx, setVidStdIdx] = useState(1);
 
     return (
-      <View style={{ flex: 1}}>
-        <VectorscopeView signalYCRCB={signalYCRCB} encodedVideoStandard={vidStdIdx} withOverlays/>
-        <YCrCbGenerator setSignal={setSignalYCRCB} setEncodingVideoStandard={setVidStdIdx}/>
-      </View>
+        <View style={{ flex: 1 }}>
+            <VectorscopeView
+                signalYCRCB={signalYCRCB}
+                encodedVideoStandard={vidStdIdx}
+                withOverlays
+            />
+            <SignalGenerator
+                setSignal={setSignalYCRCB}
+                setEncodingVideoStandard={setVidStdIdx}
+            />
+        </View>
     );
-  }
-
-
+}
