@@ -6,6 +6,7 @@ import { generateRGBSignalBars } from '../../../calculations/SignalGenerator';
 
 
 export const BarsGenerator = ({ setRgbSignal }) => {
+    
     const [useBars100, setUseBars100] = useState(true);
 
     useEffect(() => {

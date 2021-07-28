@@ -58,6 +58,7 @@ VideoTechTools
 ## Genereller Aufbau von Komponenten
 
 ## Namensgebung
+- Signale werden benannt: signalRGB, signalYCRCB
 
 ### Benennung von Funktionen
 
@@ -67,6 +68,21 @@ VideoTechTools
 
 - Signalname wird aufgrund unterschiedlicher Bedeutung bei Groß- und Kleinschreibung beim Original belassen. Dies ist eine bewusste Abweichung vom Pascal-/Camel-Case
   </br></br>
+
+## Visualisierungen
+
+### SignalPreview
+
+```JavaScript
+const RGBSignalPreview = ({ rgbSignal,
+                            YCrCbSignal = undefined,
+                            labelIndex = 0}) => {...}
+```
+| Parameter    | Beschreibung | vorgesehener Signalbereich |
+| ---------    | ----------- |----|
+| rgbSignal    | RGB-Signal-Array 3D    |  0 ≤ rgbSignal[x][y][0..2] ≤ 1       |
+| YCrCbSignal  | YCrCb-Signal-Array 3D  | 0 ≤ YCrCbSignal[x][y][0..2] ≤ 1
+| labelIndex   |          | 0..1
 
 ## Nützliche Links
 
@@ -86,7 +102,7 @@ To build this module use [roboter](https://www.npmjs.com/package/roboter).
 >
 > `code` `Test`
 
-```JacaScript
+```JavaScript
 import { CIEView } from '../../components/visualizers/cie/CIEView';
 ```
 

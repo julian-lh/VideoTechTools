@@ -6,7 +6,7 @@ import { cvtRGBtoHSV, cvtHSVtoRGB } from '../../../calculations/ColorSpaceTransf
 import { generateRGBSignalFullColor } from '../../../calculations/SignalGenerator';
 
 import { clamp } from '../../../calculations/Helpers';
-import { TapButton } from './TapButton';
+import { TapButton } from './CustomButtons';
 
 
 export const FullColorGenerator = ({ setRgbSignal }) => {
