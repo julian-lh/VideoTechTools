@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button } from 'react-native-elements';
 
@@ -28,7 +28,7 @@ export const FullColorGenerator = ({ setRgbSignal }) => {
     // prevent infinite conversion loops
     const [showingRgbControls, setShowingRgbControls] = useState(true);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         setRgbSignal(generateRGBSignalFullColor([red, green, blue], 1, 1));
 
         if (showingRgbControls){
@@ -39,7 +39,7 @@ export const FullColorGenerator = ({ setRgbSignal }) => {
         }
     }, [red, green, blue]);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         if (!showingRgbControls){
             const [r, g, b] = cvtHSVtoRGB([hue, saturation, value]);
             setRedDirectly(r);

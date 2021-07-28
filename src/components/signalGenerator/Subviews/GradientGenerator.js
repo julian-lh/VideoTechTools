@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button } from 'react-native-elements';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -13,7 +13,7 @@ export const GradientGenerator = ({ setRgbSignal }) => {
     var amountGradientPixelH =  (directionHorizontal ? 8 : 1);
     var amountGradientPixelV =  (directionHorizontal ? 1 : 8);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         setRgbSignal(() => generateRGBSignalGradient(gradientColor1, gradientColor2, amountGradientPixelH, amountGradientPixelV, directionHorizontal))
      }, [gradientColor1, gradientColor2, directionHorizontal])
 
