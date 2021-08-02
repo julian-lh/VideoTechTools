@@ -86,8 +86,7 @@ const Corrector = ({contrastOffset, setContrastOffset, gammaOffset, setGammaOffs
     const switchBitDepth = () => setBitDepthIdx(1 - bitDepthIdx);
 
     const [exceedVideoLevels, setExceedVideoLevels] = useState(false);
-
-
+    
     const [signalRGB, setSignalRGB] = useState( [[[0, 0, 0]]] );
 
     const [fStopOffset, setFStopOffset] = useState(0); //[0...2]
