@@ -11,55 +11,11 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { RGBSignalPreview } from '../signalPreview/RGBSignalPreview';
 import { VideoStandardAlertView } from '../helpers/VideoStandardAlertView';
 
-import { cvtSignalYCRCBtoRGB, cvtSignalRGBtoYCRCB, downscaleSignalYCRCB } from '../../calculations/ComponentSignal';
+import { cvtSignalYCRCBtoRGB, downscaleSignalYCRCB } from '../../calculations/ComponentSignal';
 
 import { signalToWfmArray } from './WFMViewHelpers';
 
 //extend({ Text3D });
-
-const SphereColorful = (props) => {
-    const mesh = useRef();
-
-    const color = new THREE.Color( props.RGB[0], props.RGB[1], props.RGB[2] );
-    const innergeometry = new THREE.SphereGeometry( 0.02, 5, 5 );
-
-    return (
-      <mesh ref={mesh} position={props.position} geometry={innergeometry}>
-        <meshBasicMaterial color={color}/>
-      </mesh>
-    )
-}
-
-  const SignalPlot = (props) => {
-    const mesh = useRef();
-    const shape = useMemo(() => {
-        const s = new THREE.Shape();
-        s.moveTo(props.smallSignalYCRCB[0][0][2], props.smallSignalYCRCB[0][0][1]);
-        if (props.smallSignalYCRCB.length > 1 || props.smallSignalYCRCB[0].length > 1){
-          for(let row of props.smallSignalYCRCB) {
-            for(let pixel of row) {
-              s.lineTo(pixel[2],pixel[1]);
-            }
-          }
-        }else{
-          s.absarc( props.smallSignalYCRCB[0][0][2], props.smallSignalYCRCB[0][0][1], 0.01, 0, Math.PI * 2, false );
-        }
-        return s;
-      }, [props.smallSignalYCRCB])
-
-    //const geometry = new THREE.ShapeGeometry( shape );
-    //shape.autoClose = true;
-      const points = shape.getPoints();
-      //const spacedPoints = shape.getSpacedPoints( 0.1 );
-      const geometryPoints = new THREE.BufferGeometry().setFromPoints( points );
-      //const geometrySpacedPoints = new THREE.BufferGeometry().setFromPoints( spacedPoints );
-
-    return (
-      <line ref={mesh} position={[0, 0, 0]} geometry={geometryPoints}>
-        <lineBasicMaterial color="#0c0" />
-      </line>
-    );
-}
 
 const SettingsPopOver = (props) => {
     return(
@@ -207,29 +163,7 @@ const Labels = () => {
   )
 }
 */
-export default function TextNew({ children, vAlign = 'center', hAlign = 'center', size = 1.5, color = '#000000', ...props }) {
-  const font = useLoader(THREE.FontLoader, '/Roboto.woff')
-  const config = useMemo(
-    () => ({ font, size: 2, height: 1, curveSegments: 32, bevelEnabled: true, bevelThickness: 6, bevelSize: 0.5, bevelOffset: 0, bevelSegments: 8 }),
-    [font]
-  )
-  const mesh = useRef()
-  useLayoutEffect(() => {
-    const size = new THREE.Vector3()
-    mesh.current.geometry.computeBoundingBox()
-    mesh.current.geometry.boundingBox.getSize(size)
-    mesh.current.position.x = hAlign === 'center' ? -size.x / 2 : hAlign === 'right' ? 0 : -size.x
-    mesh.current.position.y = vAlign === 'center' ? -size.y / 2 : vAlign === 'top' ? 0 : -size.y
-  }, [children])
-  return (
-    <group {...props} scale={[0.1 * size, 0.1 * size, 0.1]}>
-      <mesh ref={mesh}>
-        <textGeometry args={[children, config]} />
-        <meshBasicMaterial />
-      </mesh>
-    </group>
-  )
-}
+
 /*
 const WFMGrid = () => {
   const meshRef = useRef();
