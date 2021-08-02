@@ -80,6 +80,7 @@ VideoTechTools
 const RGBSignalPreview = ({ rgbSignal,
                             YCrCbSignal = undefined,
                             labelIndex = 0}) => {...}
+                    // Videostandard mit übergeben
 ```
 | Parameter    | Beschreibung | vorgesehener Signalbereich |
 | ---------    | ----------- |----|

@@ -1,8 +1,8 @@
-import React, {useRef, useState, useEffect, useMemo } from 'react';
+import React, {useRef, useState, useEffect, useMemo, Suspense } from 'react';
 import {  View, Text, TouchableOpacity } from 'react-native';
 
 import { Button  } from 'react-native-elements';
-import { Canvas, useFrame, useThree, extend } from 'react-three-fiber';
+import { Canvas, useFrame, useThree, extend, useLoader } from 'react-three-fiber';
 import * as THREE from 'three';
 import Icon from 'react-native-vector-icons/Ionicons';
 
@@ -182,6 +182,55 @@ const WFMGrid = ({ horizontalStratchFactor = 1.78}) => {
   )
 }
 /*
+const Labels = () => {
+  const [opts, setOpts] = useState({
+    fontSize: 0.2,
+    color: "#99ccff",
+    maxWidth: 300,
+    lineHeight: 1,
+    letterSpacing: 0,
+    textAlign: "justify",
+    materialType: "MeshBasicMaterial"
+  });
+  //const font = useLoader(THREE.FontLoader, 'Roboto.woff')
+
+  return(
+    <text3D
+        text={"Test Text"}
+        position={[0, 0, 0]}
+        {...opts}
+        anchorX="center"
+        anchorY="middle"
+      >
+        <meshBasicMaterial attach="material" />
+    </text3D>
+  )
+}
+*/
+export default function TextNew({ children, vAlign = 'center', hAlign = 'center', size = 1.5, color = '#000000', ...props }) {
+  const font = useLoader(THREE.FontLoader, '/Roboto.woff')
+  const config = useMemo(
+    () => ({ font, size: 2, height: 1, curveSegments: 32, bevelEnabled: true, bevelThickness: 6, bevelSize: 0.5, bevelOffset: 0, bevelSegments: 8 }),
+    [font]
+  )
+  const mesh = useRef()
+  useLayoutEffect(() => {
+    const size = new THREE.Vector3()
+    mesh.current.geometry.computeBoundingBox()
+    mesh.current.geometry.boundingBox.getSize(size)
+    mesh.current.position.x = hAlign === 'center' ? -size.x / 2 : hAlign === 'right' ? 0 : -size.x
+    mesh.current.position.y = vAlign === 'center' ? -size.y / 2 : vAlign === 'top' ? 0 : -size.y
+  }, [children])
+  return (
+    <group {...props} scale={[0.1 * size, 0.1 * size, 0.1]}>
+      <mesh ref={mesh}>
+        <textGeometry args={[children, config]} />
+        <meshBasicMaterial />
+      </mesh>
+    </group>
+  )
+}
+/*
 const WFMGrid = () => {
   const meshRef = useRef();
   const attributeRef = useRef();
@@ -315,12 +364,20 @@ export const WFMView = ({ signalYCRCB, withOverlays = false,  encodedVideoStanda
 //                 <WFMGrid />
 
 //           <Text>smallSignalYCRCB: {smallSignalYCRCB[0][0].map(x=>(" "+x.toFixed(3)))}</Text>
+//<Suspense fallback={null}>
+//<TextNew hAlign="right" position={[0, 0, -2]} children="REACT" />
+//</Suspense>
+
+
+// <Labels />
 
       return (
         <View style={{flex: 1}}>
           <Canvas style={{ zIndex: 0, flex: 1, backgroundColor: '#eee', minWidth: 20, minHeight: 20}}>
               <Camera position={[0.9, 0.3, 1]} />
               <WFMGrid />
+
+
               <WFMPlot signalYCRCB={smallSignalYCRCB} signalRGB={signalRGB} representationID={wfmRepIdx}/>
           </Canvas>
 
@@ -330,9 +387,9 @@ export const WFMView = ({ signalYCRCB, withOverlays = false,  encodedVideoStanda
 
           <View style={{ position: 'absolute', zIndex: 1, top: 10, right:10, minWidth: 70, minHeight: 80, justifyContent: "flex-start", alignItems: "flex-end"}}>
             {withOverlays ?
-            <Button icon={<Icon name="settings-sharp" size={25} color="#38f"/>} title="" type="clear" onPress={x => setSettingsVisible(!settingsVisible)}/>
+            <Button icon={<Icon name="settings-sharp" size={25}/>} title="" type="clear" onPress={x => setSettingsVisible(!settingsVisible)}/>
             : null }
-            <Button title={wfmReps[wfmRepIdx]} onPress={switchWfmRep} type="clear"/>
+            <Button title={wfmReps[wfmRepIdx]} onPress={switchWfmRep}/>
           </View>
 
           {withOverlays ?

@@ -50,7 +50,7 @@ export const FullColorGenerator = ({ setRgbSignal }) => {
 
     return(
         <View style={{ flex: 1, flexGrow: 1, justifyContent: 'center', alignItems: "center",}}>
-            <Button title={(showingRgbControls ? "RGB" : "HSV")} onPress={() => setShowingRgbControls(!showingRgbControls)} style={{ paddingTop: 10  }} titleStyle={{ color: "black"}} type={"outline"}/>
+            <Button title={(showingRgbControls ? "RGB" : "HSV")} onPress={() => setShowingRgbControls(!showingRgbControls)} style={{ paddingTop: 10  }} titleStyle={{ color: "black"}}/>
             {showingRgbControls ?
                 <View style={{ flex: 1,  flexDirection: "column", justifyContent: 'space-around', alignItems: "center", padding: 10 }}>
                     <TapButton label={"Rot"} currentValue={red} setValue={setRed} stepSize={0.1} color={"#fdd"} />

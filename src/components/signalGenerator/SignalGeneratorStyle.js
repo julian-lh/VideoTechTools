@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
     padding: 10 },
 
   scrollView: {
-    backgroundColor: "#dedede"
+    backgroundColor: "#dedede",
   },
   scrollViewContainer: {
     justifyContent: 'center',
