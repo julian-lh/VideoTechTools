@@ -39,7 +39,13 @@ const Generator = ({ setRgbSignal, fStopOffset, setFStopOffset }) => {
             {generatorIdx === 0 ? <FullColorGenerator setRgbSignal={setRgbSignal} /> : null}
             {generatorIdx === 1 ? <GradientGenerator setRgbSignal={setRgbSignal} /> : null}
             {generatorIdx === 2 ? <BarsGenerator setRgbSignal={setRgbSignal} /> : null}
-            
+            <View style={{ flex: 1, alignItems: 'stretch', justifyContent: 'center' }}>
+             <Slider style={{width: 200}}
+                 value={fStopOffset}
+                  onValueChange={setFStopOffset}
+                    />
+
+            </View>
             <TapButton label={"Blenden Offset"} currentValue={fStopOffset} setValue={setFStopOffset} stepSize={0.05}/>
         </View>
     )
@@ -142,11 +148,11 @@ const Corrector = ({contrastOffset, setContrastOffset, gammaOffset, setGammaOffs
             />}
 
             <Text h3 style={{paddingTop: 20, paddingBottom: 10}}>Videostandard</Text>
-            <Button title={"Rec." + videoStandards[vidStdIdx]} onPress={switchVidStd} type="clear"/>
-            <Button title={bitDepths[bitDepthIdx] + " bit"} onPress={switchBitDepth} type="clear"/>
+            <Button title={"Rec." + videoStandards[vidStdIdx]} onPress={switchVidStd}/>
+            <Button title={bitDepths[bitDepthIdx] + " bit"} onPress={switchBitDepth}/>
             <Button title={(exceedVideoLevels ? "mit Unter- & Überpegel" : "ohne Unter- & Überpegel")}
                     onPress={() => setExceedVideoLevels(!exceedVideoLevels)}
-                    type="clear"/>
+                />
         </ScrollView>
                 : null }
       </View>
