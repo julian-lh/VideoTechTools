@@ -6,6 +6,7 @@ import { Canvas, useFrame, useThree } from 'react-three-fiber';
 import * as THREE from 'three';
 import Icon from 'react-native-vector-icons/Ionicons';
 
+import { SettingsPopOver, VideoStandardSelector, ToggleElement } from '../generalComponents/Settings';
 import { RGBSignalPreview } from '../signalPreview/RGBSignalPreview';
 import { VideoStandardAlertView } from '../helpers/VideoStandardAlertView';
 
@@ -165,36 +166,6 @@ const PeakSignalHexagon = (props) => {
   );
 }
 
-const PeakSignalTolerances = () => {
-
-}
-
-const SettingsPopOver = (props) => {
-  return(
-    <View style={{left: 0, right: 0, top:0, backgroundColor: "#3338", position: 'absolute', zIndex: 2, alignItems: "center"}}>
-      <View style={{width: "80%", minHeight: "70%", backgroundColor: "#ccc", padding: 10, marginVertical:10, justifyContent: "flex-start", alignItems: "center"}}>
-        <Text style={{fontSize: 20, color: "#333", paddingBottom: 10}}>Einstellungen</Text>
-
-        <View style={{backgroundColor: "#ddd", padding: 5, marginBottom: 5}}>
-          <Text>Input-Signal interpretieren als</Text>
-          <View style={{ width: "100%", flexDirection: "row", justifyContent: 'space-around', alignItems: "center" }}>
-            <Button title={"Rec." + props.vidStdLabel} onPress={props.switchVideoStd} type="clear"/>
-            <Button title={props.bitDepthsLabel + " bit"} onPress={props.switchBitDepth} type="clear"/>
-          </View>
-        </View>
-
-        <View style={{backgroundColor: "#ddd", padding: 5, marginBottom: 8, width: "100%"}}>
-         <Text>Signalplot</Text>
-          <Button title={(props.discreteSigRep? "diskrete Punkte" : "Linienzug")} color="orange" onPress={()=>props.setDiscreteSigRep(!props.discreteSigRep)} type="clear"/>
-        </View>
-        <Button title="Schließen" onPress={()=>props.setSettingsVisible(0)} type="clear"/>
-      </View>
-
-    </View>
-  );
-}
- fontWeight: 'bold'
-
 // Quelle: https://medium.com/@joooooo308/react-three-fiber-use-gesture-to-move-the-camera-f50288cec862
 function Camera(props) {
     const cam = useRef()
@@ -220,12 +191,9 @@ export const VectorscopeView = ({ signalYCRCB, withOverlays = false, encodedVide
 
   const videoStandards = ["601", "709", "2020"];
   const [vidStdIdx, setVidStdIdx] = useState(1);
-  const switchVideoStd = () => {vidStdIdx < videoStandards.length-1 ? setVidStdIdx(vidStdIdx + 1) : setVidStdIdx(0)};
-
 
   const bitDepths = (vidStdIdx == 2 ? [10, 12] : [10, 8]);
   const [bitDepthIdx, setBitDepthIdx] = useState(0);
-  const switchBitDepth = () => setBitDepthIdx(1 - bitDepthIdx);
 
   // settings
   const [discreteSignalRepresentation, setDiscreteSignalRepresentation] = useState(true);
@@ -260,14 +228,22 @@ export const VectorscopeView = ({ signalYCRCB, withOverlays = false, encodedVide
             <Button icon={<Icon name="settings-sharp" size={25} color="#38f"/>} title="" type="clear" onPress={x => setSettingsVisible(!settingsVisible)}/>
           </View> : null }
 
+
           {(settingsVisible ?
-          <SettingsPopOver vidStdLabel={videoStandards[vidStdIdx]}
-                                                switchVideoStd={switchVideoStd}
-                                                bitDepthsLabel={bitDepths[bitDepthIdx]}
-                                                switchBitDepth={switchBitDepth}
-                                                setSettingsVisible={setSettingsVisible}
-                                                discreteSigRep={discreteSignalRepresentation}
-                                                setDiscreteSigRep={setDiscreteSignalRepresentation}/> : null)}
+          <SettingsPopOver setSettingsVisible={setSettingsVisible}>
+            <VideoStandardSelector
+                vidStdIdx={vidStdIdx}
+                setVidStdIdx={setVidStdIdx}
+                bitDepthIdx={bitDepthIdx}
+                setBitDepthIdx={setBitDepthIdx}
+            />
+            <ToggleElement
+                title={"Signalplot"}
+                value={(discreteSignalRepresentation ? "diskrete Punkte" : "Linienzug")}
+                setValue={() => setDiscreteSignalRepresentation(!discreteSignalRepresentation)}
+            />
+          </SettingsPopOver>
+          : null)}
 
         </View>
     );

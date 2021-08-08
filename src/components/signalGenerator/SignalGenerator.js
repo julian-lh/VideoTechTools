@@ -39,13 +39,7 @@ const Generator = ({ setRgbSignal, fStopOffset, setFStopOffset }) => {
             {generatorIdx === 0 ? <FullColorGenerator setRgbSignal={setRgbSignal} /> : null}
             {generatorIdx === 1 ? <GradientGenerator setRgbSignal={setRgbSignal} /> : null}
             {generatorIdx === 2 ? <BarsGenerator setRgbSignal={setRgbSignal} /> : null}
-            <View style={{ flex: 1, alignItems: 'stretch', justifyContent: 'center' }}>
-             <Slider style={{width: 200}}
-                 value={fStopOffset}
-                  onValueChange={setFStopOffset}
-                    />
-
-            </View>
+          
             <TapButton label={"Blenden Offset"} currentValue={fStopOffset} setValue={setFStopOffset} stepSize={0.05}/>
         </View>
     )
@@ -86,7 +80,7 @@ const Corrector = ({contrastOffset, setContrastOffset, gammaOffset, setGammaOffs
     const switchBitDepth = () => setBitDepthIdx(1 - bitDepthIdx);
 
     const [exceedVideoLevels, setExceedVideoLevels] = useState(false);
-    
+
     const [signalRGB, setSignalRGB] = useState( [[[0, 0, 0]]] );
 
     const [fStopOffset, setFStopOffset] = useState(0); //[0...2]
@@ -98,10 +92,13 @@ const Corrector = ({contrastOffset, setContrastOffset, gammaOffset, setGammaOffs
     // Modifizieren (Operationen nur anwenden wenn nicht neutral)
     const postCorrectorSignal = useMemo(() => {
         var signal = signalRGB;
-        signal = (fStopOffset != 0 ? offsetSignalBrightness(signal, fStopOffset) : signal);
-        signal = (contrastOffset != 1 ? offsetSignalContrast(signal, contrastOffset) : signal);
-        signal = (brightnessOffset != 0 ? offsetSignalBrightness(signal, brightnessOffset) : signal);
+
         signal = (gammaOffset != 1 ? offsetSignalGamma(signal, gammaOffset) : signal);
+
+        signal = (fStopOffset != 0 ? offsetSignalBrightness(signal, fStopOffset) : signal);
+        signal = (brightnessOffset != 0 ? offsetSignalBrightness(signal, brightnessOffset) : signal);
+        signal = (contrastOffset != 1 ? offsetSignalContrast(signal, contrastOffset) : signal);
+
         signal = (exceedVideoLevels ?  signal : limiterRGBSignal(signal));
         return signal;
     }, [fStopOffset, contrastOffset, gammaOffset, brightnessOffset, exceedVideoLevels, bitDepthIdx, vidStdIdx, signalRGB])

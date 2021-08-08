@@ -113,8 +113,17 @@ const RGBSignalPreview = ({ rgbSignal,
 
 ### signalYCRCB
 
+[[[Y, CR, CB], [Y, CR, CB]],
+  [Y, CR, CB], [Y, CR, CB]]]
+
+
 ### signalSmallYCRCB
 
+[[[Y, CR, CB], [Y, CR, CB]],
+  [Y, CR, CB], [Y, CR, CB]]]
+
+mit Y: 0..1
+mit CR/CB: -1..1
 
 ### signalRGB
 
@@ -122,6 +131,7 @@ const RGBSignalPreview = ({ rgbSignal,
 
 
 ---
+
 ## Durchreichen von Daten
 
 - Eltern nach Kind: Mittels props an child view.

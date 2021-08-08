@@ -10,8 +10,8 @@ export const GradientGenerator = ({ setRgbSignal }) => {
     const [gradientColor1, setGradientColor1] = useState([1, 0, 1]);
     const [gradientColor2, setGradientColor2] = useState([0, 1, 0]);
     const [directionHorizontal, setDirectionHorizontal] = useState(true);
-    var amountGradientPixelH =  (directionHorizontal ? 8 : 1);
-    var amountGradientPixelV =  (directionHorizontal ? 1 : 8);
+    var amountGradientPixelH =  (directionHorizontal ? 80 : 1);
+    var amountGradientPixelV =  (directionHorizontal ? 1 : 80);
 
     useLayoutEffect(() => {
         setRgbSignal(() => generateRGBSignalGradient(gradientColor1, gradientColor2, amountGradientPixelH, amountGradientPixelV, directionHorizontal))
