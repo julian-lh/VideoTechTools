@@ -28,7 +28,7 @@ Farbmodell zur Visualisierung aller vom menschlichen Auge wahrnehmbaren Farben (
 
 # Waveformmonitor
 
-Instrument zur Betrachtung der Pegel eines Videosignals. Beinhalgtet mehrere Darstellungsformen als Komponenten und in RGB. Darstellungen als Paraden-Ansicht
+Instrument zur Betrachtung der Pegel eines Videosignals. Beinhalgtet Darstellungsformen als Komponentensignal, Luma-Signal und RGB. Darstellungen als Paraden
 
 ## Verwendete Komponenten
 

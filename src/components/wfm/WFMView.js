@@ -7,7 +7,7 @@ import * as THREE from 'three';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 //import { Text as Text3D } from 'troika-three-text';
-
+import { SettingsPopOver, VideoStandardSelector } from '../generalComponents/Settings';
 import { RGBSignalPreview } from '../signalPreview/RGBSignalPreview';
 import { VideoStandardAlertView } from '../helpers/VideoStandardAlertView';
 
@@ -16,32 +16,6 @@ import { cvtSignalYCRCBtoRGB, downscaleSignalYCRCB } from '../../calculations/Co
 import { signalToWfmArray } from './WFMViewHelpers';
 
 //extend({ Text3D });
-
-const SettingsPopOver = (props) => {
-    return(
-      <View style={{left: 0, right: 0, top:0, backgroundColor: "#3338", position: 'absolute', zIndex: 2, alignItems: "center"}}>
-      <View style={{width: "80%", minHeight: "70%", backgroundColor: "#ccc", padding: 10, marginVertical:10, justifyContent: "flex-start", alignItems: "center"}}>
-        <Text style={{fontSize: 20, color: "#333", paddingBottom: 10}}>Einstellungen</Text>
-
-        <View style={{backgroundColor: "#ddd", padding: 5, marginBottom: 5}}>
-          <Text>Input-Signal interpretieren als</Text>
-          <View style={{ width: "100%", flexDirection: "row", justifyContent: 'space-around', alignItems: "center" }}>
-            <Button title={"Rec." + props.vidStdLabel} onPress={props.switchVideoStd} type="clear"/>
-            <Button title={props.bitDepthsLabel + " bit"} onPress={props.switchBitDepth} type="clear"/>
-          </View>
-        </View>
-
-        <View style={{backgroundColor: "#ddd", padding: 5, marginBottom: 8, width: "100%"}}>
-         <Text>Signalplot</Text>
-          <Button title={(props.discreteSigRep? "diskrete Punkte" : "Linienzug")} color="orange" onPress={()=>props.setDiscreteSigRep(!props.discreteSigRep)} type="clear"/>
-        </View>
-        <Button title="Schließen" onPress={()=>props.setSettingsVisible(0)} type="clear"/>
-      </View>
-
-    </View>
-    );
-  }
-
 
 const WFMPlot = ({signalYCRCB, signalRGB, representationID, horizontalScaleFactor = 1.78}) => {
   const meshRef = useRef();
@@ -277,11 +251,11 @@ export const WFMView = ({ signalYCRCB, withOverlays = false,  encodedVideoStanda
 
     const videoStandards = ["601", "709", "2020"];
     const [vidStdIdx, setVidStdIdx] = useState(1);
-    const switchVideoStd = () => {vidStdIdx < videoStandards.length-1 ? setVidStdIdx(vidStdIdx + 1) : setVidStdIdx(0)};
+    //const switchVideoStd = () => {vidStdIdx < videoStandards.length-1 ? setVidStdIdx(vidStdIdx + 1) : setVidStdIdx(0)};
 
     const bitDepths = (vidStdIdx == 2 ? [10, 12] : [10, 8]);
     const [bitDepthIdx, setBitDepthIdx] = useState(0);
-    const switchBitDepth = () => setBitDepthIdx(1 - bitDepthIdx);
+    //const switchBitDepth = () => setBitDepthIdx(1 - bitDepthIdx);
 
     // settings
     const wfmReps = ["RGB", "YCrCb", "Luma"];
@@ -334,14 +308,25 @@ export const WFMView = ({ signalYCRCB, withOverlays = false,  encodedVideoStanda
           </View> : null }
 
 
-            {(settingsVisible ? <SettingsPopOver vidStdLabel={videoStandards[vidStdIdx]}
-                                                  switchVideoStd={switchVideoStd}
-                                                  bitDepthsLabel={bitDepths[bitDepthIdx]}
-                                                  switchBitDepth={switchBitDepth}
-                                                  setSettingsVisible={setSettingsVisible}
-                                                  discreteSigRep={discreteSignalRepresentation}
-                                                  setDiscreteSigRep={setDiscreteSignalRepresentation}/> : <View/>)}
+            {(settingsVisible ?
+              <SettingsPopOver setSettingsVisible={setSettingsVisible}>
+                      <VideoStandardSelector
+                          vidStdIdx={vidStdIdx}
+                          setVidStdIdx={setVidStdIdx}
+                          bitDepthIdx={bitDepthIdx}
+                          setBitDepthIdx={setBitDepthIdx}
+                      />
+                  </SettingsPopOver>
+            : null)}
 
           </View>
       );
   }
+
+  /* <SettingsPopOver vidStdLabel={videoStandards[vidStdIdx]}
+                            switchVideoStd={switchVideoStd}
+                            bitDepthsLabel={bitDepths[bitDepthIdx]}
+                            switchBitDepth={switchBitDepth}
+                            setSettingsVisible={setSettingsVisible}
+                            discreteSigRep={discreteSignalRepresentation}
+                            setDiscreteSigRep={setDiscreteSignalRepresentation}/>*/

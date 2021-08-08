@@ -30,6 +30,10 @@ signalxyY : xyY-Array, normierte Werte (0..1)
 
 - Begrenzungslinien der Gamuts von Rec. 601, 709 und 2020 mit Legende und Weißpunkt
 
+## Optimierungen
+
+- Farbvorschau muss korrigiert werden. Dazu die Beachtung der sRGB-Farbraum-Begrenzung aus React Native.
+
 </br>
 </br>
 </br>

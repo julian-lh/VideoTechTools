@@ -182,8 +182,8 @@ const SettingsPopOver = ({vidStdLabel,
           <Button  icon={ <Icon name="ios-close" size={20} color="black"  />} onPress={()=>setSettingsVisible(0)} type="clear"/>
         </View>
 
-        <ScrollView>
-          <View style={{width: "100%", backgroundColor: "#ddd", padding: 5, marginBottom: 5}}>
+        <ScrollView style={{marginBottom: 5}}>
+          <View style={{flex: 1, backgroundColor: "#ddd", padding: 5, margin: 2.5}}>
             <Text>Input-Signal interpretieren als</Text>
             <View style={{ flexDirection: "row", justifyContent: 'space-around', alignItems: "center" }}>
               <Button title={"Rec." + vidStdLabel} onPress={switchVideoStd} type="clear"/>
@@ -192,7 +192,7 @@ const SettingsPopOver = ({vidStdLabel,
           </View>
 
           {visibleGamutBounds !== undefined ?
-          <View style={{width: "100%", backgroundColor: "#ddd", padding: 5, marginBottom: 5}}>
+          <View style={{flex: 1, backgroundColor: "#ddd", padding: 5, margin: 2.5}}>
             <Text>Gamut-Grenzen</Text>
             <View style={{  flexDirection: "row", justifyContent: 'space-around', alignItems: "center" }}>
               {visibleGamutBounds.map( (x, idx) => <Button title={gamutData[idx].name} titleStyle={{ color: (x ? "orange" : "gray")}} onPress={()=> toggleGamutBounds(idx)}  key={idx} type="clear"/>)}
@@ -202,7 +202,7 @@ const SettingsPopOver = ({vidStdLabel,
           <View style={{ flexDirection: "row", justifyContent: 'justify', alignItems: "center" }}>
 
             {showSignalDescription !== undefined ?
-              <View style={{ flex: 1, backgroundColor: "#ddd", padding: 5,marginRight: 2.5, marginBottom: 8}}>
+              <View style={{ flex: 1, backgroundColor: "#ddd", padding: 5, margin: 2.5}}>
               <Text>Signal-Legende</Text>
               <View style={{  flexDirection: "row", justifyContent: 'space-around', alignItems: "center" }}>
                 <Button title={(showSignalDescription ? 'An' : 'Aus')}  onPress={()=> setShowSignalDescription(!showSignalDescription)} type="clear"/>
@@ -210,7 +210,7 @@ const SettingsPopOver = ({vidStdLabel,
             </View> : <View />}
 
             {lightBackground !== undefined ?
-              <View style={{ flex: 1, backgroundColor: "#ddd", padding: 5, marginLeft: 2.5, marginBottom: 8}}>
+              <View style={{ flex: 1, backgroundColor: "#ddd", padding: 5, margin: 2.5}}>
               <Text>Hintergrundfarbe</Text>
               <View style={{  flexDirection: "row", justifyContent: 'space-around', alignItems: "center" }}>
                 <Button title={(lightBackground ? 'hell' : 'dunkel')}  onPress={()=> setlightBackground(!lightBackground)} type="clear"/>
@@ -334,11 +334,8 @@ function Camera(props) {
           </View>
 
           <View style={{ position: 'absolute', zIndex: 1, bottom: 0, width: "100%", flexDirection: "row", justifyContent: 'space-around' }}>
-            <Button title="xy" onPress={()=>setCamPos([0.5, 0.4, 1.1])} type="clear"/>
-            <Button title="xY" onPress={()=>setCamPos([0.5, 1.1, 0.4])} type="clear"/>
-            <Button title="Yy" onPress={()=>setCamPos([1.1, 0.4, 0.4])} type="clear"/>
-
-            <Button title="3D" onPress={()=>{setCamPos([0.5, - 0.2, 1.2]); setZoomOffset(0)}} type="clear"/>
+            <Button title="xy" onPress={()=>setCamPos([0.5, 0.4, 1.1])}/>
+            <Button title="xyY" onPress={()=>{setCamPos([0.5, - 0.2, 1.2]); setZoomOffset(0)}}/>
           </View>
           </> : null }
         </View>
@@ -346,3 +343,7 @@ function Camera(props) {
       </View>
     );
 }
+
+/*         <Button title="xY" onPress={()=>setCamPos([0.5, 1.1, 0.4])} type="clear"/>
+            <Button title="Yy" onPress={()=>setCamPos([1.1, 0.4, 0.4])} type="clear"/>
+            */
