@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
 
-import { WFMView } from '../../components/wfm/WFMView';
+import { WfmView } from '../../components/wfm/WfmView';
 import { CieView } from '../../components/cie/CieView';
 import { VectorscopeView } from '../../components/vectorscope/VectorscopeView';
 import { SignalPreviewView } from '../../components/signalPreview/SignalPreviewView';
@@ -20,13 +20,16 @@ export default function ScopesCombinationScreen() {
       <View style={{ flex: 1}}>
         <View style={{ flex: 1, flexDirection: "row" }}>
           <CieView signalYCRCB={signalYCRCB}/>
-          <WFMView signalYCRCB={signalYCRCB}/>
+          <WfmView signalYCRCB={signalYCRCB}/>
         </View>
         <View style={{ flex: 1, flexDirection: "row"}}>
           <VectorscopeView signalYCRCB={signalYCRCB}/>
           <SignalPreviewView signalYCRCB={signalYCRCB} labelIndex={labelIdx}/>
         </View>
-        <SignalGenerator setSignal={setSignalYCRCB} setEncodingVideoStandard={setVidStdIdx} showHideButton={true}/>
+        <SignalGenerator
+            setSignal={setSignalYCRCB}
+            setEncodingVideoStandard={setVidStdIdx}
+            showHideButton={true}/>
       </View>
     );
   }

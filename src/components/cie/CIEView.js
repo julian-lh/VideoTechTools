@@ -1,8 +1,7 @@
-import React, {useRef, useState, useEffect, useMemo} from 'react';
+import React, { useState, useMemo} from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
-
 import { Button } from 'react-native-elements';
-import { Canvas, useFrame, useThree } from 'react-three-fiber';
+import { Canvas } from 'react-three-fiber';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import { styles } from './CieViewStyle';

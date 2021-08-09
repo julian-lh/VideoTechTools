@@ -2,7 +2,7 @@ import React, {useRef, useMemo} from 'react';
 import * as THREE from 'three';
 
 
-export const WFMGrid = ({ horizontalStratchFactor = 1.78}) => {
+export const WfmGrid = ({ horizontalStratchFactor = 1.78}) => {
     const meshRef = useRef();
 
     const positions = useMemo(() => {

@@ -2,7 +2,7 @@ import React, {useRef, useMemo} from 'react';
 import * as THREE from 'three';
 
 
-export const WFMPlot = ({signalYCRCB, signalRGB, representationID, horizontalScaleFactor = 1.78}) => {
+export const WfmPlot = ({signalYCRCB, signalRGB, representationID, horizontalScaleFactor = 1.78}) => {
     const meshRef = useRef();
     const amountSubdivisions = (representationID == 2 ? 1 : 3);
     const signal = (representationID == 0 ? signalRGB : signalYCRCB);
