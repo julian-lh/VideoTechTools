@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View } from 'react-native';
 
 import { SignalPreviewView } from '../../components/signalPreview/SignalPreviewView';
-import { SignalGenerator } from '../../components/signalGenerator/SignalGenerator'
+import { SignalGeneratorView } from '../../components/signalGenerator/SignalGeneratorView'
 
 
 export default function SignalPreviewScreen() {
@@ -16,7 +16,7 @@ export default function SignalPreviewScreen() {
             withOverlays={true}
             encodedVideoStandard={vidStdIdx}
         />
-        <SignalGenerator
+        <SignalGeneratorView
             setSignal={setSignalYCRCB}
             setEncodingVideoStandard={setVidStdIdx}
         />

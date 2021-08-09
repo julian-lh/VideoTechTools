@@ -8,8 +8,7 @@ const theme = {
   Button: {
     type: "outline",
     titleStyle: {
-      color: "black",
-      
+      color: "black"
     },
     containerStyle: {
       color: "black"

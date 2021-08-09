@@ -62,7 +62,6 @@ export const FullColorGenerator = ({ setSignalRGB }) => {
                     <TapButton label={"Saturation"} currentValue={saturation} setValue={setSaturation} stepSize={0.1}/>
                     <TapButton label={"Value"} currentValue={value} setValue={setValue} stepSize={0.1}/>
                 </View>}
-
         </View>
     )
 }

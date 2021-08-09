@@ -2,69 +2,17 @@ import React, { useState, useLayoutEffect, useMemo } from 'react';
 import { View, ScrollView } from 'react-native';
 import { Button, Text } from 'react-native-elements';
 
-import { styles } from './SignalGeneratorStyle';
+import { styles } from './SignalGeneratorViewStyle';
 
-import { TapButton, PageBar } from './subComponents/CustomButtons';
-import { BarsGenerator} from './subComponents/BarsGenerator';
-import { FullColorGenerator } from './subComponents/FullColorGenerator';
-import { GradientGenerator } from './subComponents/GradientGenerator';
+import { PageBar } from './subComponents/CustomButtons';
+import { GeneratorContainer } from './subComponents/GeneratorContainer';
+import { Corrector } from './subComponents/Corrector';
 
-import { cvtSignalRGBtoYCRCB, upscaleSignalYCRCB, limiterComponentSignal, limiterRGBSignal} from '../../calculations/CalcComponentSignal';
+import { cvtSignalRGBtoYCRCB, upscaleSignalYCRCB, limiterSignalYCRCB, limiterSignalSmallRGB} from '../../calculations/CalcComponentSignal';
 import { offsetSignalContrast, offsetSignalBrightness, offsetSignalGamma } from '../../calculations/CalcSignalCorrector';
 
 
-
-const Generator = ({ setSignalRGB, generatorIdx, setGeneratorIdx, fStopOffset, setFStopOffset }) => {
-   // const [generatorIdx, setGeneratorIdx] = useState(0);
-
-    return(
-        <View style={styles.generatorContainer}>
-            <View style={styles.generatorSignalsContainer}>
-                <Button title="Einfarbig"
-                        onPress={()=>setGeneratorIdx(0)}
-                        titleStyle={{ color: (generatorIdx == 0 ? "black" : "gray")}}
-                        type="clear"/>
-                <Button title="Verlauf"
-                        onPress={()=>setGeneratorIdx(1)}
-                        titleStyle={{ color: (generatorIdx == 1 ? "black" : "gray")}}
-                        type="clear"/>
-                <Button title="Bars"
-                        onPress={()=>setGeneratorIdx(2)}
-                        titleStyle={{ color: (generatorIdx == 2 ? "black" : "gray")}}
-                        type="clear"/>
-            </View>
-
-            {generatorIdx === 0 ? <FullColorGenerator setSignalRGB={setSignalRGB} /> : null}
-            {generatorIdx === 1 ? <GradientGenerator setSignalRGB={setSignalRGB} /> : null}
-            {generatorIdx === 2 ? <BarsGenerator setSignalRGB={setSignalRGB} /> : null}
-
-            <TapButton label={"Blenden Offset"} currentValue={fStopOffset} setValue={setFStopOffset} stepSize={0.05}/>
-        </View>
-    )
-}
-
-
-const Corrector = ({contrastOffset, setContrastOffset, gammaOffset, setGammaOffset, brightnessOffset, setBrightnessOffset}) => {
-    const reset = () => {
-        setContrastOffset(1);
-        setGammaOffset(1);
-        setBrightnessOffset(0);
-    }
-
-    return(
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: "center", padding: 10 }}>
-            <TapButton label={"Kontrast"} currentValue={contrastOffset} setValue={setContrastOffset} stepSize={0.05}/>
-            <TapButton label={"Gamma"} currentValue={gammaOffset} setValue={setGammaOffset} stepSize={0.1}/>
-            <TapButton label={"Helligkeit"} currentValue={brightnessOffset} setValue={setBrightnessOffset} stepSize={0.05}/>
-            <Button title={"Zurücksetzen"} onPress={reset} type="clear"/>
-
-        </View>
-    )
-}
-
-
-
- export const SignalGenerator = ({setSignal, setEncodingVideoStandard, showHideButton = false}) => {
+ export const SignalGeneratorView = ({setSignal, setEncodingVideoStandard, showHideButton = false}) => {
 
     // appearance
     const [hideSignalGenerator, setHideSignalGenerator] = useState(false);
@@ -80,6 +28,7 @@ const Corrector = ({contrastOffset, setContrastOffset, gammaOffset, setGammaOffs
     const [bitDepthIdx, setBitDepthIdx] = useState(0);
     const switchBitDepth = () => setBitDepthIdx(1 - bitDepthIdx);
 
+    // signal limiters
     const [exceedVideoLevels, setExceedVideoLevels] = useState(false);
 
     // signal parameters
@@ -96,18 +45,19 @@ const Corrector = ({contrastOffset, setContrastOffset, gammaOffset, setGammaOffs
 
         signal = (gammaOffset != 1 ? offsetSignalGamma(signal, gammaOffset) : signal);
 
-        signal = (fStopOffset != 0 ? offsetSignalBrightness(signal, fStopOffset) : signal);
-        signal = (brightnessOffset != 0 ? offsetSignalBrightness(signal, brightnessOffset) : signal);
         signal = (contrastOffset != 1 ? offsetSignalContrast(signal, contrastOffset) : signal);
 
-        signal = (exceedVideoLevels ?  signal : limiterRGBSignal(signal));
+        signal = (fStopOffset != 0 ? offsetSignalBrightness(signal, fStopOffset) : signal);
+        signal = (brightnessOffset != 0 ? offsetSignalBrightness(signal, brightnessOffset) : signal);
+
+        signal = limiterSignalSmallRGB(signal, exceedVideoLevels);
         return signal;
     }, [fStopOffset, contrastOffset, gammaOffset, brightnessOffset, exceedVideoLevels, bitDepthIdx, vidStdIdx, signalRGB])
 
     // RGB -> YCrCb
     const signalSmallYCRCB = cvtSignalRGBtoYCRCB(postCorrectorSignal, videoStandards[vidStdIdx]);
     var signalYCRCB = upscaleSignalYCRCB(signalSmallYCRCB, bitDepths[bitDepthIdx]);
-    signalYCRCB = limiterComponentSignal(signalYCRCB, bitDepths[bitDepthIdx], exceedVideoLevels);
+    signalYCRCB = limiterSignalYCRCB(signalYCRCB, bitDepths[bitDepthIdx], false);
 
     // signal refresh
     useLayoutEffect(() => {
@@ -132,7 +82,8 @@ const Corrector = ({contrastOffset, setContrastOffset, gammaOffset, setGammaOffs
                     style={styles.scrollView}>
 
             {pageID == 0 ?
-            <Generator rgbSignal={signalRGB}
+            <GeneratorContainer
+                        rgbSignal={signalRGB}
                         setSignalRGB={setSignalRGB}
                         generatorIdx={generatorIdx}
                         setGeneratorIdx={setGeneratorIdx}
@@ -147,7 +98,7 @@ const Corrector = ({contrastOffset, setContrastOffset, gammaOffset, setGammaOffs
             <Text h3 style={{paddingTop: 20, paddingBottom: 10}}>Videostandard</Text>
             <Button title={"Rec." + videoStandards[vidStdIdx]} onPress={switchVidStd}/>
             <Button title={bitDepths[bitDepthIdx] + " bit"} onPress={switchBitDepth}/>
-            <Button title={(exceedVideoLevels ? "mit Unter- & Überpegel" : "ohne Unter- & Überpegel")}
+            <Button title={(exceedVideoLevels ? "RGB full Video Data" : "legales RGB" )}
                     onPress={() => setExceedVideoLevels(!exceedVideoLevels)}
                 />
         </ScrollView> : null }

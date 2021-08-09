@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View } from "react-native";
 
 import { VectorscopeView } from "../../components/vectorscope/VectorscopeView";
-import { SignalGenerator } from "../../components/signalGenerator/SignalGenerator";
+import { SignalGeneratorView } from "../../components/signalGenerator/SignalGeneratorView";
 
 export default function VectorscopeScreen() {
     const [signalYCRCB, setSignalYCRCB] = useState([[[100, 128, 128]]]);
@@ -15,7 +15,7 @@ export default function VectorscopeScreen() {
                 encodedVideoStandard={vidStdIdx}
                 withOverlays
             />
-            <SignalGenerator
+            <SignalGeneratorView
                 setSignal={setSignalYCRCB}
                 setEncodingVideoStandard={setVidStdIdx}
             />
