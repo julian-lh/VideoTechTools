@@ -28,8 +28,34 @@ const styles = StyleSheet.create({
     zIndex: 1,
     top: 0,
     left: 0
-  }
+  },
 
+  settingsElementContainer: {
+    flexDirection: "row",
+    justifyContent: 'center',
+    alignItems: "center"
+  },
+
+  overlaysContainer: {
+    position: 'absolute',
+    zIndex: 1,
+    top: 10,
+    right:10,
+    minWidth: 70,
+    minHeight: 80,
+    justifyContent: "flex-start",
+    alignItems: "flex-end"
+  },
+
+
+  perspectiveButtonsContainer: {
+    position: 'absolute',
+    zIndex: 1,
+    bottom: 0,
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: 'space-around'
+  }
 
 });
 

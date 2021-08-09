@@ -1,13 +1,14 @@
 // Expects an rgb-Signal-Array
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text } from 'react-native';
 
-import { rgbToComplementary, rgbToHex, rgbToString, rgbToComplColorString } from '../../calculations/Helpers'
+import { styles } from './SignalPreviewPlotStyle';
+
+import { rgbToString, rgbToComplColorString } from '../../../calculations/Helpers'
 
 
-const PixelRepresentative = ({ labelIndex, labelSignal, signalDescription, idx1, idx2, rgb }) => {
+const PixelRepresentative = ({ labelIdx, labelSignal, signalDescription, idx1, idx2, rgb }) => {
 
-  //const color = rgbToHex(rgbToComplementary(rgb));
   const color = rgbToComplColorString(rgb);
 
   return (
@@ -15,7 +16,7 @@ const PixelRepresentative = ({ labelIndex, labelSignal, signalDescription, idx1,
           style={styles.columnElement}
           backgroundColor={rgbToString(rgb)}
       >
-          {labelIndex > 0 ? (
+          {labelIdx > 0 ? (
               <Text style={(styles.label, { color: color })}>
                   {labelSignal[idx1][idx2].map(
                       (v, i) => " " + signalDescription[i] + ":" + v.toFixed(1)
@@ -26,18 +27,17 @@ const PixelRepresentative = ({ labelIndex, labelSignal, signalDescription, idx1,
   );
 }
 
-export const RGBSignalPreview = ({ rgbSignal, YCrCbSignal = undefined, labelIndex = 0}) => {
-    //Anlehnung: https://www.digitalocean.com/community/conceptual_articles/understanding-how-to-render-arrays-in-react
+export const SignalPreviewPlot = ({ signalRGB, signalYCRCB = undefined, labelIdx = 0}) => {
 
     var labelSignal = [];
     var desctiption = [];
-    switch (labelIndex){
+    switch (labelIdx){
       case 1:
-        labelSignal = rgbSignal; //.map( x => x.map( y => y * 100 ) );
+        labelSignal = signalRGB;
         desctiption = ["R", "G", "B"];
         break;
       case 2:
-        labelSignal = YCrCbSignal;
+        labelSignal = signalYCRCB;
         desctiption = ["Y", "Cr", "Cb"];
         break;
       default:
@@ -47,13 +47,13 @@ export const RGBSignalPreview = ({ rgbSignal, YCrCbSignal = undefined, labelInde
 
     return (
         <View style={styles.outerContainer}>
-            {rgbSignal.map((x, idx1) => {
+            {signalRGB.map((x, idx1) => {
                 return (
                     <View style={styles.rowContainer} key={idx1}>
                         {x.map((y, idx2) => {
                             return (
                                 <PixelRepresentative
-                                    labelIndex={labelIndex}
+                                    labelIdx={labelIdx}
                                     labelSignal={labelSignal}
                                     signalDescription={desctiption}
                                     idx1={idx1}
@@ -72,23 +72,5 @@ export const RGBSignalPreview = ({ rgbSignal, YCrCbSignal = undefined, labelInde
 
 
 
-const styles = StyleSheet.create({
 
-    outerContainer: {
-      flex: 1
-    },
-    rowContainer: {
-      flex: 1,
-      flexDirection: "row"
-    },
-    columnElement: {
-      flex: 1,
-      alignItems: 'center',
-      justifyContent: 'center'
-    },
-    label: {
-      fontSize: 10,
-    }
-
-});
 

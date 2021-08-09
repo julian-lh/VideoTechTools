@@ -1,31 +1,19 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
 
-import { RGBSignalPreview } from '../../components/signalPreview/RGBSignalPreview';
+import { SignalPreviewView } from '../../components/signalPreview/SignalPreviewView';
 import { CIEView } from '../../components/cie/CIEView';
 import { SignalGenerator } from '../../components/signalGenerator/SignalGenerator'
 import { VectorscopeView } from '../../components/vectorscope/VectorscopeView';
 import { WFMView } from '../../components/wfm/WFMView';
 
-import { cvtSignalYCRCBtoRGB, downscaleSignalYCRCB } from '../../calculations/ComponentSignal';
-
 
 export default function ScopesCombinationScreen() {
-    const videoStandards = ["601", "709", "2020"];
     const [vidStdIdx, setVidStdIdx] = useState(1);
-    const switchVidStd = () => {vidStdIdx < 2 ? setVidStdIdx(vidStdIdx + 1) : setVidStdIdx(0)};
-
-    const bitDepths = (vidStdIdx == 2 ? [10, 12] : [10, 8]);
-    const [bitDepthIdx, setBitDepthIdx] = useState(0);
-    const switchBitDepth = () => setBitDepthIdx(1 - bitDepthIdx);
 
     const [signalYCRCB, setSignalYCRCB] = useState([[[100, 128, 128]]]);
-    const smallSignalYCRCB = downscaleSignalYCRCB(signalYCRCB, bitDepths[bitDepthIdx]);
-    const signalRGB = cvtSignalYCRCBtoRGB(smallSignalYCRCB, videoStandards[vidStdIdx]);
 
-    const labels = ["Keine", "RGB", "YCrCb", ];
     const [labelIdx, setLabelIdx] = useState(1);
-    const switchLabelIdx = () => {labelIdx < 2 ? setLabelIdx(labelIdx + 1) : setLabelIdx(0)};
 
 
     return (
@@ -36,7 +24,7 @@ export default function ScopesCombinationScreen() {
         </View>
         <View style={{ flex: 1, flexDirection: "row"}}>
           <VectorscopeView signalYCRCB={signalYCRCB}/>
-          <RGBSignalPreview rgbSignal={signalRGB} YCrCbSignal={signalYCRCB} labelIndex={labelIdx}/>
+          <SignalPreviewView signalYCRCB={signalYCRCB} labelIndex={labelIdx}/>
         </View>
         <SignalGenerator setSignal={setSignalYCRCB} setEncodingVideoStandard={setVidStdIdx} showHideButton={true}/>
       </View>

@@ -1,14 +1,13 @@
-import React, { useState, useEffect, useLayoutEffect, useMemo } from 'react';
+import React, { useState, useLayoutEffect, useMemo } from 'react';
 import { View, ScrollView } from 'react-native';
-import { Button, Text, Slider } from 'react-native-elements';
+import { Button, Text } from 'react-native-elements';
 
 import { styles } from './SignalGeneratorStyle';
 
-
-import { TapButton, PageBar } from './Subviews/CustomButtons';
-import { BarsGenerator} from './Subviews/BarsGenerator';
-import { FullColorGenerator } from './Subviews/FullColorGenerator';
-import { GradientGenerator } from './Subviews/GradientGenerator';
+import { TapButton, PageBar } from './subviews/CustomButtons';
+import { BarsGenerator} from './subviews/BarsGenerator';
+import { FullColorGenerator } from './subviews/FullColorGenerator';
+import { GradientGenerator } from './subviews/GradientGenerator';
 
 import { cvtSignalRGBtoYCRCB, upscaleSignalYCRCB, limiterComponentSignal, limiterRGBSignal} from '../../calculations/ComponentSignal';
 import { offsetSignalContrast, offsetSignalBrightness, offsetSignalGamma } from '../../calculations/SignalGenerator';
@@ -16,7 +15,6 @@ import { offsetSignalContrast, offsetSignalBrightness, offsetSignalGamma } from 
 
 
 const Generator = ({ setRgbSignal, fStopOffset, setFStopOffset }) => {
-
     const [generatorIdx, setGeneratorIdx] = useState(0);
 
     return(
@@ -39,7 +37,7 @@ const Generator = ({ setRgbSignal, fStopOffset, setFStopOffset }) => {
             {generatorIdx === 0 ? <FullColorGenerator setRgbSignal={setRgbSignal} /> : null}
             {generatorIdx === 1 ? <GradientGenerator setRgbSignal={setRgbSignal} /> : null}
             {generatorIdx === 2 ? <BarsGenerator setRgbSignal={setRgbSignal} /> : null}
-          
+
             <TapButton label={"Blenden Offset"} currentValue={fStopOffset} setValue={setFStopOffset} stepSize={0.05}/>
         </View>
     )
@@ -88,8 +86,7 @@ const Corrector = ({contrastOffset, setContrastOffset, gammaOffset, setGammaOffs
     const [brightnessOffset, setBrightnessOffset] = useState(0); //[-2...2]
     const [gammaOffset, setGammaOffset] = useState(1); //[-3...3]
 
-
-    // Modifizieren (Operationen nur anwenden wenn nicht neutral)
+    // Color Corrector operations
     const postCorrectorSignal = useMemo(() => {
         var signal = signalRGB;
 
@@ -110,7 +107,7 @@ const Corrector = ({contrastOffset, setContrastOffset, gammaOffset, setGammaOffs
     signalYCRCB = limiterComponentSignal(signalYCRCB, bitDepths[bitDepthIdx], exceedVideoLevels);
 
 
-    // Trigger recalculation of signal when values change
+    // signal refresh
     useLayoutEffect(() => {
         setSignal(signalYCRCB);
         setEncodingVideoStandard(vidStdIdx);

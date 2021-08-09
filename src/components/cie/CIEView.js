@@ -3,29 +3,28 @@ import { View, Text, TouchableOpacity } from 'react-native';
 
 import { Button } from 'react-native-elements';
 import { Canvas, useFrame, useThree } from 'react-three-fiber';
-
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import { styles } from './CIEViewStyle';
 
 import { SettingsPopOver, VideoStandardSelectElement, GamutSelectElement, ToggleElement } from '../generalComponents/Settings';
-import { RGBSignalPreview } from '../signalPreview/RGBSignalPreview';
-import { VideoStandardAlertView } from '../helpers/VideoStandardAlertView';
+import { SignalPreviewPlot } from '../signalPreview/subviews/SignalPreviewPlot';
+import { VideoStandardAlertView } from '../generalComponents/VideoStandardAlertView';
 
-import { CIEPlot } from './Subviews/CIEPlot';
-import { GamutBounds, GamutLabels } from './Subviews/GamutBounds';
-import { CIEBounds, COS } from './Subviews/CIEBounds';
+import { CIEPlot } from './subviews/CIEPlot';
+import { GamutBounds, GamutLabels } from './subviews/GamutBounds';
+import { CIEBounds, COS } from './subviews/CIELabeling';
 
-import { cvtSignalRGBtoXYZ, cvtSignalXYZtoxyY, CIEBoundsValues } from '../../calculations/ColorSpaceTransform';
+import { cvtSignalRGBtoXYZ, cvtSignalXYZtoxyY } from '../../calculations/ColorSpaceTransform';
+import { cvtSignalYCRCBtoRGB, downscaleSignalYCRCB } from '../../calculations/ComponentSignal';
 import { offsetSignalGamma } from '../../calculations/SignalGenerator';
 
-import { cvtSignalYCRCBtoRGB, downscaleSignalYCRCB } from '../../calculations/ComponentSignal';
 
-
-function Camera(props) {
+const Camera = (props) => {
     const cam = useRef()
     const { setDefaultCamera } = useThree()
 
+    // zoom to fit window
     const { camera, size: { width, height } } = useThree();
     const initialZoom = Math.min(width/1.3, height/1.3);
 
@@ -47,40 +46,42 @@ function Camera(props) {
 
  export const CIEView = ({ signalYCRCB, withOverlays = false, encodedVideoStandard = 1 }) => {
 
+    // camera perspective
     const [camPos, setCamPos] = useState([0.5, 0.4, 1.1]);
     const [zoomOffset, setZoomOffset] = useState(0);
 
+    // appearance
     const [largePreview, setLargePreview] = useState(false);
     const togglePreviewSize = () => setLargePreview(!largePreview);
-
     const [settingsVisible, setSettingsVisible] = useState(false);
     const [lightBackground, setLightBackground] = useState(true);
     const [showSignalDescription, setShowSignalDescription] = useState(false);
 
+    // gamut boundaries
     const [showGamut601, setShowGamut601] = useState(false);
     const [showGamut709, setShowGamut709] = useState(false);
     const [showGamut2020, setShowGamut2020] = useState(false);
 
-    // Signal
+    // video standard
     const videoStandards = ["601", "709", "2020"];
     const [vidStdIdx, setVidStdIdx] = useState(encodedVideoStandard);
 
     const bitDepths = (vidStdIdx == 2 ? [10, 12] : [10, 8]);
     const [bitDepthIdx, setBitDepthIdx] = useState(0);
 
-    // convert signal
-    const smallSignalYCRCB = useMemo(() => downscaleSignalYCRCB(signalYCRCB, bitDepths[bitDepthIdx]), [signalYCRCB, bitDepthIdx]);
-    const signalRGB = useMemo(() => cvtSignalYCRCBtoRGB(smallSignalYCRCB, videoStandards[vidStdIdx]), [smallSignalYCRCB, vidStdIdx]);
+    // YCrCb -> RGB
+    const signalSmallYCRCB = useMemo(() => downscaleSignalYCRCB(signalYCRCB, bitDepths[bitDepthIdx]), [signalYCRCB, bitDepthIdx]);
+    const signalRGB = useMemo(() => cvtSignalYCRCBtoRGB(signalSmallYCRCB, videoStandards[vidStdIdx]), [signalSmallYCRCB, vidStdIdx]);
 
     //const signalRGBlinear = useMemo(() =>  offsetSignalGamma(signalRGB, 0.42), [signalRGB, vidStdIdx]);
 
+    // RGB -> xyY
     const signalXYZ = useMemo(() => cvtSignalRGBtoXYZ(signalRGB, videoStandards[vidStdIdx]), [signalRGB, vidStdIdx]);
     const signalxyY = useMemo(() => cvtSignalXYZtoxyY(signalXYZ), [signalXYZ]);
 
 
     return (
       <View style={{flex: 1}}>
-        <View style={{flex: 1}}>
 
           <Canvas style={styles.canvas, {backgroundColor: (lightBackground ? '#eee' : '#333')}}>
             <Camera position={camPos} zoomOffset={zoomOffset}/>
@@ -106,6 +107,25 @@ function Camera(props) {
 
 
 
+          {withOverlays ? <>
+              <View style={styles.overlaysContainer}>
+                <TouchableOpacity style={{ aspectRatio: 1.78, minWidth: 20,  minHeight:(largePreview ? 110 : 45), width: (largePreview ? "60%" : "20%")}}
+                                  onPress={togglePreviewSize}>
+                  <SignalPreviewPlot signalRGB={signalRGB}/>
+                </TouchableOpacity>
+                <Button icon={<Icon name="settings-sharp" size={25}/>} type="clear" onPress={() => setSettingsVisible(!settingsVisible)}/>
+                <Button title={"+"} onPress={() => setZoomOffset(zoomOffset + 10)} style={{paddingRight: 5}} titleStyle={{ fontWeight: 'bold'}} type="clear"/>
+                <Button title={"-"} onPress={() => setZoomOffset(zoomOffset - 10)} style={{paddingRight: 5}} titleStyle={{ fontWeight: 'bold'}} type="clear"/>
+              </View>
+
+              <View style={styles.perspectiveButtonsContainer}>
+                <Button title="xy" onPress={()=>setCamPos([0.5, 0.4, 1.1])}/>
+                <Button title="xyY" onPress={()=>{setCamPos([0.5, - 0.2, 1.2]); setZoomOffset(0)}}/>
+              </View>
+            </> : null }
+
+
+
           {(settingsVisible ?
             <SettingsPopOver setSettingsVisible={setSettingsVisible}>
               <VideoStandardSelectElement
@@ -122,7 +142,7 @@ function Camera(props) {
                           showRec2020={showGamut2020}
                           toggleRec2020={setShowGamut2020}
               />
-              <View style={{ flexDirection: "row", justifyContent: 'justify', alignItems: "center" }}>
+              <View style={styles.settingsElementContainer}>
                 <ToggleElement
                             elementTitle={"Signal Beschriftung"}
                             title={(showSignalDescription ? 'An' : 'Aus')}
@@ -136,26 +156,6 @@ function Camera(props) {
               </View>
             </SettingsPopOver> : null)}
 
-
-          {withOverlays ? <>
-            <View style={{ position: 'absolute', zIndex: 1, top: 10, right:10, minWidth: 70, minHeight: 80, justifyContent: "flex-start", alignItems: "flex-end"}}>
-              <TouchableOpacity style={{ minWidth: 20, minHeight:(largePreview ? 110 : 45), width: (largePreview ? "60%" : "20%"), aspectRatio: 1.78}} onPress={togglePreviewSize}>
-                <RGBSignalPreview rgbSignal={signalRGB}/>
-              </TouchableOpacity>
-              <Button icon={<Icon name="settings-sharp" size={25}/>} title="" type="clear" onPress={x => setSettingsVisible(!settingsVisible)}/>
-              <Button title={"+"} onPress={() => setZoomOffset(zoomOffset + 10)} style={{paddingRight: 5}} titleStyle={{ fontWeight: 'bold'}} type="clear"/>
-              <Button title={"-"} onPress={() => setZoomOffset(zoomOffset - 10)} style={{paddingRight: 5}} titleStyle={{ fontWeight: 'bold'}} type="clear"/>
-            </View>
-
-            <View style={{ position: 'absolute', zIndex: 1, bottom: 0, width: "100%", flexDirection: "row", justifyContent: 'space-around' }}>
-              <Button title="xy" onPress={()=>setCamPos([0.5, 0.4, 1.1])}/>
-              <Button title="xyY" onPress={()=>{setCamPos([0.5, - 0.2, 1.2]); setZoomOffset(0)}}/>
-            </View>
-          </> : null }
-
-
         </View>
-
-      </View>
     );
 }
