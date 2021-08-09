@@ -1,30 +1,4 @@
-import { cvtSignalRGBtoXYZ, cvtSignalXYZtoxyY } from './ColorSpaceTransform';
-
-
-function offsetContrast(pixelValue = [0, 0, 0], m = 1) {
-    return pixelValue.map(x => x * m);
-}
-
-function offsetBrightness(pixelValue = [0, 0, 0], b = 0) {
-    return pixelValue.map(x => x + b);
-}
-
-function offsetGamma(pixelValue = [0, 0, 0], gamma = 1, maxValue = 1) {
-    return pixelValue.map(x => (x/maxValue) ** gamma);
-}
-
-
-export function offsetSignalContrast(signalRGB, m = 1) {
-    return signalRGB.map( x => x.map( y => offsetContrast(y, m)));
-}
-
-export function offsetSignalBrightness(signalRGB, b = 0) {
-    return signalRGB.map( x => x.map( y => offsetBrightness(y, b)));
-}
-
-export function offsetSignalGamma(signalRGB, gamma = 1, maxValue = 1) {
-    return signalRGB.map( x => x.map( y => offsetGamma(y, gamma, maxValue)));
-}
+import { cvtSignalRGBtoXYZ, cvtSignalXYZtoxyY } from './CalcColorSpaceTransform';
 
 
 export function generateRGBSignalFullColor(valueRGB, width, height){
@@ -114,7 +88,7 @@ export function generateRGB3dCoordinates(){
     return rgbArraySignal;
 }
 
-export function generateYxy3dCoordinates(colorSpace = "709"){
+export function generatexyY3dCoordinates(colorSpace = "709"){
     var rgbArray = [];
     for(var r = 0; r <= 1; r += 0.2){
         for(var g = 0; g <= 1; g += 0.2){
@@ -128,17 +102,3 @@ export function generateYxy3dCoordinates(colorSpace = "709"){
     const xyYArraySignal = cvtSignalXYZtoxyY(XYZArraySignal);
     return xyYArraySignal;
 }
-
-
-/*
-// applies operation to every pixel of a 2D-signal-array
-export function modifySignalPixel(signal, operation) {
-    const result = signal.map(operation);
-    return result;
-}
-
-// applies operation to every subpixel of a 2D-signal-Array
-export function modifySignalSubPixel(signal, operation, ...args) {
-    const result = signal.map( x => x.map( y => operation(y, args)));
-    return result;
-}*/

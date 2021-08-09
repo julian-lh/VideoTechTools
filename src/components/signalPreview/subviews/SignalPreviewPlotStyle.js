@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
       zIndex: 0
     },
     label: {
-      fontSize: 10,
+      fontSize: 10
     }
 
 });

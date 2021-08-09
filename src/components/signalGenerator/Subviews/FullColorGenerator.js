@@ -2,10 +2,10 @@ import React, { useState, useEffect, useLayoutEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button } from 'react-native-elements';
 
-import { cvtRGBtoHSV, cvtHSVtoRGB } from '../../../calculations/ColorSpaceTransform';
-import { generateRGBSignalFullColor } from '../../../calculations/SignalGenerator';
+import { cvtRGBtoHSV, cvtHSVtoRGB } from '../../../calculations/CalcColorSpaceTransform';
+import { generateRGBSignalFullColor } from '../../../calculations/CalcSignalGenerator';
 
-import { clamp } from '../../../calculations/Helpers';
+import { clamp } from '../../../calculations/CalcHelpers';
 import { TapButton } from './CustomButtons';
 
 

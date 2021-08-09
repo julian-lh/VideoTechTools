@@ -1,4 +1,3 @@
-// Expects an rgb-Signal-Array
 import React, { useState } from 'react';
 import { View } from 'react-native';
 import { Button  } from 'react-native-elements';
@@ -6,7 +5,7 @@ import { Button  } from 'react-native-elements';
 import { styles } from './SignalPreviewViewStyle';
 
 import { SignalPreviewPlot } from './subviews/SignalPreviewPlot';
-import { cvtSignalYCRCBtoRGB, downscaleSignalYCRCB } from '../../calculations/ComponentSignal';
+import { cvtSignalYCRCBtoRGB, downscaleSignalYCRCB } from '../../calculations/CalcComponentSignal';
 
 
 export const SignalPreviewView = ({ signalYCRCB, withOverlays = false, encodedVideoStandard = 1 }) => {

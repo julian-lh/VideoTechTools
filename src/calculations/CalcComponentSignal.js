@@ -1,9 +1,8 @@
-// Collection of Component Signal Conversions
 
-import { clamp } from './Helpers';
+import { clamp } from './CalcHelpers';
 
 // ----------------------------------------------------------------
-// ------------------- Single Value Basic Conversions -------------------
+// ---------------------- Triple Conversions ----------------------
 
 
 export function cvtRGBtoYCRCB(rgb, standard = "709") {
@@ -31,7 +30,7 @@ export function cvtRGBtoYCRCB(rgb, standard = "709") {
     return [Y, Cr, Cb];
 }
 
-export function cvtYCRCBtoRGB(YCrCb, standard = "709") {
+export function cvtYCRCBtoRGB(YCRCB, standard = "709") {
     var rgbFactors = [1, 1, 1]; var crcbQuotients = [1, 1];
 
     switch (standard){
@@ -49,34 +48,34 @@ export function cvtYCRCBtoRGB(YCrCb, standard = "709") {
             break;
     }
 
-    const R = (YCrCb[1] * crcbQuotients[0]) + YCrCb[0]; // (Cr * standardQuotient) + Y
-    const B = (YCrCb[2] * crcbQuotients[1]) + YCrCb[0]; // (Cb * standardQuotient) + Y
-    const G = (YCrCb[0] - R*rgbFactors[0] - B*rgbFactors[2]) / rgbFactors[1]; // (Y - (R * rFaktor) - (B * bFaktor)) / gFaktor
+    const R = (YCRCB[1] * crcbQuotients[0]) + YCRCB[0]; // (Cr * standardQuotient) + Y
+    const B = (YCRCB[2] * crcbQuotients[1]) + YCRCB[0]; // (Cb * standardQuotient) + Y
+    const G = (YCRCB[0] - R*rgbFactors[0] - B*rgbFactors[2]) / rgbFactors[1]; // (Y - (R * rFaktor) - (B * bFaktor)) / gFaktor
 
     return [R, G, B];
 }
 
-export function upscaleYCRCB(YCrCb, bitDepth = 10) {
+export function upscaleYCRCB(YCRCB, bitDepth = 10) {
     const bitFactor = 2**(bitDepth-8);
 
     // Rundung fuehrt zu Rundungsfehlern, ist aber in Standard eigentlich vorgesehen
-    //const dY = Math.round( (219 * YCrCb[0] + 16) * bitFactor);
-    //const dCr = Math.round( (224 * YCrCb[1] + 128) * bitFactor);
-    //const dCb = Math.round( (224 * YCrCb[2] + 128) * bitFactor);
+    //const dY = Math.round( (219 * YCRCB[0] + 16) * bitFactor);
+    //const dCr = Math.round( (224 * YCRCB[1] + 128) * bitFactor);
+    //const dCb = Math.round( (224 * YCRCB[2] + 128) * bitFactor);
 
-    const dY = (219 * YCrCb[0] + 16) * bitFactor;
-    const dCr = (224 * YCrCb[1] + 128) * bitFactor;
-    const dCb = (224 * YCrCb[2] + 128) * bitFactor;
+    const dY = (219 * YCRCB[0] + 16) * bitFactor;
+    const dCr = (224 * YCRCB[1] + 128) * bitFactor;
+    const dCb = (224 * YCRCB[2] + 128) * bitFactor;
 
     return [dY, dCr, dCb];
 }
 
-export function downscaleYCRCB(YCrCb, bitDepth = 10) {
+export function downscaleYCRCB(YCRCB, bitDepth = 10) {
     const bitFactor = 2**(bitDepth-8);
 
-    const eY = ((YCrCb[0] / bitFactor) - 16) / 219;
-    const eCr = ((YCrCb[1] / bitFactor) - 128) / 224;
-    const eCb = ((YCrCb[2] / bitFactor) - 128) / 224;
+    const eY = ((YCRCB[0] / bitFactor) - 16) / 219;
+    const eCr = ((YCRCB[1] / bitFactor) - 128) / 224;
+    const eCb = ((YCRCB[2] / bitFactor) - 128) / 224;
 
     return [eY, eCr, eCb];
 }
@@ -85,7 +84,7 @@ export function limiterRGBSignal(signalRGB){
     return signalRGB.map( x => x.map( y => y.map( z => clamp(z))));
 }
 
-export function limiterComponent(YCrCb, bitDepth, exceedVideoLevels = false) {
+export function limiterComponent(YCRCB, bitDepth, exceedVideoLevels = false) {
     const bitDepthFactor = 2**(bitDepth - 8);
 
     var peakLimitY = 235 * bitDepthFactor;
@@ -100,7 +99,7 @@ export function limiterComponent(YCrCb, bitDepth, exceedVideoLevels = false) {
         lowerChromaLimit = blackLimitY;
     }
 
-    var tempYCRCB = [...YCrCb]; //Array kopieren
+    var tempYCRCB = [...YCRCB]; //Array kopieren
     tempYCRCB[0] = (tempYCRCB[0] > peakLimitY ? peakLimitY : tempYCRCB[0]);
     tempYCRCB[0] = (tempYCRCB[0] < blackLimitY ? blackLimitY : tempYCRCB[0]);
 
@@ -112,14 +111,15 @@ export function limiterComponent(YCrCb, bitDepth, exceedVideoLevels = false) {
     return tempYCRCB;
 }
 
-export function limiterComponentSignal(signalYCrCb, bitDepth, exceedVideoLevels = false){
-    return signalYCrCb.map( x => x.map( y => limiterComponent(y, bitDepth, exceedVideoLevels)));
+export function limiterComponentSignal(signalYCRCB, bitDepth, exceedVideoLevels = false){
+    return signalYCRCB.map( x => x.map( y => limiterComponent(y, bitDepth, exceedVideoLevels)));
 }
 
 
 
 // ----------------------------------------------------------------
-// ------------------- Image Signal Array Conversions -------------------
+// ----------------------  Array Conversions ----------------------
+
 
 export function cvtSignalRGBtoYCRCB(signalRGB, videoStandard = "709" ) {
     return signalRGB.map( x => x.map( y => cvtRGBtoYCRCB(y, videoStandard)));

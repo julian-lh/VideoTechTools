@@ -11,37 +11,15 @@ import { SettingsPopOver, VideoStandardSelectElement, GamutSelectElement, Toggle
 import { SignalPreviewPlot } from '../signalPreview/subviews/SignalPreviewPlot';
 import { VideoStandardAlertView } from '../generalComponents/VideoStandardAlertView';
 
+import { ScopesCamera } from '../generalComponents/ScopesCamera';
+
 import { CIEPlot } from './subviews/CIEPlot';
 import { GamutBounds, GamutLabels } from './subviews/GamutBounds';
 import { CIEBounds, COS } from './subviews/CIELabeling';
 
-import { cvtSignalRGBtoXYZ, cvtSignalXYZtoxyY } from '../../calculations/ColorSpaceTransform';
-import { cvtSignalYCRCBtoRGB, downscaleSignalYCRCB } from '../../calculations/ComponentSignal';
-import { offsetSignalGamma } from '../../calculations/SignalGenerator';
-
-
-const Camera = (props) => {
-    const cam = useRef()
-    const { setDefaultCamera } = useThree()
-
-    // zoom to fit window
-    const { camera, size: { width, height } } = useThree();
-    const initialZoom = Math.min(width/1.3, height/1.3);
-
-    useEffect(() => {
-      camera.zoom = initialZoom + props.zoomOffset;
-      camera.updateProjectionMatrix();
-    },[props.zoomOffset])
-
-    useEffect(() => void setDefaultCamera(cam.current), [])
-
-    useFrame(() => {
-      cam.current.updateMatrixWorld();
-      cam.current.lookAt(0.5, 0.4, 0.4);
-    })
-
-    return <orthographicCamera ref={cam} zoom={initialZoom} near={0.0} {...props} />
-  }
+import { cvtSignalRGBtoXYZ, cvtSignalXYZtoxyY } from '../../calculations/CalcColorSpaceTransform';
+import { cvtSignalYCRCBtoRGB, downscaleSignalYCRCB } from '../../calculations/CalcComponentSignal';
+import { offsetSignalGamma } from '../../calculations/CalcSignalGenerator';
 
 
  export const CIEView = ({ signalYCRCB, withOverlays = false, encodedVideoStandard = 1 }) => {
@@ -84,7 +62,7 @@ const Camera = (props) => {
       <View style={{flex: 1}}>
 
           <Canvas style={styles.canvas, {backgroundColor: (lightBackground ? '#eee' : '#333')}}>
-            <Camera position={camPos} zoomOffset={zoomOffset}/>
+            <ScopesCamera position={camPos} target={[0.5, 0.4, 0.4]} initialZoomScale={1.3} zoomOffset={zoomOffset}/>
             <COS />
             <CIEBounds />
             <GamutBounds showRec601={showGamut601} showRec709={showGamut709} showRec2020={showGamut2020}/>
@@ -119,7 +97,7 @@ const Camera = (props) => {
               </View>
 
               <View style={styles.perspectiveButtonsContainer}>
-                <Button title="xy" onPress={()=>setCamPos([0.5, 0.4, 1.1])}/>
+                <Button title="xy" onPress={()=>{setCamPos([0.5, 0.4, 1.1]); setZoomOffset(0)}}/>
                 <Button title="xyY" onPress={()=>{setCamPos([0.5, - 0.2, 1.2]); setZoomOffset(0)}}/>
               </View>
             </> : null }
