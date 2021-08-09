@@ -1,4 +1,4 @@
-# CIEView
+# CieView
 
 ```JavaScript
 export const CIEView = ({   signalYCRCB,

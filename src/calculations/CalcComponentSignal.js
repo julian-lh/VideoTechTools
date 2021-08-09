@@ -80,11 +80,17 @@ export function downscaleYCRCB(YCRCB, bitDepth = 10) {
     return [eY, eCr, eCb];
 }
 
-export function limiterRGBSignal(signalRGB){
-    return signalRGB.map( x => x.map( y => y.map( z => clamp(z))));
+export function limiterSignalSmallRGB(signalSmallRGB, fullVideoData = false){
+    var peakLimit = 1;
+    var bottomLimit = 0
+    if (fullVideoData) {
+        peakLimit = 1.16;
+        bottomLimit = -0.073;
+    }
+    return signalSmallRGB.map( x => x.map( y => y.map( z => clamp(z, bottomLimit, peakLimit))));
 }
 
-export function limiterComponent(YCRCB, bitDepth, exceedVideoLevels = false) {
+export function limiterYCRCB(signalYCRCB, bitDepth, fullVideoData = false) {
     const bitDepthFactor = 2**(bitDepth - 8);
 
     var peakLimitY = 235 * bitDepthFactor;
@@ -92,14 +98,14 @@ export function limiterComponent(YCRCB, bitDepth, exceedVideoLevels = false) {
     var upperChromaLimit = 240 * bitDepthFactor;
     var lowerChromaLimit = 16 * bitDepthFactor;
 
-    if (exceedVideoLevels){
+    if (fullVideoData){
         peakLimitY = (256 * bitDepthFactor) - (bitDepthFactor - 1);
         blackLimitY = 1 * bitDepthFactor;
         upperChromaLimit = peakLimitY;
         lowerChromaLimit = blackLimitY;
     }
 
-    var tempYCRCB = [...YCRCB]; //Array kopieren
+    var tempYCRCB = [...signalYCRCB]; //Array kopieren
     tempYCRCB[0] = (tempYCRCB[0] > peakLimitY ? peakLimitY : tempYCRCB[0]);
     tempYCRCB[0] = (tempYCRCB[0] < blackLimitY ? blackLimitY : tempYCRCB[0]);
 
@@ -111,8 +117,8 @@ export function limiterComponent(YCRCB, bitDepth, exceedVideoLevels = false) {
     return tempYCRCB;
 }
 
-export function limiterComponentSignal(signalYCRCB, bitDepth, exceedVideoLevels = false){
-    return signalYCRCB.map( x => x.map( y => limiterComponent(y, bitDepth, exceedVideoLevels)));
+export function limiterSignalYCRCB(signalYCRCB, bitDepth, fullVideoData = false){
+    return signalYCRCB.map( x => x.map( y => limiterYCRCB(y, bitDepth, fullVideoData)));
 }
 
 
@@ -129,8 +135,8 @@ export function cvtSignalYCRCBtoRGB(signalYCRCB, videoStandard = "709" ) {
     return signalYCRCB.map( x => x.map( y => cvtYCRCBtoRGB(y, videoStandard)));
 }
 
-export function upscaleSignalYCRCB(signalYCRCB, bitDepth = 10 ) {
-    return signalYCRCB.map( x => x.map( y => upscaleYCRCB(y, bitDepth)));
+export function upscaleSignalYCRCB(signalSmallYCRCB, bitDepth = 10 ) {
+    return signalSmallYCRCB.map( x => x.map( y => upscaleYCRCB(y, bitDepth)));
 }
 
 export function downscaleSignalYCRCB(signalYCRCB, bitDepth = 10 ) {

@@ -5,7 +5,7 @@ import { WfmView } from '../../components/wfm/WfmView';
 import { CieView } from '../../components/cie/CieView';
 import { VectorscopeView } from '../../components/vectorscope/VectorscopeView';
 import { SignalPreviewView } from '../../components/signalPreview/SignalPreviewView';
-import { SignalGenerator } from '../../components/signalGenerator/SignalGenerator'
+import { SignalGeneratorView } from '../../components/signalGenerator/SignalGeneratorView'
 
 
 export default function ScopesCombinationScreen() {
@@ -26,7 +26,7 @@ export default function ScopesCombinationScreen() {
           <VectorscopeView signalYCRCB={signalYCRCB}/>
           <SignalPreviewView signalYCRCB={signalYCRCB} labelIndex={labelIdx}/>
         </View>
-        <SignalGenerator
+        <SignalGeneratorView
             setSignal={setSignalYCRCB}
             setEncodingVideoStandard={setVidStdIdx}
             showHideButton={true}/>
