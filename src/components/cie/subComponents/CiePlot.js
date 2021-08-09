@@ -2,7 +2,7 @@ import React, {useRef} from 'react';
 import * as THREE from 'three';
 
 
-export const CIEPlot = ({ signalxyY, signalRGB, dotSize = 0.01 }) => {
+export const CiePlot = ({ signalxyY, signalRGB, dotSize = 0.01 }) => {
     return(
     <>
       {signalxyY.map( (x, idx1) =>  x.map( (y, idx2) => (<SphereColorful xyY={y} RGB={signalRGB[idx1][idx2]} dotSize={dotSize} key={(idx1 * 100) + idx2}/> ) ) )}

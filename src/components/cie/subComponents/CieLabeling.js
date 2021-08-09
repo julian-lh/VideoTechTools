@@ -1,7 +1,7 @@
 import React, {useRef, useMemo} from 'react';
 import * as THREE from 'three';
 
-import { CIEBoundsValues } from '../../../calculations/CalcColorSpaceTransform';
+import { CieBoundsValues } from '../../../calculations/CalcColorSpaceTransform';
 
 
 export const COS = (props) => {
@@ -11,15 +11,15 @@ export const COS = (props) => {
 }
 
 
-export const CIEBounds = () => {
+export const CieBounds = () => {
   const mesh = useRef();
   const shape = useMemo(() => {
     const s = new THREE.Shape();
-    s.moveTo(CIEBoundsValues[0][1], CIEBoundsValues[0][2], CIEBoundsValues[0][3]);
-    for (let v of CIEBoundsValues) {
+    s.moveTo(CieBoundsValues[0][1], CieBoundsValues[0][2], CieBoundsValues[0][3]);
+    for (let v of CieBoundsValues) {
       s.lineTo(v[1], v[2], v[3]);
     }
-    s.lineTo(CIEBoundsValues[0][1], CIEBoundsValues[0][2], CIEBoundsValues[0][3]);
+    s.lineTo(CieBoundsValues[0][1], CieBoundsValues[0][2], CieBoundsValues[0][3]);
     return s;
   }, [])
 
