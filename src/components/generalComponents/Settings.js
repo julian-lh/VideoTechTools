@@ -35,20 +35,7 @@ export const ToggleElement = ({ elementTitle, title, onPress }) => {
         </View>
     )
 }
-/*
-export const HighlightToggleElement = ({ elementTitle, title1, onPress1, title2, onPress2, title3, onPress3 }) => {
-    return(
-        <View style={styles.elementContainer}>
-            <Text>{elementTitle}</Text>
-            <View style={styles.elementButtonContainer}>
-                <Button title={title1} onPress={onPress1} type="clear"/>
-                <Button title={title2} onPress={onPress2} type="clear"/>
-                <Button title={title3} onPress={onPress3} type="clear"/>
-            </View>
-        </View>
-    )
-}
-*/
+
 export const GamutSelectElement = ({ showRec601, toggleRec601, showRec709, toggleRec709, showRec2020, toggleRec2020 }) => {
     return(
         <View style={styles.elementContainer}>

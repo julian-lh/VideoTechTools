@@ -13,7 +13,7 @@ import CIEScreen from '../screens/signalAndScopes/CIEScreen';
 import VectorscopeScreen from '../screens/signalAndScopes/VectorscopeScreen';
 import WFMScreen from '../screens/signalAndScopes/WFMScreen';
 import ScopesCombinationScreen from '../screens/signalAndScopes/ScopesCombinationScreen';
-import SignalDisplayYCrCbScreen from '../screens/signalAndScopes/SignalPreviewScreen';
+import SignalPreviewScreen from '../screens/signalAndScopes/SignalPreviewScreen';
 
 
 const Drawer = createDrawerNavigator();
@@ -74,7 +74,7 @@ export default function Navigation() {
               <Drawer.Screen name="WFM" component={StackWrap_WFMScreen} />
               <Drawer.Screen name="Vektorskop" component={StackWrap_VectorscopeScreen} />
               <Drawer.Screen name="CIE-Normfarbtafel" component={StackWrap_CIEScreen} />
-              <Drawer.Screen name="Komponentensignal" component={StackWrap_SignalDisplayYCrCbScreen} />
+              <Drawer.Screen name="Komponentensignal" component={StackWrap_SignalPreviewScreen} />
               <Drawer.Screen name="Scopes Übersicht" component={StackWrap_ScopesCombinationScreen} />
 
           </Drawer.Navigator>
@@ -118,10 +118,10 @@ export default function Navigation() {
     );
   }
 
-  function StackWrap_SignalDisplayYCrCbScreen({ navigation }) {
+  function StackWrap_SignalPreviewScreen({ navigation }) {
     return (
       <Stack.Navigator>
-        <Stack.Screen name= {"ComponentSignalScreen"} component={SignalDisplayYCrCbScreen} options={{
+        <Stack.Screen name= {"ComponentSignalScreen"} component={SignalPreviewScreen} options={{
             headerTitle: "Komponentensignal",
           headerLeft: () => <Button icon={<Ionicons name="menu" size={25} color="gray" />} onPress={() => navigation.toggleDrawer()} type="clear"/>
         }}/>

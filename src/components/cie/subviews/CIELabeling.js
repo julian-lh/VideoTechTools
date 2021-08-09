@@ -3,6 +3,7 @@ import * as THREE from 'three';
 
 import { CIEBoundsValues } from '../../../calculations/ColorSpaceTransform';
 
+
 export const COS = (props) => {
     return(
         <axesHelper {...props}/>
