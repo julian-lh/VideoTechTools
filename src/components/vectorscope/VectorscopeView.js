@@ -6,7 +6,7 @@ import { Canvas, useFrame, useThree } from 'react-three-fiber';
 import * as THREE from 'three';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import { SettingsPopOver, VideoStandardSelector, ToggleElement } from '../generalComponents/Settings';
+import { SettingsPopOver, VideoStandardSelectElement, ToggleElement } from '../generalComponents/Settings';
 import { RGBSignalPreview } from '../signalPreview/RGBSignalPreview';
 import { VideoStandardAlertView } from '../helpers/VideoStandardAlertView';
 
@@ -231,16 +231,16 @@ export const VectorscopeView = ({ signalYCRCB, withOverlays = false, encodedVide
 
           {(settingsVisible ?
           <SettingsPopOver setSettingsVisible={setSettingsVisible}>
-            <VideoStandardSelector
+            <VideoStandardSelectElement
                 vidStdIdx={vidStdIdx}
                 setVidStdIdx={setVidStdIdx}
                 bitDepthIdx={bitDepthIdx}
                 setBitDepthIdx={setBitDepthIdx}
             />
             <ToggleElement
-                title={"Signalplot"}
-                value={(discreteSignalRepresentation ? "diskrete Punkte" : "Linienzug")}
-                setValue={() => setDiscreteSignalRepresentation(!discreteSignalRepresentation)}
+                elementTitle={"Signalplot"}
+                title={(discreteSignalRepresentation ? "diskrete Punkte" : "Linienzug")}
+                onPress={() => setDiscreteSignalRepresentation(!discreteSignalRepresentation)}
             />
           </SettingsPopOver>
           : null)}
