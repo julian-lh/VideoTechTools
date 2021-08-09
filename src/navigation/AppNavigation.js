@@ -3,7 +3,6 @@
 import * as React from 'react';
 import { Button } from 'react-native-elements';
 import { NavigationContainer } from '@react-navigation/native';
-
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createStackNavigator } from '@react-navigation/stack';
 
@@ -83,7 +82,7 @@ export default function Navigation() {
   }
 
 
-  // TODO: There must be a more elegant way
+  // TODO: There must be a more elegant way to solve this
 
   function StackWrap_CIEScreen({ navigation }) {
     return (

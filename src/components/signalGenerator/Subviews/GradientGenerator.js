@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { Button } from 'react-native-elements';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import { generateRGBSignalGradient } from '../../../calculations/SignalGenerator';
+import { generateRGBSignalGradient } from '../../../calculations/CalcSignalGenerator';
 
 
 export const GradientGenerator = ({ setRgbSignal }) => {

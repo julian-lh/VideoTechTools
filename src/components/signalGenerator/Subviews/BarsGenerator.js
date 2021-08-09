@@ -2,7 +2,7 @@ import React, { useState, useEffect, useLayoutEffect } from 'react';
 import { StyleSheet } from 'react-native';
 import { Button } from 'react-native-elements';
 
-import { generateRGBSignalBars } from '../../../calculations/SignalGenerator';
+import { generateRGBSignalBars } from '../../../calculations/CalcSignalGenerator';
 
 
 export const BarsGenerator = ({ setRgbSignal }) => {

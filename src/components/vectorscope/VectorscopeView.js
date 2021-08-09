@@ -10,28 +10,13 @@ import { SettingsPopOver, VideoStandardSelectElement, ToggleElement } from '../g
 import { SignalPreviewPlot } from '../signalPreview/subviews/SignalPreviewPlot';
 import { VideoStandardAlertView } from '../generalComponents/VideoStandardAlertView';
 
+import { ScopesCamera } from '../generalComponents/ScopesCamera';
+
 import { VectorscopePlot } from './subviews/VectorscopePlot';
 import { VectorscopeBounds, PeakSignalHexagon} from './subviews/VectorscopeLabeling';
 
-import { cvtSignalYCRCBtoRGB, downscaleSignalYCRCB } from '../../calculations/ComponentSignal';
+import { cvtSignalYCRCBtoRGB, downscaleSignalYCRCB } from '../../calculations/CalcComponentSignal';
 
-
-const Camera = (props) => {
-    const cam = useRef()
-    const { setDefaultCamera } = useThree()
-
-    // zoom to fit window
-    const { size: { width, height } } = useThree();
-    const initialZoom = Math.min(width/2.4, height/2.4);
-
-    useEffect(() => void setDefaultCamera(cam.current), [])
-
-    useFrame(() => {
-      cam.current.updateMatrixWorld();
-      cam.current.lookAt(0, 0, 0);
-    })
-    return <orthographicCamera ref={cam} zoom={initialZoom} near={0.0} {...props} />
-  }
 
 
 export const VectorscopeView = ({ signalYCRCB, withOverlays = false, encodedVideoStandard = 1  }) => {
@@ -58,7 +43,7 @@ export const VectorscopeView = ({ signalYCRCB, withOverlays = false, encodedVide
       <View style={{flex: 1}}>
 
           <Canvas style={styles.canvas}>
-              <Camera position={[0, 0, 1]} />
+              <ScopesCamera position={[0, 0, 1]} initialZoomScale={2.4} />
               <VectorscopeBounds />
               <PeakSignalHexagon videoStandard={videoStandards[vidStdIdx]}/>
               <VectorscopePlot signalSmallYCRCB={signalSmallYCRCB} signalRGB={signalRGB} discreteSignalRepresentation={discreteSignalRepresentation}/>

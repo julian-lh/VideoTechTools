@@ -4,7 +4,7 @@ import { View, Text } from 'react-native';
 
 import { styles } from './SignalPreviewPlotStyle';
 
-import { rgbToString, rgbToComplColorString } from '../../../calculations/Helpers'
+import { rgbToString, rgbToComplColorString } from '../../../calculations/CalcHelpers'
 
 
 const PixelRepresentative = ({ labelIdx, labelSignal, signalDescription, idx1, idx2, rgb }) => {

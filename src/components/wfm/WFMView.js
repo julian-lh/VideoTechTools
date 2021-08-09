@@ -11,29 +11,13 @@ import { SettingsPopOver, VideoStandardSelectElement } from '../generalComponent
 import { SignalPreviewPlot } from '../signalPreview/subviews/SignalPreviewPlot';
 import { VideoStandardAlertView } from '../generalComponents/VideoStandardAlertView';
 
+import { ScopesCamera } from '../generalComponents/ScopesCamera';
+
 import { WFMPlot } from './subviews/WFMPlot';
 import { WFMGrid } from './subviews/WFMLabeling';
 
-import { cvtSignalYCRCBtoRGB, downscaleSignalYCRCB } from '../../calculations/ComponentSignal';
+import { cvtSignalYCRCBtoRGB, downscaleSignalYCRCB } from '../../calculations/CalcComponentSignal';
 
-
-
-const Camera = (props) => {
-    const cam = useRef()
-    const { setDefaultCamera } = useThree()
-
-    // zoom to fit window
-    const { size: { width, height } } = useThree();
-    const initialZoom = Math.min(width/2.3, height/2.3);
-
-    useEffect(() => void setDefaultCamera(cam.current), [])
-
-    useFrame(() => {
-      cam.current.updateMatrixWorld();
-      cam.current.lookAt(0.9, 0.3, 0);
-    })
-    return <orthographicCamera ref={cam} zoom={initialZoom} near={0.0} {...props} />
-  }
 
 
 export const WFMView = ({ signalYCRCB, withOverlays = false,  encodedVideoStandard = 1 }) => {
@@ -64,7 +48,7 @@ export const WFMView = ({ signalYCRCB, withOverlays = false,  encodedVideoStanda
         <View style={{flex: 1}}>
 
           <Canvas style={styles.canvas}>
-              <Camera position={[0.9, 0.3, 1]} />
+              <ScopesCamera position={[0.9, 0.3, 1]} target={[0.9, 0.3, 0]} initialZoomScale={2.3}/>
               <WFMGrid />
               <WFMPlot signalYCRCB={signalSmallYCRCB} signalRGB={signalRGB} representationID={wfmRepIdx}/>
           </Canvas>

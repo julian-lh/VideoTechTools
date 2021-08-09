@@ -1,7 +1,7 @@
 import React, { useRef, useMemo } from 'react';
 import * as THREE from 'three';
 
-import { cvtSignalRGBtoYCRCB } from '../../../calculations/ComponentSignal';
+import { cvtSignalRGBtoYCRCB } from '../../../calculations/CalcComponentSignal';
 
 
 

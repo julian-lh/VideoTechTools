@@ -9,8 +9,8 @@ import { BarsGenerator} from './subviews/BarsGenerator';
 import { FullColorGenerator } from './subviews/FullColorGenerator';
 import { GradientGenerator } from './subviews/GradientGenerator';
 
-import { cvtSignalRGBtoYCRCB, upscaleSignalYCRCB, limiterComponentSignal, limiterRGBSignal} from '../../calculations/ComponentSignal';
-import { offsetSignalContrast, offsetSignalBrightness, offsetSignalGamma } from '../../calculations/SignalGenerator';
+import { cvtSignalRGBtoYCRCB, upscaleSignalYCRCB, limiterComponentSignal, limiterRGBSignal} from '../../calculations/CalcComponentSignal';
+import { offsetSignalContrast, offsetSignalBrightness, offsetSignalGamma } from '../../calculations/CalcSignalCorrector';
 
 
 

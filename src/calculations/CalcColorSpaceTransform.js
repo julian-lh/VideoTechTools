@@ -72,9 +72,10 @@ export function cvtSignalXYZtoxyY(signalXYZ){
 
 
 
-// input: h in [0,360] and s,v in [0,1] - output: r,g,b in [0,1]
+
 export function cvtHSVtoRGB(hsv){
-    // https://stackoverflow.com/a/54024653/860099
+    // input: h in [0,360] and s,v in [0,1] - output: r,g,b in [0,1]
+    // Based on: https://stackoverflow.com/a/54024653/860099 (last access 09.08.2021)
     const [h, s, v] = hsv;
 
     let f= (n,k=(n+h/60)%6) => v - v*s*Math.max( Math.min(k,4-k,1), 0);
@@ -82,9 +83,11 @@ export function cvtHSVtoRGB(hsv){
 }
 
 
-// input: r,g,b in [0,1], out: h in [0,360) and s,v in [0,1]
+
 export function cvtRGBtoHSV(rgb) {
-//https://stackoverflow.com/a/54070620/860099
+    // input: r,g,b in [0,1], out: h in [0,360) and s,v in [0,1]
+    // Based on: https://stackoverflow.com/a/54070620/860099 (last access 09.08.2021)
+
     const [r, g, b] = rgb;
     let v=Math.max(r,g,b), c=v-Math.min(r,g,b);
     let h= c && ((v==r) ? (g-b)/c : ((v==g) ? 2+(b-r)/c : 4+(r-g)/c));

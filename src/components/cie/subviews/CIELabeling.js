@@ -1,7 +1,7 @@
 import React, {useRef, useMemo} from 'react';
 import * as THREE from 'three';
 
-import { CIEBoundsValues } from '../../../calculations/ColorSpaceTransform';
+import { CIEBoundsValues } from '../../../calculations/CalcColorSpaceTransform';
 
 
 export const COS = (props) => {
