@@ -5,24 +5,24 @@ import { Button } from 'react-native-elements';
 import { Canvas, useFrame, useThree } from 'react-three-fiber';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import { styles } from './CIEViewStyle';
+import { styles } from './CieViewStyle';
 
 import { SettingsPopOver, VideoStandardSelectElement, GamutSelectElement, ToggleElement } from '../generalComponents/Settings';
-import { SignalPreviewPlot } from '../signalPreview/subviews/SignalPreviewPlot';
+import { SignalPreviewPlot } from '../signalPreview/subComponents/SignalPreviewPlot';
 import { VideoStandardAlertView } from '../generalComponents/VideoStandardAlertView';
 
 import { ScopesCamera } from '../generalComponents/ScopesCamera';
 
-import { CIEPlot } from './subviews/CIEPlot';
-import { GamutBounds, GamutLabels } from './subviews/GamutBounds';
-import { CIEBounds, COS } from './subviews/CIELabeling';
+import { CiePlot } from './subComponents/CiePlot';
+import { GamutBounds, GamutLabels } from './subComponents/GamutBounds';
+import { CieBounds, COS } from './subComponents/CieLabeling';
 
 import { cvtSignalRGBtoXYZ, cvtSignalXYZtoxyY } from '../../calculations/CalcColorSpaceTransform';
 import { cvtSignalYCRCBtoRGB, downscaleSignalYCRCB } from '../../calculations/CalcComponentSignal';
 import { offsetSignalGamma } from '../../calculations/CalcSignalGenerator';
 
 
- export const CIEView = ({ signalYCRCB, withOverlays = false, encodedVideoStandard = 1 }) => {
+ export const CieView = ({ signalYCRCB, withOverlays = false, encodedVideoStandard = 1 }) => {
 
     // camera perspective
     const [camPos, setCamPos] = useState([0.5, 0.4, 1.1]);
@@ -64,9 +64,9 @@ import { offsetSignalGamma } from '../../calculations/CalcSignalGenerator';
           <Canvas style={styles.canvas, {backgroundColor: (lightBackground ? '#eee' : '#333')}}>
             <ScopesCamera position={camPos} target={[0.5, 0.4, 0.4]} initialZoomScale={1.3} zoomOffset={zoomOffset}/>
             <COS />
-            <CIEBounds />
+            <CieBounds />
             <GamutBounds showRec601={showGamut601} showRec709={showGamut709} showRec2020={showGamut2020}/>
-            <CIEPlot signalxyY={signalxyY} signalRGB={signalRGB} dotSize={0.015}/>
+            <CiePlot signalxyY={signalxyY} signalRGB={signalRGB} dotSize={0.015}/>
           </Canvas>
 
 

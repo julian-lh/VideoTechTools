@@ -4,7 +4,7 @@ import { Button  } from 'react-native-elements';
 
 import { styles } from './SignalPreviewViewStyle';
 
-import { SignalPreviewPlot } from './subviews/SignalPreviewPlot';
+import { SignalPreviewPlot } from './subComponents/SignalPreviewPlot';
 import { cvtSignalYCRCBtoRGB, downscaleSignalYCRCB } from '../../calculations/CalcComponentSignal';
 
 

@@ -7,13 +7,13 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { styles } from './VectorscopeViewStyle';
 
 import { SettingsPopOver, VideoStandardSelectElement, ToggleElement } from '../generalComponents/Settings';
-import { SignalPreviewPlot } from '../signalPreview/subviews/SignalPreviewPlot';
+import { SignalPreviewPlot } from '../signalPreview/subComponents/SignalPreviewPlot';
 import { VideoStandardAlertView } from '../generalComponents/VideoStandardAlertView';
 
 import { ScopesCamera } from '../generalComponents/ScopesCamera';
 
-import { VectorscopePlot } from './subviews/VectorscopePlot';
-import { VectorscopeBounds, PeakSignalHexagon} from './subviews/VectorscopeLabeling';
+import { VectorscopePlot } from './subComponents/VectorscopePlot';
+import { VectorscopeBounds, PeakSignalHexagon} from './subComponents/VectorscopeLabeling';
 
 import { cvtSignalYCRCBtoRGB, downscaleSignalYCRCB } from '../../calculations/CalcComponentSignal';
 

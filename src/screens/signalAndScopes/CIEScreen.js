@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import { View } from "react-native";
 
-import { CIEView } from "../../components/cie/CIEView";
+import { CieView } from "../../components/cie/CieView";
 import { SignalGenerator } from "../../components/signalGenerator/SignalGenerator";
 
-export default function CIEScreen() {
+export default function CieScreen() {
     const [signalYCRCB, setSignalYCRCB] = useState([[[100, 128, 128]]]);
     const [vidStdIdx, setVidStdIdx] = useState(1);
 
     return (
         <View style={{ flex: 1 }}>
-            <CIEView
+            <CieView
                 signalYCRCB={signalYCRCB}
                 encodedVideoStandard={vidStdIdx}
                 withOverlays={true}

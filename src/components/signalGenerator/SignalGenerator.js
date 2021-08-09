@@ -4,10 +4,10 @@ import { Button, Text } from 'react-native-elements';
 
 import { styles } from './SignalGeneratorStyle';
 
-import { TapButton, PageBar } from './subviews/CustomButtons';
-import { BarsGenerator} from './subviews/BarsGenerator';
-import { FullColorGenerator } from './subviews/FullColorGenerator';
-import { GradientGenerator } from './subviews/GradientGenerator';
+import { TapButton, PageBar } from './subComponents/CustomButtons';
+import { BarsGenerator} from './subComponents/BarsGenerator';
+import { FullColorGenerator } from './subComponents/FullColorGenerator';
+import { GradientGenerator } from './subComponents/GradientGenerator';
 
 import { cvtSignalRGBtoYCRCB, upscaleSignalYCRCB, limiterComponentSignal, limiterRGBSignal} from '../../calculations/CalcComponentSignal';
 import { offsetSignalContrast, offsetSignalBrightness, offsetSignalGamma } from '../../calculations/CalcSignalCorrector';

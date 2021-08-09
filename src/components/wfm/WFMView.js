@@ -8,13 +8,13 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { styles } from './WFMViewStyle';
 
 import { SettingsPopOver, VideoStandardSelectElement } from '../generalComponents/Settings';
-import { SignalPreviewPlot } from '../signalPreview/subviews/SignalPreviewPlot';
+import { SignalPreviewPlot } from '../signalPreview/subComponents/SignalPreviewPlot';
 import { VideoStandardAlertView } from '../generalComponents/VideoStandardAlertView';
 
 import { ScopesCamera } from '../generalComponents/ScopesCamera';
 
-import { WFMPlot } from './subviews/WFMPlot';
-import { WFMGrid } from './subviews/WFMLabeling';
+import { WFMPlot } from './subComponents/WFMPlot';
+import { WFMGrid } from './subComponents/WFMLabeling';
 
 import { cvtSignalYCRCBtoRGB, downscaleSignalYCRCB } from '../../calculations/CalcComponentSignal';
 

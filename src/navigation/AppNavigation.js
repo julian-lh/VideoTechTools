@@ -8,7 +8,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import CIEScreen from '../screens/signalAndScopes/CIEScreen';
+import CieScreen from '../screens/signalAndScopes/CieScreen';
 import VectorscopeScreen from '../screens/signalAndScopes/VectorscopeScreen';
 import WFMScreen from '../screens/signalAndScopes/WFMScreen';
 import ScopesCombinationScreen from '../screens/signalAndScopes/ScopesCombinationScreen';
@@ -22,10 +22,10 @@ export default function Navigation() {
     return (
       <NavigationContainer>
           <Drawer.Navigator
-                drawerStyle={{
-                    maxWidth: 240,
-                    paddingTop: "40%"
-                    }}
+              drawerStyle={{
+                  maxWidth: 240,
+                  paddingTop: "40%"
+                  }}
               screenOptions={({ route }) => ({
               drawerIcon: ({ focused, color, size }) => {
                   let iconName;
@@ -65,14 +65,13 @@ export default function Navigation() {
                     break;
                   }
 
-                  // You can return any component that you like here!
                   return <Ionicons name={iconName} size={size} color={color} />;
               },
               })}>
 
               <Drawer.Screen name="WFM" component={StackWrap_WFMScreen} />
               <Drawer.Screen name="Vektorskop" component={StackWrap_VectorscopeScreen} />
-              <Drawer.Screen name="CIE-Normfarbtafel" component={StackWrap_CIEScreen} />
+              <Drawer.Screen name="CIE-Normfarbtafel" component={StackWrap_CieScreen} />
               <Drawer.Screen name="Komponentensignal" component={StackWrap_SignalPreviewScreen} />
               <Drawer.Screen name="Scopes Übersicht" component={StackWrap_ScopesCombinationScreen} />
 
@@ -84,11 +83,11 @@ export default function Navigation() {
 
   // TODO: There must be a more elegant way to solve this
 
-  function StackWrap_CIEScreen({ navigation }) {
+  function StackWrap_CieScreen({ navigation }) {
     return (
       <Stack.Navigator>
-        <Stack.Screen name= {"CIEScreen"} component={CIEScreen} options={{
-            headerTitle: "CIE-Normfarbtafel",
+        <Stack.Screen name= {"CieScreen"} component={CieScreen} options={{
+            headerTitle: "Cie-Normfarbtafel",
           headerLeft: () => <Button icon={<Ionicons name="menu" size={25} color="gray" />} onPress={() => navigation.toggleDrawer()} type="clear"/>
         }}/>
       </Stack.Navigator>
