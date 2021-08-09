@@ -7,7 +7,7 @@ import * as THREE from 'three';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 //import { Text as Text3D } from 'troika-three-text';
-import { SettingsPopOver, VideoStandardSelector } from '../generalComponents/Settings';
+import { SettingsPopOver, VideoStandardSelectElement } from '../generalComponents/Settings';
 import { RGBSignalPreview } from '../signalPreview/RGBSignalPreview';
 import { VideoStandardAlertView } from '../helpers/VideoStandardAlertView';
 
@@ -310,7 +310,7 @@ export const WFMView = ({ signalYCRCB, withOverlays = false,  encodedVideoStanda
 
             {(settingsVisible ?
               <SettingsPopOver setSettingsVisible={setSettingsVisible}>
-                      <VideoStandardSelector
+                      <VideoStandardSelectElement
                           vidStdIdx={vidStdIdx}
                           setVidStdIdx={setVidStdIdx}
                           bitDepthIdx={bitDepthIdx}

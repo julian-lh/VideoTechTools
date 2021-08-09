@@ -25,18 +25,44 @@ export const SettingsPopOver = (props) => {
     );
 }
 
-export const ToggleElement = ({title, value, setValue }) => {
+export const ToggleElement = ({ elementTitle, title, onPress }) => {
     return(
         <View style={styles.elementContainer}>
-            <Text>{title}</Text>
+            <Text>{elementTitle}</Text>
             <View style={styles.elementButtonContainer}>
-                <Button title={value} onPress={setValue} type="clear"/>
+                <Button title={title} onPress={onPress} type="clear"/>
+            </View>
+        </View>
+    )
+}
+/*
+export const HighlightToggleElement = ({ elementTitle, title1, onPress1, title2, onPress2, title3, onPress3 }) => {
+    return(
+        <View style={styles.elementContainer}>
+            <Text>{elementTitle}</Text>
+            <View style={styles.elementButtonContainer}>
+                <Button title={title1} onPress={onPress1} type="clear"/>
+                <Button title={title2} onPress={onPress2} type="clear"/>
+                <Button title={title3} onPress={onPress3} type="clear"/>
+            </View>
+        </View>
+    )
+}
+*/
+export const GamutSelectElement = ({ showRec601, toggleRec601, showRec709, toggleRec709, showRec2020, toggleRec2020 }) => {
+    return(
+        <View style={styles.elementContainer}>
+            <Text>{"Gamut-Begrenzungen einblenden"}</Text>
+            <View style={styles.elementButtonContainer}>
+                <Button title={"Rec.601"} onPress={() => toggleRec601(!showRec601)} titleStyle={{ color: (showRec601 ? "black" : "gray")}} type="clear"/>
+                <Button title={"Rec.709"} onPress={() => toggleRec709(!showRec709)} titleStyle={{ color: (showRec709 ? "black" : "gray")}} type="clear"/>
+                <Button title={"Rec.2020"} onPress={() => toggleRec2020(!showRec2020)} titleStyle={{ color: (showRec2020 ? "black" : "gray")}} type="clear"/>
             </View>
         </View>
     )
 }
 
-export const VideoStandardSelector = ({vidStdIdx, setVidStdIdx, bitDepthIdx, setBitDepthIdx}) => {
+export const VideoStandardSelectElement = ({vidStdIdx, setVidStdIdx, bitDepthIdx, setBitDepthIdx}) => {
     const videoStandards = ["601", "709", "2020"];
     const switchVideoStd = () => {vidStdIdx < videoStandards.length-1 ? setVidStdIdx(vidStdIdx + 1) : setVidStdIdx(0)};
 
