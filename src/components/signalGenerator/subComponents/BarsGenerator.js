@@ -1,16 +1,15 @@
-import React, { useState, useEffect, useLayoutEffect } from 'react';
-import { StyleSheet } from 'react-native';
+import React, { useState, useLayoutEffect } from 'react';
 import { Button } from 'react-native-elements';
 
 import { generateRGBSignalBars } from '../../../calculations/CalcSignalGenerator';
 
 
-export const BarsGenerator = ({ setRgbSignal }) => {
+export const BarsGenerator = ({ setSignalRGB }) => {
 
     const [useBars100, setUseBars100] = useState(true);
 
     useLayoutEffect(() => {
-        setRgbSignal(() => generateRGBSignalBars(8, 1, useBars100))
+        setSignalRGB(() => generateRGBSignalBars(8, 1, useBars100))
      }, [useBars100])
 
     return(

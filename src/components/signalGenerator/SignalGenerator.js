@@ -14,8 +14,8 @@ import { offsetSignalContrast, offsetSignalBrightness, offsetSignalGamma } from 
 
 
 
-const Generator = ({ setRgbSignal, fStopOffset, setFStopOffset }) => {
-    const [generatorIdx, setGeneratorIdx] = useState(0);
+const Generator = ({ setSignalRGB, generatorIdx, setGeneratorIdx, fStopOffset, setFStopOffset }) => {
+   // const [generatorIdx, setGeneratorIdx] = useState(0);
 
     return(
         <View style={styles.generatorContainer}>
@@ -34,9 +34,9 @@ const Generator = ({ setRgbSignal, fStopOffset, setFStopOffset }) => {
                         type="clear"/>
             </View>
 
-            {generatorIdx === 0 ? <FullColorGenerator setRgbSignal={setRgbSignal} /> : null}
-            {generatorIdx === 1 ? <GradientGenerator setRgbSignal={setRgbSignal} /> : null}
-            {generatorIdx === 2 ? <BarsGenerator setRgbSignal={setRgbSignal} /> : null}
+            {generatorIdx === 0 ? <FullColorGenerator setSignalRGB={setSignalRGB} /> : null}
+            {generatorIdx === 1 ? <GradientGenerator setSignalRGB={setSignalRGB} /> : null}
+            {generatorIdx === 2 ? <BarsGenerator setSignalRGB={setSignalRGB} /> : null}
 
             <TapButton label={"Blenden Offset"} currentValue={fStopOffset} setValue={setFStopOffset} stepSize={0.05}/>
         </View>
@@ -66,9 +66,12 @@ const Corrector = ({contrastOffset, setContrastOffset, gammaOffset, setGammaOffs
 
  export const SignalGenerator = ({setSignal, setEncodingVideoStandard, showHideButton = false}) => {
 
+    // appearance
     const [hideSignalGenerator, setHideSignalGenerator] = useState(false);
     const [pageID, setPageID] = useState(0);
+    const [generatorIdx, setGeneratorIdx] = useState(0);
 
+    // video standard
     const videoStandards = ["601", "709", "2020"];
     const [vidStdIdx, setVidStdIdx] = useState(1);
     const switchVidStd = () => {vidStdIdx < 2 ? setVidStdIdx(vidStdIdx + 1) : setVidStdIdx(0)};
@@ -79,6 +82,7 @@ const Corrector = ({contrastOffset, setContrastOffset, gammaOffset, setGammaOffs
 
     const [exceedVideoLevels, setExceedVideoLevels] = useState(false);
 
+    // signal parameters
     const [signalRGB, setSignalRGB] = useState( [[[0, 0, 0]]] );
 
     const [fStopOffset, setFStopOffset] = useState(0); //[0...2]
@@ -86,7 +90,7 @@ const Corrector = ({contrastOffset, setContrastOffset, gammaOffset, setGammaOffs
     const [brightnessOffset, setBrightnessOffset] = useState(0); //[-2...2]
     const [gammaOffset, setGammaOffset] = useState(1); //[-3...3]
 
-    // Color Corrector operations
+    // color corrector
     const postCorrectorSignal = useMemo(() => {
         var signal = signalRGB;
 
@@ -100,12 +104,10 @@ const Corrector = ({contrastOffset, setContrastOffset, gammaOffset, setGammaOffs
         return signal;
     }, [fStopOffset, contrastOffset, gammaOffset, brightnessOffset, exceedVideoLevels, bitDepthIdx, vidStdIdx, signalRGB])
 
-
     // RGB -> YCrCb
     const signalSmallYCRCB = cvtSignalRGBtoYCRCB(postCorrectorSignal, videoStandards[vidStdIdx]);
     var signalYCRCB = upscaleSignalYCRCB(signalSmallYCRCB, bitDepths[bitDepthIdx]);
     signalYCRCB = limiterComponentSignal(signalYCRCB, bitDepths[bitDepthIdx], exceedVideoLevels);
-
 
     // signal refresh
     useLayoutEffect(() => {
@@ -131,7 +133,9 @@ const Corrector = ({contrastOffset, setContrastOffset, gammaOffset, setGammaOffs
 
             {pageID == 0 ?
             <Generator rgbSignal={signalRGB}
-                        setRgbSignal={setSignalRGB}
+                        setSignalRGB={setSignalRGB}
+                        generatorIdx={generatorIdx}
+                        setGeneratorIdx={setGeneratorIdx}
                         fStopOffset={fStopOffset}
                         setFStopOffset={setFStopOffset} />
             :
@@ -146,8 +150,8 @@ const Corrector = ({contrastOffset, setContrastOffset, gammaOffset, setGammaOffs
             <Button title={(exceedVideoLevels ? "mit Unter- & Überpegel" : "ohne Unter- & Überpegel")}
                     onPress={() => setExceedVideoLevels(!exceedVideoLevels)}
                 />
-        </ScrollView>
-                : null }
+        </ScrollView> : null }
+
       </View>
     );
   }

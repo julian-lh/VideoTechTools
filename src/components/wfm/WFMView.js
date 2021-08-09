@@ -5,7 +5,7 @@ import { Button  } from 'react-native-elements';
 import { Canvas, useFrame, useThree } from 'react-three-fiber';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import { styles } from './WFMViewStyle';
+import { styles } from './WfmViewStyle';
 
 import { SettingsPopOver, VideoStandardSelectElement } from '../generalComponents/Settings';
 import { SignalPreviewPlot } from '../signalPreview/subComponents/SignalPreviewPlot';
@@ -13,14 +13,14 @@ import { VideoStandardAlertView } from '../generalComponents/VideoStandardAlertV
 
 import { ScopesCamera } from '../generalComponents/ScopesCamera';
 
-import { WFMPlot } from './subComponents/WFMPlot';
-import { WFMGrid } from './subComponents/WFMLabeling';
+import { WfmPlot } from './subComponents/WfmPlot';
+import { WfmGrid } from './subComponents/WfmLabeling';
 
 import { cvtSignalYCRCBtoRGB, downscaleSignalYCRCB } from '../../calculations/CalcComponentSignal';
 
 
 
-export const WFMView = ({ signalYCRCB, withOverlays = false,  encodedVideoStandard = 1 }) => {
+export const WfmView = ({ signalYCRCB, withOverlays = false,  encodedVideoStandard = 1 }) => {
 
     // WFM mode
     const wfmReps = ["RGB", "YCrCb", "Luma"];
@@ -49,8 +49,8 @@ export const WFMView = ({ signalYCRCB, withOverlays = false,  encodedVideoStanda
 
           <Canvas style={styles.canvas}>
               <ScopesCamera position={[0.9, 0.3, 1]} target={[0.9, 0.3, 0]} initialZoomScale={2.3}/>
-              <WFMGrid />
-              <WFMPlot signalYCRCB={signalSmallYCRCB} signalRGB={signalRGB} representationID={wfmRepIdx}/>
+              <WfmGrid />
+              <WfmPlot signalYCRCB={signalSmallYCRCB} signalRGB={signalRGB} representationID={wfmRepIdx}/>
           </Canvas>
 
 

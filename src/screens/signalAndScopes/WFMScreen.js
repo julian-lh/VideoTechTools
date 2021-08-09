@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import { View } from "react-native";
 
-import { WFMView } from "../../components/wfm/WFMView";
+import { WfmView } from "../../components/wfm/WfmView";
 import { SignalGenerator } from "../../components/signalGenerator/SignalGenerator";
 
-export default function WFMScreen() {
+export default function WfmScreen() {
     const [signalYCRCB, setSignalYCRCB] = useState([[[100, 128, 128]]]);
     const [vidStdIdx, setVidStdIdx] = useState(1);
 
     return (
         <View style={{ flex: 1 }}>
-            <WFMView
+            <WfmView
                 signalYCRCB={signalYCRCB}
                 encodedVideoStandard={vidStdIdx}
                 withOverlays={true}

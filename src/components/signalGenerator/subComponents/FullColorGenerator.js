@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useLayoutEffect } from 'react';
+import React, { useState, useLayoutEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button } from 'react-native-elements';
 
@@ -9,7 +9,7 @@ import { clamp } from '../../../calculations/CalcHelpers';
 import { TapButton } from './CustomButtons';
 
 
-export const FullColorGenerator = ({ setRgbSignal }) => {
+export const FullColorGenerator = ({ setSignalRGB }) => {
 
     const [hue, setHueDirectly] = useState(0);
     const setHue = (value)  => setHueDirectly((value % 360 < 0) ? (360 - Math.abs(value) % 360) : value % 360);
@@ -25,11 +25,11 @@ export const FullColorGenerator = ({ setRgbSignal }) => {
     const [blue, setBlueDirectly] = useState(0.0);
     const setBlue = (value)  => setBlueDirectly( clamp(value) );
 
-    // prevent infinite conversion loops
+    // prevents infinite conversion loops
     const [showingRgbControls, setShowingRgbControls] = useState(true);
 
     useLayoutEffect(() => {
-        setRgbSignal(generateRGBSignalFullColor([red, green, blue], 1, 1));
+        setSignalRGB(generateRGBSignalFullColor([red, green, blue], 1, 1));
 
         if (showingRgbControls){
             const [h, s, v] = cvtRGBtoHSV([red, green, blue]);
@@ -49,15 +49,15 @@ export const FullColorGenerator = ({ setRgbSignal }) => {
     }, [hue, saturation, value]);
 
     return(
-        <View style={{ flex: 1, flexGrow: 1, justifyContent: 'center', alignItems: "center",}}>
-            <Button title={(showingRgbControls ? "RGB" : "HSV")} onPress={() => setShowingRgbControls(!showingRgbControls)} style={{ paddingTop: 10  }} titleStyle={{ color: "black"}}/>
+        <View style={styles.outerContainer}>
+            <Button title={(showingRgbControls ? "RGB" : "HSV")} onPress={() => setShowingRgbControls(!showingRgbControls)} style={{ paddingTop: 10  }} titleStyle={{ color: 'black'}}/>
             {showingRgbControls ?
-                <View style={{ flex: 1,  flexDirection: "column", justifyContent: 'space-around', alignItems: "center", padding: 10 }}>
-                    <TapButton label={"Rot"} currentValue={red} setValue={setRed} stepSize={0.1} color={"#fdd"} />
-                    <TapButton label={"Grün"} currentValue={green} setValue={setGreen} stepSize={0.1} color={"#dfd"}/>
-                    <TapButton label={"Blau"} currentValue={blue} setValue={setBlue} stepSize={0.1} color={"#ddf"}/>
+                <View style={styles.buttonColumnContainer}>
+                    <TapButton label={"Rot"} currentValue={red} setValue={setRed} stepSize={0.1} color={'#fdd'} />
+                    <TapButton label={"Grün"} currentValue={green} setValue={setGreen} stepSize={0.1} color={'#dfd'}/>
+                    <TapButton label={"Blau"} currentValue={blue} setValue={setBlue} stepSize={0.1} color={'#ddf'}/>
                 </View> :
-                <View style={{ flex: 1, flexDirection: "column", justifyContent: 'space-around', alignItems: "center", padding: 10}}>
+                <View style={styles.buttonColumnContainer}>
                     <TapButton label={"Hue"} currentValue={hue} setValue={setHue} stepSize={5} stepSize2={20}/>
                     <TapButton label={"Saturation"} currentValue={saturation} setValue={setSaturation} stepSize={0.1}/>
                     <TapButton label={"Value"} currentValue={value} setValue={setValue} stepSize={0.1}/>
@@ -66,3 +66,19 @@ export const FullColorGenerator = ({ setRgbSignal }) => {
         </View>
     )
 }
+
+const styles = StyleSheet.create({
+    outerContainer: {
+        flex: 1,
+        flexGrow: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    buttonColumnContainer: {
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        padding: 10
+    }
+});

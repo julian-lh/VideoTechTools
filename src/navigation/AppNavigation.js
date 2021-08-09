@@ -10,7 +10,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import CieScreen from '../screens/signalAndScopes/CieScreen';
 import VectorscopeScreen from '../screens/signalAndScopes/VectorscopeScreen';
-import WFMScreen from '../screens/signalAndScopes/WFMScreen';
+import WfmScreen from '../screens/signalAndScopes/WfmScreen';
 import ScopesCombinationScreen from '../screens/signalAndScopes/ScopesCombinationScreen';
 import SignalPreviewScreen from '../screens/signalAndScopes/SignalPreviewScreen';
 
@@ -69,7 +69,7 @@ export default function Navigation() {
               },
               })}>
 
-              <Drawer.Screen name="WFM" component={StackWrap_WFMScreen} />
+              <Drawer.Screen name="WFM" component={StackWrap_WfmScreen} />
               <Drawer.Screen name="Vektorskop" component={StackWrap_VectorscopeScreen} />
               <Drawer.Screen name="CIE-Normfarbtafel" component={StackWrap_CieScreen} />
               <Drawer.Screen name="Komponentensignal" component={StackWrap_SignalPreviewScreen} />
@@ -105,10 +105,10 @@ export default function Navigation() {
     );
   }
 
-  function StackWrap_WFMScreen({ navigation }) {
+  function StackWrap_WfmScreen({ navigation }) {
     return (
       <Stack.Navigator>
-        <Stack.Screen name= {"WFMScreen"} component={WFMScreen} options={{
+        <Stack.Screen name= {"WfmScreen"} component={WfmScreen} options={{
             headerTitle: "WFM",
           headerLeft: () => <Button icon={<Ionicons name="menu" size={25} color="gray" />} onPress={() => navigation.toggleDrawer()} type="clear"/>
         }}/>
