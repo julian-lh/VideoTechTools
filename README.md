@@ -51,7 +51,7 @@ VideoTechTools
 
 ## [Komponenten](README_subpages/Components.md)
 
-- [CIEView](README_subpages/Components.md#cieview)
+- [CIEView](README_subpages/Components/CIE.md)
 
 - [SignalGenerator](README_subpages/Components.md#signalgenerator)
 
