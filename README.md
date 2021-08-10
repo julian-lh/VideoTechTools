@@ -75,38 +75,12 @@ VideoTechTools
 
 - [Scopes Kombination](README_subpages/Screens.md#waveformmonitor)
 
+
+## [Vorkommende Signal-Arrays](README_subpages/SignalArrays.md)
+
+</br>
+
 ## Genereller Aufbau von Komponenten
-
-## Signalarten
-Zur Kommunikation zwischen den Komponenten und bei internen Berechnungen gibt es wiederkehrende Signalarten, die mit deren Notation hier zusammengefasst sind.
-
-### signalYCRCB[rowIdx][columnIdx][pixel]
-
-Haupt-Kommunikations-Array zwischen App-Komponenten der Signalerzeugung oder -Messung.
-
-|           |       |
-|-----------|-------|
-| rowIdx    | Index der Zeile. Entspricht relativer vertikaler Bildposition.      |
-| columnIdx | Index der Spalte. Entspricht relativer horizontaler Bildposition.   |
-| pixel     | Komponenten-Tripel eines Pixels oder Pixelfläche.                   |
-
-Quantisierung 
-
-Aus Gründen der Datenersparnis können Höhe und Breite des Arrays von der Auflösung der Videostandards abweichen. Sie repräsentieren dennoch ein Vollbild und sind als relative Bildpositionen zu betrachten. Für eine korrekte Darstellung muss das Array auf ein Vollbild gestreckt werden.
-
-
-### signalSmallYCRCB[row][column][pixel]
-
-
-
-| Parameter   | Beschreibung          | vorgesehener Signalbereich      |
-| ----------- | --------------------- | ------------------------------- |
-| rgbSignal   | RGB-Signal-Array 3D   | 0 ≤ rgbSignal[x][y][0..2] ≤ 1   |
-| YCrCbSignal | YCrCb-Signal-Array 3D | 0 ≤ YCrCbSignal[x][y][0..2] ≤ 1 |
-| labelIndex  |                       | 0..1                            |
-
-
-- Signale werden benannt: signalRGB, signalYCRCB
 
 ### Benennung von Funktionen
 
@@ -133,28 +107,6 @@ const RGBSignalPreview = ({ rgbSignal,
 | rgbSignal   | RGB-Signal-Array 3D   | 0 ≤ rgbSignal[x][y][0..2] ≤ 1   |
 | YCrCbSignal | YCrCb-Signal-Array 3D | 0 ≤ YCrCbSignal[x][y][0..2] ≤ 1 |
 | labelIndex  |                       | 0..1                            |
-
----
-
-## Signal-Arten
-
-### signalYCRCB
-
-[[[Y, CR, CB], [Y, CR, CB]],
-  [Y, CR, CB], [Y, CR, CB]]]
-
-
-### signalSmallYCRCB
-
-[[[Y, CR, CB], [Y, CR, CB]],
-  [Y, CR, CB], [Y, CR, CB]]]
-
-mit Y: 0..1
-mit CR/CB: -1..1
-
-### signalRGB
-
-
 
 
 ---
