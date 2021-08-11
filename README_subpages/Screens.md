@@ -1,17 +1,22 @@
+# Screens
 
-# CIE-Normfarbtafel
+## CIE-Normfarbtafel
+
+```JavaScript
+export default function CieScreen() {
+```
 
 Farbmodell zur Visualisierung aller vom menschlichen Auge wahrnehmbaren Farben (in 3D Ansicht) bzw. Farbwerte (in xy-Ansicht).
 
-## Verwendete Komponenten
+### Verwendete Komponenten
 
-- [CIEView](Components.md#cieview)
+- [CIEView](./Components/CIE.md)
 
-- [SignalPreview](Components.md#signalpreview)
+- [SignalPreviewView](./Components/SignalPreview.md)
 
-- [SignalGenerator](Components.md#signalgenerator)
+- [SignalGeneratorView](./Components/SignalGenerator.md)
 
-## Ideen für neue Funktionen
+### Ideen für neue Funktionen
 
 - "Orbit-Controls" für die Bewegung der Kameraperspektive in 3D
 
@@ -26,19 +31,23 @@ Farbmodell zur Visualisierung aller vom menschlichen Auge wahrnehmbaren Farben (
 
 </br>
 
-# Waveformmonitor
+## Waveformmonitor
+
+```JavaScript
+export default function WfmScreen() {
+```
 
 Instrument zur Betrachtung der Pegel eines Videosignals. Beinhalgtet Darstellungsformen als Komponentensignal, Luma-Signal und RGB. Darstellungen als Paraden
 
-## Verwendete Komponenten
+### Verwendete Komponenten
 
-- [WFMView](Components.md#wfmview)
+- [WFMView](./Components/WFM.md)
 
-- [SignalPreview](Components.md#signalpreview)
+- [SignalPreviewView](./Components/SignalPreview.md)
 
-- [SignalGenerator](Components.md#signalgenerator)
+- [SignalGeneratorView](./Components/SignalGenerator.md)
 
-## Ideen für neue Funktionen
+### Ideen für neue Funktionen
 
 - Lineinzug-Darstellung, wie im Vektorskop
 
@@ -51,19 +60,23 @@ Instrument zur Betrachtung der Pegel eines Videosignals. Beinhalgtet Darstellung
 
 </br>
 
-# Vektorskop
+## Vektorskop
+
+```JavaScript
+export default function VectorscopeScreen() {
+```
 
 Instrument zur Betrachtung des Chrominanzanteils eines Komponentensignals.
 
-## Verwendete Komponenten
+### Verwendete Komponenten
 
-- [VectorscopeView](Components.md#vectorscopeview)
+- [VectorscopeView](./Components/Vectorscope.md)
 
-- [SignalPreview](Components.md#signalpreview)
+- [SignalPreviewView](./Components/SignalPreview.md)
 
-- [SignalGenerator](Components.md#signalgenerator)
+- [SignalGeneratorView](./Components/SignalGenerator.md)
 
-## Ideen für neue Funktionen
+### Ideen für neue Funktionen
 
 - Option zur Anzeige von Toleranzfeldern
 
@@ -75,18 +88,22 @@ Instrument zur Betrachtung des Chrominanzanteils eines Komponentensignals.
 
 </br>
 
-# Komponentensignal
+## Komponentensignal
+
+```JavaScript
+export default function SignalPreviewScreen() {
+```
 
 Eine Vollbildansicht der Signalvorschau zur genaueren Betrachtung der erzeugnten Signale.
 Beinhaltet eine Beschriftung über die Signalwerte in RGB und als Komponentensignal.
 
-## Verwendete Komponenten
+### Verwendete Komponenten
 
-- [SignalPreview](Components.md#signalpreview)
+- [SignalPreviewView](./Components/SignalPreview.md)
 
-- [SignalGenerator](Components.md#signalgenerator)
+- [SignalGeneratorView](./Components/SignalGenerator.md)
 
-## Ideen für neue Funktionen
+### Ideen für neue Funktionen
 
 - Bessere Formatierung der Beschriftungen. Speziell bei horizontalen Farbverläufen im Signal
 
@@ -97,22 +114,26 @@ Beinhaltet eine Beschriftung über die Signalwerte in RGB und als Komponentensig
 
 </br>
 
-# Scopes Kombination
+## Scopes Übersicht
+
+```JavaScript
+export default function ScopesCombinationScreen() {
+```
 
 Gesamtübersicht über alle Messinstrumente. Zeigt in welcher Bezeihung diese zueinander stehen.
 
-## Verwendete Komponenten
+### Verwendete Komponenten
 
-- [CIEView](Components.md#cieview)
+- [CIEView](./Components/CIE.md)
 
-- [WFMView](Components.md#wfmview)
+- [WFMView](./Components/WFM.md)
 
-- [VectorscopeView](Components.md#vectorscopeview)
+- [VectorscopeView](./Components/Vectorscope.md)
 
-- [SignalPreview](Components.md#signalpreview)
+- [SignalPreviewView](./Components/SignalPreview.md)
 
-- [SignalGenerator](Components.md#signalgenerator)
+- [SignalGeneratorView](./Components/SignalGenerator.md)
 
-## Ideen für neue Funktionen
+### Ideen für neue Funktionen
 
-–
+–-

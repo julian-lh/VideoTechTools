@@ -61,7 +61,13 @@ VideoTechTools
 
 - [Signal-Vorschau](README_subpages/Components/SignalPreview.md)
 
-- [Einstellungs-Fenster](README_subpages/Components/Settings.md)
+- Allgemeine Komponenten
+
+    - [Einstellungs-Fenster](README_subpages/Components/Settings.md)
+
+    - [ScopesCamera](README_subpages/Components/SmallGeneralComponents.md#scopescamera)
+
+    - [VideoStandardAlertView](README_subpages/Components/SmallGeneralComponents.md#videostandardalertview)
 
 ## [Navigation](README_subpages/Navigation.md)
 
@@ -71,11 +77,11 @@ VideoTechTools
 
 - [Waveformmonitor](README_subpages/Screens.md#waveformmonitor)
 
-- [Vektorskop](README_subpages/Screens.md#waveformmonitor)
+- [Vektorskop](README_subpages/Screens.md#vektorskop)
 
-- [Komponentensignal](README_subpages/Screens.md#waveformmonitor)
+- [Komponentensignal](README_subpages/Screens.md#komponentensignal)
 
-- [Scopes Kombination](README_subpages/Screens.md#waveformmonitor)
+- [Scopes Übersicht](README_subpages/Screens.md#scopes_ubersicht)
 
 
 ## [Vorkommende Signal-Arrays](README_subpages/SignalArrays.md)
@@ -105,7 +111,7 @@ VideoTechTools
 - Eltern nach Kind: Mittels props an child view.
 - Kind nach Eltern: Mittels nach unten durchgereichter set()-Funktion
     (<https://www.pluralsight.com/guides/how-to-pass-data-between-react-components>)
-    ...
+
 
 ## Nützliche Links
 
