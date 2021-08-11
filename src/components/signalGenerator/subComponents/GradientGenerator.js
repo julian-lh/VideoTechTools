@@ -31,7 +31,6 @@ export const GradientGenerator = ({ setSignalRGB }) => {
 }
 
 const ColorPad = ({ setColor }) => {
-    //const gradientColors = [[1, 0, 0 ], [1, 1, 0], [0, 1, 0], [0, 1, 1], [0, 0, 1], [1, 0, 1], [0, 0, 0], [1, 1, 1]];
     const buttonSize = 40;
     return(
         <View style={styles.colorButtonsContainer}>
@@ -39,13 +38,16 @@ const ColorPad = ({ setColor }) => {
                 <Button title={""} onPress={() => setColor([1, 0, 0])} buttonStyle={{ backgroundColor: "#f00", height: buttonSize, width: buttonSize }} />
                 <Button title={""} onPress={() => setColor([1, 1, 0])} buttonStyle={{ backgroundColor: "#ff0", height: buttonSize, width: buttonSize }} />
                 <Button title={""} onPress={() => setColor([0, 1, 0])} buttonStyle={{ backgroundColor: "#0f0", height: buttonSize, width: buttonSize }} />
-                <Button title={""} onPress={() => setColor([0, 0, 0])} buttonStyle={{ backgroundColor: "#000", height: buttonSize, width: buttonSize }} />
             </View>
             <View>
                 <Button title={""} onPress={() => setColor([1, 0, 1])} buttonStyle={{ backgroundColor: "#f0f", height: buttonSize, width: buttonSize }} />
                 <Button title={""} onPress={() => setColor([0, 0, 1])} buttonStyle={{ backgroundColor: "#00f", height: buttonSize, width: buttonSize }} />
                 <Button title={""} onPress={() => setColor([0, 1, 1])} buttonStyle={{ backgroundColor: "#0ff", height: buttonSize, width: buttonSize }} />
+            </View>
+            <View>
                 <Button title={""} onPress={() => setColor([1, 1, 1])} buttonStyle={{ backgroundColor: "#fff", height: buttonSize, width: buttonSize }} />
+                <Button title={""} onPress={() => setColor([0.5, 0.5, 0.5])} buttonStyle={{ backgroundColor: "#888", height: buttonSize, width: buttonSize }} />
+                <Button title={""} onPress={() => setColor([0, 0, 0])} buttonStyle={{ backgroundColor: "#000", height: buttonSize, width: buttonSize }} />
             </View>
 
         </View>

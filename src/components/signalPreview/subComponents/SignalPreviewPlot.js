@@ -7,27 +7,7 @@ import { styles } from './SignalPreviewPlotStyle';
 import { rgbToString, rgbToComplColorString } from '../../../calculations/CalcHelpers'
 
 
-const PixelRepresentative = ({ labelIdx, labelSignal, signalDescription, idx1, idx2, rgb }) => {
-
-  const color = rgbToComplColorString(rgb);
-
-  return (
-      <View
-          style={styles.columnElement}
-          backgroundColor={rgbToString(rgb)}
-      >
-          {labelIdx > 0 ? (
-              <Text style={(styles.label, { color: color })}>
-                  {labelSignal[idx1][idx2].map(
-                      (v, i) => " " + signalDescription[i] + ":" + v.toFixed(1)
-                  )}
-              </Text>
-          ) : null}
-      </View>
-  );
-}
-
-export const SignalPreviewPlot = ({ signalRGB, signalYCRCB = undefined, labelIdx = 0}) => {
+export const SignalPreviewPlot = ({ signalRGB, signalYCRCB = undefined, labelIdx = 0 }) => {
 
     var labelSignal = [];
     var desctiption = [];
@@ -68,9 +48,28 @@ export const SignalPreviewPlot = ({ signalRGB, signalYCRCB = undefined, labelIdx
             })}
         </View>
     );
+}
+
+
+const PixelRepresentative = ({ labelIdx, labelSignal, signalDescription, idx1, idx2, rgb }) => {
+
+    const color = rgbToComplColorString(rgb);
+
+    return (
+        <View
+            style={styles.columnElement}
+            backgroundColor={rgbToString(rgb)}
+        >
+            {labelIdx > 0 ? (
+                <Text style={(styles.label, { color: color })}>
+                    {labelSignal[idx1][idx2].map(
+                        (v, i) => " " + signalDescription[i] + ":" + v.toFixed(1)
+                    )}
+                </Text>
+            ) : null}
+        </View>
+    );
   }
-
-
 
 
 
