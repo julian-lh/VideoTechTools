@@ -2,10 +2,10 @@
 
 ## Table of Contents
 
-1. [Einstieg](#einstieg)
-2. [Schnelleinstieg](#schnelleinstieg)
-3. [Third Example](#third-example)
-4. [Nützliche Links](#nutzliche-links)
+1. [Einleitung](#einleitung)
+2. [Installation](#installation)
+3. [Aufbau der Software](#aufbau_der_software)
+4. [Notation](#notation)
 
 </br>
 
@@ -19,11 +19,8 @@ _VideoTechTools_ ist eine Sammlung von Simulationen für die Videotechnik-Vorles
 npm install <Add module name here>
 ```
 
-## Schnelleinstieg
 
 ## Aufbau der Software
-
-Für die Weiterentwicklung bietet sich folgende Struktur für die direkt zu bearbeitenden Teile an
 
 ```
 VideoTechTools
@@ -44,8 +41,6 @@ VideoTechTools
 │
 └───...
 ```
-
-## Abschnitte
 
 ## [Berechnungen](README_subpages/Calculations.md)
 
@@ -88,7 +83,7 @@ VideoTechTools
 
 </br>
 
-## Genereller Aufbau von Komponenten
+## Notation
 
 ### Benennung von Funktionen
 
@@ -103,8 +98,6 @@ VideoTechTools
 - Signalname wird aufgrund unterschiedlicher Bedeutung bei Groß- und Kleinschreibung auch so belassen. Dies ist eine bewusste Abweichung vom Pascal-/Camel-Case. Z.B.: "signalxyY" anstatt "signalXyy".
     </br></br>
 
-
-## Visualisierungen
 
 ## Durchreichen von Daten
 
