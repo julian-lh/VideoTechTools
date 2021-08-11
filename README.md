@@ -53,9 +53,9 @@ VideoTechTools
 
 - [CIE-Normfarbtafel](README_subpages/Components/CIE.md)
 
-- [Signal Generator](README_subpages/Components.md#signalgenerator)
+- [Signal-Generator](README_subpages/Components.md#signalgenerator)
 
-- [Signal Vorschau](README_subpages/Components.md#signalpreview)
+- [Signal-Vorschau](README_subpages/Components/SignalPreview.md)
 
 - [Vektorskop](README_subpages/Components/Vectorscope.md)
 
@@ -97,24 +97,6 @@ VideoTechTools
 
 
 ## Visualisierungen
-
-### SignalPreview
-
-```JavaScript
-const RGBSignalPreview = ({ rgbSignal,
-                            YCrCbSignal = undefined,
-                            labelIndex = 0}) => {...}
-                    // Videostandard mit übergeben
-```
-
-| Parameter   | Beschreibung          | vorgesehener Signalbereich      |
-| ----------- | --------------------- | ------------------------------- |
-| rgbSignal   | RGB-Signal-Array 3D   | 0 ≤ rgbSignal[x][y][0..2] ≤ 1   |
-| YCrCbSignal | YCrCb-Signal-Array 3D | 0 ≤ YCrCbSignal[x][y][0..2] ≤ 1 |
-| labelIndex  |                       | 0..1                            |
-
-
----
 
 ## Durchreichen von Daten
 
