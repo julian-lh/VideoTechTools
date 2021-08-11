@@ -53,13 +53,15 @@ VideoTechTools
 
 - [CIE-Normfarbtafel](README_subpages/Components/CIE.md)
 
-- [Signal-Generator](README_subpages/Components.md#signalgenerator)
-
-- [Signal-Vorschau](README_subpages/Components/SignalPreview.md)
-
 - [Vektorskop](README_subpages/Components/Vectorscope.md)
 
 - [Waveformmonitor](README_subpages/Components/WFM.md)
+
+- [Signal-Generator](README_subpages/Components/SignalGenerator.md)
+
+- [Signal-Vorschau](README_subpages/Components/SignalPreview.md)
+
+- [Einstellungs-Fenster](README_subpages/Components/Settings.md)
 
 ## [Navigation](README_subpages/Navigation.md)
 

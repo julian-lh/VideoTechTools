@@ -7,7 +7,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 import { styles } from './WfmViewStyle';
 
-import { SettingsPopOver, VideoStandardSelectElement } from '../generalComponents/Settings';
+import { SettingsPopOverContainer, VideoStandardSelectElement } from '../generalComponents/Settings';
 import { SignalPreviewPlot } from '../signalPreview/subComponents/SignalPreviewPlot';
 import { VideoStandardAlertView } from '../generalComponents/VideoStandardAlertView';
 
@@ -60,10 +60,10 @@ export const WfmView = ({ signalYCRCB, withOverlays = false,  encodedVidStdIdx =
           </View>
 
           <View style={styles.overlaysContainer}>
-            {withOverlays ?
-            <Button icon={<Icon name="settings-sharp" size={25}/>} type="clear"
+              {withOverlays ?
+              <Button icon={<Icon name="settings-sharp" size={25}/>} type="clear"
                     onPress={() => setSettingsVisible(!settingsVisible)}/> : null }
-            <Button title={wfmReps[wfmRepIdx]} onPress={switchWfmRep}/>
+              <Button title={wfmReps[wfmRepIdx]} onPress={switchWfmRep}/>
           </View>
 
 
@@ -72,21 +72,21 @@ export const WfmView = ({ signalYCRCB, withOverlays = false,  encodedVidStdIdx =
           <View style={{ position: 'absolute', zIndex: 1, bottom: 10, right:20, left: 20, minHeight: (largePreview ? 110 : 30), justifyContent: "flex-start", alignItems: 'center'}}>
               <TouchableOpacity style={{ height: '100%', aspectRatio: (largePreview ? 1.78 : undefined), width: (largePreview ? undefined : '100%')}}
                                 onPress={togglePreviewSize}>
-                <SignalPreviewPlot signalRGB={signalRGB}/>
+                  <SignalPreviewPlot signalRGB={signalRGB}/>
               </TouchableOpacity>
           </View> : null }
 
 
 
           {(settingsVisible ?
-            <SettingsPopOver setSettingsVisible={setSettingsVisible}>
-                    <VideoStandardSelectElement
-                        vidStdIdx={vidStdIdx}
-                        setVidStdIdx={setVidStdIdx}
-                        bitDepthIdx={bitDepthIdx}
-                        setBitDepthIdx={setBitDepthIdx}
-                    />
-                </SettingsPopOver> : null)}
+            <SettingsPopOverContainer setSettingsVisible={setSettingsVisible}>
+                <VideoStandardSelectElement
+                    vidStdIdx={vidStdIdx}
+                    setVidStdIdx={setVidStdIdx}
+                    bitDepthIdx={bitDepthIdx}
+                    setBitDepthIdx={setBitDepthIdx}
+                />
+            </SettingsPopOverContainer> : null)}
 
         </View>
       );

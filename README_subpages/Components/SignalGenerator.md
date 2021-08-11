@@ -80,7 +80,7 @@ const GeneratorContainer = ({   setSignalRGB,
 export const FullColorGenerator = ({ setSignalRGB })=> {...}
 ```
 
-**setSignalRGB:** Signal-Ausgang: Übergibt ein signalRGB siehe [Signal Arrays](../SignalArrays) über diesen Parameter an Eltern-Objekt. </br>
+**setSignalRGB:** Signal-Ausgang: Übergibt ein signalRGB (siehe [Signal Arrays](../SignalArrays)) über diesen Parameter an Eltern-Objekt. </br>
 
 - Erzeugt ein einfarbiges Vollbild als signalRGB.
 

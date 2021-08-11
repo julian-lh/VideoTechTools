@@ -20,12 +20,14 @@ export const CieView = ({   signalYCRCB,
 
 - Einen Weg finden, um [OrbitControls](https://docs.pmnd.rs/drei/controls/orbit) zu integrieren (bisher Problem mit Paketversion von [drei](https://docs.pmnd.rs/drei/introduction))
 
+- Farbmanagement des Canvas für korrekte Farbwiedergabe anpassen
+
 </br>
 
 ### Verwendete GeneralComponents:
 [ScopesCamera],
 [VideoStandardAlertView],
-[SettingsPopOver]
+[SettingsPopOverContainer](./Settings.md)
 
 ---
 
