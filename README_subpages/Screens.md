@@ -136,4 +136,7 @@ Gesamtübersicht über alle Messinstrumente. Zeigt in welcher Bezeihung diese zu
 
 ### Ideen für neue Funktionen
 
+- Die vertikalen Zwischenräume der Messansichten können mehr gestaucht werden, um dem Signalgenerator mehr Platz zu geben.
+
+- Ggf. ein allgemeines Einstellungsmenü zum Wechsel aller Videostandard
 –-

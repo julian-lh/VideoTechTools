@@ -5,7 +5,7 @@ import { clamp } from './CalcHelpers';
 // ---------------------- Triple Conversions ----------------------
 
 
-export function cvtRGBtoYCRCB(rgb, standard = "709") {
+export function cvtRGBtoYCRCB(RGB, standard = "709") {
     var rgbFactors = [1, 1, 1]; var crcbQuotients = [1, 1];
 
     switch (standard){
@@ -23,9 +23,9 @@ export function cvtRGBtoYCRCB(rgb, standard = "709") {
             break;
     }
 
-    const Y = rgb[0]*rgbFactors[0] + rgb[1]*rgbFactors[1] + rgb[2]*rgbFactors[2];
-    const Cr = (rgb[0] - Y) / crcbQuotients[0];
-    const Cb = (rgb[2] - Y) / crcbQuotients[1];
+    const Y = RGB[0]*rgbFactors[0] + RGB[1]*rgbFactors[1] + RGB[2]*rgbFactors[2];
+    const Cr = (RGB[0] - Y) / crcbQuotients[0];
+    const Cb = (RGB[2] - Y) / crcbQuotients[1];
 
     return [Y, Cr, Cb];
 }
@@ -80,17 +80,8 @@ export function downscaleYCRCB(YCRCB, bitDepth = 10) {
     return [eY, eCr, eCb];
 }
 
-export function limiterSignalSmallRGB(signalSmallRGB, fullVideoData = false){
-    var peakLimit = 1;
-    var bottomLimit = 0
-    if (fullVideoData) {
-        peakLimit = 1.16;
-        bottomLimit = -0.073;
-    }
-    return signalSmallRGB.map( x => x.map( y => y.map( z => clamp(z, bottomLimit, peakLimit))));
-}
 
-export function limiterYCRCB(signalYCRCB, bitDepth, fullVideoData = false) {
+export function limiterYCRCB(YCRCB, bitDepth, fullVideoData = false) {
     const bitDepthFactor = 2**(bitDepth - 8);
 
     var peakLimitY = 235 * bitDepthFactor;
@@ -105,7 +96,7 @@ export function limiterYCRCB(signalYCRCB, bitDepth, fullVideoData = false) {
         lowerChromaLimit = blackLimitY;
     }
 
-    var tempYCRCB = [...signalYCRCB]; //Array kopieren
+    var tempYCRCB = [...YCRCB]; //Array kopieren
     tempYCRCB[0] = (tempYCRCB[0] > peakLimitY ? peakLimitY : tempYCRCB[0]);
     tempYCRCB[0] = (tempYCRCB[0] < blackLimitY ? blackLimitY : tempYCRCB[0]);
 
@@ -117,9 +108,6 @@ export function limiterYCRCB(signalYCRCB, bitDepth, fullVideoData = false) {
     return tempYCRCB;
 }
 
-export function limiterSignalYCRCB(signalYCRCB, bitDepth, fullVideoData = false){
-    return signalYCRCB.map( x => x.map( y => limiterYCRCB(y, bitDepth, fullVideoData)));
-}
 
 
 
@@ -141,4 +129,18 @@ export function upscaleSignalYCRCB(signalSmallYCRCB, bitDepth = 10 ) {
 
 export function downscaleSignalYCRCB(signalYCRCB, bitDepth = 10 ) {
     return signalYCRCB.map( x => x.map( y => downscaleYCRCB(y, bitDepth)));
+}
+
+export function limiterSignalYCRCB(signalYCRCB, bitDepth, fullVideoData = false){
+    return signalYCRCB.map( x => x.map( y => limiterYCRCB(y, bitDepth, fullVideoData)));
+}
+
+export function limiterSignalSmallRGB(signalSmallRGB, fullVideoData = false){
+    var peakLimit = 1;
+    var bottomLimit = 0
+    if (fullVideoData) {
+        peakLimit = 1.16;
+        bottomLimit = -0.073;
+    }
+    return signalSmallRGB.map( x => x.map( y => y.map( z => clamp(z, bottomLimit, peakLimit))));
 }

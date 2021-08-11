@@ -44,14 +44,6 @@ export function generateRGBSignalBars(width = 8, height = 1, type100 = true){
     return signal;
 }
 
-// helper for generateRGBSignalGradient()
-function blendPixel(firstRGB, secondRGB, ratio = 0.5){
-	var result = new Array(firstRGB.length);
-	for (var x in firstRGB){
-		 result[x] = (1-ratio)*firstRGB[x] + ratio*secondRGB[x];
-    }
-    return result;
-}
 
 export function generateRGBSignalGradient(startRGB, endRGB, width, height, directionHorizontal=true){
 	var signal = new Array(height);
@@ -74,6 +66,21 @@ export function generateRGBSignalGradient(startRGB, endRGB, width, height, direc
     }
     return signal;
 }
+
+// helper for generateRGBSignalGradient
+function blendPixel(firstRGB, secondRGB, ratio = 0.5){
+	var result = new Array(firstRGB.length);
+	for (var x in firstRGB){
+		 result[x] = (1-ratio)*firstRGB[x] + ratio*secondRGB[x];
+    }
+    return result;
+}
+
+
+// ----------------------------------------------------------------
+// ---------------------- Not in use ----------------------
+
+// corner values of 3D Gamut bodies
 
 export function generateRGB3dCoordinates(){
     var rgbArray = [];
