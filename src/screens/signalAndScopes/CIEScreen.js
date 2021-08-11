@@ -12,7 +12,7 @@ export default function CieScreen() {
         <View style={{ flex: 1 }}>
             <CieView
                 signalYCRCB={signalYCRCB}
-                encodedVideoStandard={vidStdIdx}
+                encodedVidStdIdx={vidStdIdx}
                 withOverlays={true}
             />
             <SignalGeneratorView

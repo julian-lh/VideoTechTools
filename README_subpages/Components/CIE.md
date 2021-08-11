@@ -8,19 +8,17 @@ export const CieView = ({   signalYCRCB,
                             encodedVideoStandard = 1
                             }) => {...}
 ```
-### Input-Parameter
-
-| Parameter   | Beschreibung          | vorgesehener Signalbereich      | Default   |
-| ----------- | --------------------- | ------------------------------- |---------  |
-| signalYCRCB | siehe "Signal Arrays"   | |   |
-| withOverlays| Buttons und Labels anzeigen  | true/false  | false
-| encodedVideoStandard  | Rec.601, 709 oder 2020 | 0..2                           |   1
-
-</br>
+**signalYCRCB:**   siehe [Signal Arrays](../SignalArrays) </br>
+**withOverlays:**  Buttons und Labels anzeigen (true/false) </br>
+**encodedVidStdIdx:**  Index des Videostandards, dem signalYCRCB entspricht ([0..2] für Rec.601, 709 oder 2020) </br>
 
 - Rechnet Signal für Visualisierung um
 
 - Stellt Einstellungs-Menüs für Visualisierung bereit
+
+### Optimierungen
+
+- Einen Weg finden, um [OrbitControls](https://docs.pmnd.rs/drei/controls/orbit) zu integrieren (bisher Problem mit Paketversion von [drei](https://docs.pmnd.rs/drei/introduction))
 
 </br>
 
@@ -46,8 +44,9 @@ const CiePlot = ({  signalxyY,
                     }) => {...}
 ```
 
-**dotSize:**                Größe, in der die Punkte im Plot erscheinen sollen. </br>
-**signalxyY, signalRGB:**   siehe [Signal Arrays](../SignalArrays)
+
+**signalxyY, signalRGB:**   siehe [Signal Arrays](../SignalArrays) </br>
+**dotSize:**                Radius der Punkte im Plot
 
 - Bringt Bildpunte des signalxyY in eine CIE-Normfarbtafel mit den entsprechenden Farben aus dem signalRGB
 
@@ -58,6 +57,8 @@ const CiePlot = ({  signalxyY,
 ### Optimierungen
 
 - Alternativ zu der aktuell relativen Darstellung der Farben: Modus um "echte Farben" darzustellen, sodass (durch sRGB-Farbraum-Begrenzung aus React Native) alle Farben außerhalb sRGB immer voll gesättigt dargestellt werden.
+
+- Hier lässt sich die Performance noch deutlich optimieren, indem systematischer mit den Hooks "useMemo()", "useRef()",... gearbeitet wird und unter Verwendung eines [InstancedMesh](https://threejs.org/docs/#api/en/objects/InstancedMesh). Hier muss aber auf die Paketversion von Three geachtet werden, da neuere Versionen mit anderen Bibliotheken (wie react-three-fiber) Probleme bereiten kann.
 
 </br>
 </br>
@@ -83,7 +84,7 @@ export const COS = (props) => {...}
 
 - Achsenbeschriftungen fehlen
 
-- Linien nicht bunt
+- Achsen dürfen nicht bunt sein
 
 </br>
 </br>

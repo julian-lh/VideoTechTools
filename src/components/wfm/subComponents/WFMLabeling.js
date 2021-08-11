@@ -2,7 +2,7 @@ import React, {useRef, useMemo} from 'react';
 import * as THREE from 'three';
 
 
-export const WfmGrid = ({ horizontalStratchFactor = 1.78}) => {
+export const WfmGrid = ({ aspectRatio = 1.78 }) => {
     const meshRef = useRef();
 
     const positions = useMemo(() => {
@@ -13,7 +13,7 @@ export const WfmGrid = ({ horizontalStratchFactor = 1.78}) => {
         return pos
     });
 
-    const lineWidth = 1.1 * horizontalStratchFactor;
+    const lineWidth = 1.1 * aspectRatio;
     const points = [new THREE.Vector3( -0.1, 0, 0 ), new THREE.Vector3( lineWidth, 0, 0 )];
     const geometry =  new THREE.BufferGeometry().setFromPoints( points );
     const lineMaterial = new THREE.LineBasicMaterial( { color: '#444', linewidth: 0.1} );

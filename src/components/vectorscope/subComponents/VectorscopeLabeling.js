@@ -55,10 +55,11 @@ export const VectorscopeBounds = () => {
 }
 
 
-export const PeakSignalHexagon = (props) => {
+export const PeakSignalHexagon = ({ videoStandard }) => {
     const mesh = useRef();
     const maxSignalRGB = [[[1, 0, 0], [1, 1, 0], [0, 1, 0], [0, 1, 1], [0, 0, 1], [1, 0, 1], [1, 0, 0]]];
-    const maxSignalYCRCB = cvtSignalRGBtoYCRCB(maxSignalRGB, props.videoStandard);
+    const maxSignalYCRCB = cvtSignalRGBtoYCRCB(maxSignalRGB, videoStandard);
+
     const shape = useMemo(() => {
         const s = new THREE.Shape();
         s.moveTo(maxSignalYCRCB[0][0][2], maxSignalYCRCB[0][0][1]);
@@ -68,7 +69,7 @@ export const PeakSignalHexagon = (props) => {
             }
           }
         return s;
-      }, [props.videoStandard])
+      }, [videoStandard])
 
       const points = shape.getPoints();
       const geometryPoints = new THREE.BufferGeometry().setFromPoints( points );

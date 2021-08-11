@@ -14,7 +14,7 @@ export default function SignalPreviewScreen() {
         <SignalPreviewView
             signalYCRCB={signalYCRCB}
             withOverlays={true}
-            encodedVideoStandard={vidStdIdx}
+            encodedVidStdIdx={vidStdIdx}
         />
         <SignalGeneratorView
             setSignal={setSignalYCRCB}
