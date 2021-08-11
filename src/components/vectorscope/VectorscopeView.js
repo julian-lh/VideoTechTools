@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 import { styles } from './VectorscopeViewStyle';
 
-import { SettingsPopOver, VideoStandardSelectElement, ToggleElement } from '../generalComponents/Settings';
+import { SettingsPopOverContainer, VideoStandardSelectElement, ToggleElement } from '../generalComponents/Settings';
 import { SignalPreviewPlot } from '../signalPreview/subComponents/SignalPreviewPlot';
 import { VideoStandardAlertView } from '../generalComponents/VideoStandardAlertView';
 
@@ -66,7 +66,7 @@ export const VectorscopeView = ({ signalYCRCB, withOverlays = false, encodedVidS
 
 
           {settingsVisible ?
-            <SettingsPopOver setSettingsVisible={setSettingsVisible}>
+            <SettingsPopOverContainer setSettingsVisible={setSettingsVisible}>
               <VideoStandardSelectElement
                   vidStdIdx={vidStdIdx}
                   setVidStdIdx={setVidStdIdx}
@@ -75,10 +75,10 @@ export const VectorscopeView = ({ signalYCRCB, withOverlays = false, encodedVidS
               />
               <ToggleElement
                   elementTitle={"Signalplot"}
-                  title={(useDiscreteSignalRepresentation ? "diskrete Punkte" : "Linienzug")}
+                  buttonTitle={(useDiscreteSignalRepresentation ? "diskrete Punkte" : "Linienzug")}
                   onPress={() => setUseDiscreteSignalRepresentation(!useDiscreteSignalRepresentation)}
               />
-            </SettingsPopOver> : null}
+            </SettingsPopOverContainer> : null}
 
         </View>
     );

@@ -6,7 +6,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 
 import { styles } from './SettingsStyle';
 
-export const SettingsPopOver = (props) => {
+export const SettingsPopOverContainer = (props) => {
     return (
         <View style={styles.shadow}>
             <View style={styles.settingsView}>
@@ -25,12 +25,12 @@ export const SettingsPopOver = (props) => {
     );
 }
 
-export const ToggleElement = ({ elementTitle, title, onPress }) => {
+export const ToggleElement = ({ elementTitle, buttonTitle, onPress }) => {
     return(
         <View style={styles.elementContainer}>
             <Text>{elementTitle}</Text>
             <View style={styles.elementButtonContainer}>
-                <Button title={title} onPress={onPress} type="clear"/>
+                <Button title={buttonTitle} onPress={onPress} type="clear"/>
             </View>
         </View>
     )

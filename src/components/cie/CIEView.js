@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 import { styles } from './CieViewStyle';
 
-import { SettingsPopOver, VideoStandardSelectElement, GamutSelectElement, ToggleElement } from '../generalComponents/Settings';
+import { SettingsPopOverContainer, VideoStandardSelectElement, GamutSelectElement, ToggleElement } from '../generalComponents/Settings';
 import { SignalPreviewPlot } from '../signalPreview/subComponents/SignalPreviewPlot';
 import { VideoStandardAlertView } from '../generalComponents/VideoStandardAlertView';
 
@@ -104,7 +104,7 @@ import { offsetSignalGamma } from '../../calculations/CalcSignalGenerator';
 
 
           {(settingsVisible ?
-            <SettingsPopOver setSettingsVisible={setSettingsVisible}>
+            <SettingsPopOverContainer setSettingsVisible={setSettingsVisible}>
               <VideoStandardSelectElement
                             vidStdIdx={vidStdIdx}
                             setVidStdIdx={setVidStdIdx}
@@ -122,16 +122,16 @@ import { offsetSignalGamma } from '../../calculations/CalcSignalGenerator';
               <View style={styles.settingsElementContainer}>
                 <ToggleElement
                             elementTitle={"Signal Beschriftung"}
-                            title={(showSignalDescription ? 'An' : 'Aus')}
+                            buttonTitle={(showSignalDescription ? 'An' : 'Aus')}
                             onPress={()=> setShowSignalDescription(!showSignalDescription)}
                 />
                 <ToggleElement
                             elementTitle={"Hintergrundfarbe"}
-                            title={(lightBackground ? 'hell' : 'dunkel')}
+                            buttonTitle={(lightBackground ? 'hell' : 'dunkel')}
                             onPress={()=> setLightBackground(!lightBackground)}
                 />
               </View>
-            </SettingsPopOver> : null)}
+            </SettingsPopOverContainer> : null)}
 
         </View>
     );
