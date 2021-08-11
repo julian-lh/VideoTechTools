@@ -2,13 +2,13 @@ import React, {useRef, useMemo} from 'react';
 import * as THREE from 'three';
 
 
-export const WfmPlot = ({signalYCRCB, signalRGB, representationID, horizontalScaleFactor = 1.78}) => {
+export const WfmPlot = ({signalYCRCB, signalRGB, representationID, aspectRatio = 1.78}) => {
     const meshRef = useRef();
     const amountSubdivisions = (representationID == 2 ? 1 : 3);
     const signal = (representationID == 0 ? signalRGB : signalYCRCB);
 
     const amountHorizontalPixels = signalYCRCB[0].length;
-    const pixelWidth = (( 1 / amountHorizontalPixels) / amountSubdivisions) * horizontalScaleFactor ;
+    const pixelWidth = (( 1 / amountHorizontalPixels) / amountSubdivisions) * aspectRatio ;
 
 
     const linePositions = useMemo(() => {
@@ -16,19 +16,19 @@ export const WfmPlot = ({signalYCRCB, signalRGB, representationID, horizontalSca
       switch (representationID){
 
         case 2: //Luma
-          lineArray = lineArray.concat(signalToWfmArray(signal, 0, '#333', undefined, false, horizontalScaleFactor));
+          lineArray = lineArray.concat(signalToWfmArray(signal, 0, '#333', undefined, false, aspectRatio));
           break;
 
         case 1: //YCrCb
-          lineArray = lineArray.concat(signalToWfmArray(signal, 0, '#111', 0, false, horizontalScaleFactor));
-          lineArray = lineArray.concat(signalToWfmArray(signal, 1, '#f05', 1, true, horizontalScaleFactor));
-          lineArray = lineArray.concat(signalToWfmArray(signal, 2, '#50f', 2, true, horizontalScaleFactor));
+          lineArray = lineArray.concat(signalToWfmArray(signal, 0, '#111', 0, false, aspectRatio));
+          lineArray = lineArray.concat(signalToWfmArray(signal, 1, '#f05', 1, true, aspectRatio));
+          lineArray = lineArray.concat(signalToWfmArray(signal, 2, '#50f', 2, true, aspectRatio));
           break;
 
         default: //RGB
-          lineArray = lineArray.concat(signalToWfmArray(signal, 0, '#f00', 0, false, horizontalScaleFactor));
-          lineArray = lineArray.concat(signalToWfmArray(signal, 1, '#0b0', 1, false, horizontalScaleFactor));
-          lineArray = lineArray.concat(signalToWfmArray(signal, 2, '#00f', 2, false, horizontalScaleFactor));
+          lineArray = lineArray.concat(signalToWfmArray(signal, 0, '#f00', 0, false, aspectRatio));
+          lineArray = lineArray.concat(signalToWfmArray(signal, 1, '#0b0', 1, false, aspectRatio));
+          lineArray = lineArray.concat(signalToWfmArray(signal, 2, '#00f', 2, false, aspectRatio));
           break;
       }
       return lineArray;
@@ -50,7 +50,7 @@ export const WfmPlot = ({signalYCRCB, signalRGB, representationID, horizontalSca
     )
 }
 
-function signalToWfmArray(signalArray, signalIdx, hexColorString = "#555", subdivisionPosition = undefined, withChromaOffset = false, horizontalStretch = 1){
+function signalToWfmArray(signalArray, signalIdx, hexColorString = "#555", subdivisionPosition = undefined, withChromaOffset = false, aspectRatio = 1.78){
     const horizontalSignalLength = signalArray[0].length;
     const lineArray = [];
     var subdivisionOffset = 0;
@@ -69,7 +69,7 @@ function signalToWfmArray(signalArray, signalIdx, hexColorString = "#555", subdi
         if (withChromaOffset){
             y += 0.5
         }
-        lineArray.push([(x * horizontalStretch), y, 0, hexColorString]);
+        lineArray.push([(x * aspectRatio), y, 0, hexColorString]);
       }
     }
     return lineArray;

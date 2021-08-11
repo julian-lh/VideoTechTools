@@ -71,7 +71,7 @@ import { offsetSignalGamma } from '../../calculations/CalcSignalGenerator';
 
 
           <View style={styles.VideoStandardAlertContainer}>
-            <VideoStandardAlertView signalStd={encodedVideoStandard} scopeStd={vidStdIdx} />
+            <VideoStandardAlertView signalVidStdIdx={encodedVideoStandard} scopeVidStdIdx={vidStdIdx} />
           </View>
 
           <View style={styles.GamutLabelsContainer}>

@@ -19,13 +19,13 @@ import { cvtSignalYCRCBtoRGB, downscaleSignalYCRCB } from '../../calculations/Ca
 
 
 
-export const VectorscopeView = ({ signalYCRCB, withOverlays = false, encodedVideoStandard = 1  }) => {
+export const VectorscopeView = ({ signalYCRCB, withOverlays = false, encodedVidStdIdx = 1  }) => {
 
   // appearance
   const [largePreview, setLargePreview] = useState(false);
   const togglePreviewSize = () => setLargePreview(!largePreview);
   const [settingsVisible, setSettingsVisible] = useState(false);
-  const [discreteSignalRepresentation, setDiscreteSignalRepresentation] = useState(true);
+  const [useDiscreteSignalRepresentation, setUseDiscreteSignalRepresentation] = useState(true);
 
   // video standard
   const videoStandards = ["601", "709", "2020"];
@@ -46,12 +46,12 @@ export const VectorscopeView = ({ signalYCRCB, withOverlays = false, encodedVide
               <ScopesCamera position={[0, 0, 1]} initialZoomScale={2.4} />
               <VectorscopeBounds />
               <PeakSignalHexagon videoStandard={videoStandards[vidStdIdx]}/>
-              <VectorscopePlot signalSmallYCRCB={signalSmallYCRCB} signalRGB={signalRGB} discreteSignalRepresentation={discreteSignalRepresentation}/>
+              <VectorscopePlot signalSmallYCRCB={signalSmallYCRCB} signalRGB={signalRGB} useDiscreteSignalRepresentation={useDiscreteSignalRepresentation}/>
           </Canvas>
 
 
           <View style={styles.VideoStandardAlertContainer}>
-            <VideoStandardAlertView signalStd={encodedVideoStandard} scopeStd={vidStdIdx} />
+            <VideoStandardAlertView signalVidStdIdx={encodedVidStdIdx} scopeVidStdIdx={vidStdIdx} />
           </View>
 
 
@@ -75,8 +75,8 @@ export const VectorscopeView = ({ signalYCRCB, withOverlays = false, encodedVide
               />
               <ToggleElement
                   elementTitle={"Signalplot"}
-                  title={(discreteSignalRepresentation ? "diskrete Punkte" : "Linienzug")}
-                  onPress={() => setDiscreteSignalRepresentation(!discreteSignalRepresentation)}
+                  title={(useDiscreteSignalRepresentation ? "diskrete Punkte" : "Linienzug")}
+                  onPress={() => setUseDiscreteSignalRepresentation(!useDiscreteSignalRepresentation)}
               />
             </SettingsPopOver> : null}
 

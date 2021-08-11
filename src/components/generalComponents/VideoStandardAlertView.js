@@ -1,9 +1,9 @@
-import React, {useRef, useState, useEffect, useMemo} from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import React from 'react';
+import { Text } from 'react-native';
 
-export const VideoStandardAlertView = ({signalStd, scopeStd}) => {
+export const VideoStandardAlertView = ({signalVidStdIdx, scopeVidStdIdx}) => {
     return(
-        <>{ signalStd !== scopeStd ?
+        <>{ signalVidStdIdx !== scopeVidStdIdx ?
             <Text style={{ textAlign: 'center', fontSize: 12 }}>⚠️ Async. Videostandard</Text>
             : null
         }

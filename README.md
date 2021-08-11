@@ -51,15 +51,15 @@ VideoTechTools
 
 ## [Komponenten](README_subpages/Components.md)
 
-- [CIEView](README_subpages/Components/CIE.md)
+- [CIE-Normfarbtafel](README_subpages/Components/CIE.md)
 
-- [SignalGenerator](README_subpages/Components.md#signalgenerator)
+- [Signal Generator](README_subpages/Components.md#signalgenerator)
 
-- [SignalPreview](README_subpages/Components.md#signalpreview)
+- [Signal Vorschau](README_subpages/Components.md#signalpreview)
 
-- [VectorscopeView](README_subpages/Components.md#vectorscopeview)
+- [Vektorskop](README_subpages/Components/Vectorscope.md)
 
-- [WFMView](README_subpages/Components.md#wfmview)
+- [Waveformmonitor](README_subpages/Components/WFM.md)
 
 ## [Navigation](README_subpages/Navigation.md)
 
@@ -86,10 +86,15 @@ VideoTechTools
 
 - Funktionsnamen wird aufgrund unterschiedlicher Bedeutung bei Groß- und Kleinschreibung von Farbräumen beim Original belassen. Dies ist eine bewusste Abweichung vom Pascal-/Camel-Case
 
-### Benennung von Signalen
+- (Arrow-)Funktionen, die eine React-, React Native-, oder React-Three-Fiber-Komponente zurückgeben müssen mit einem Großbuchstaben beginnen.
 
-- Signalname wird aufgrund unterschiedlicher Bedeutung bei Groß- und Kleinschreibung beim Original belassen. Dies ist eine bewusste Abweichung vom Pascal-/Camel-Case
+- Zur besseren Unterscheidung werden Funktionen, die keine React-, React Native-, oder React-Three-Fiber-Komponente zurückgeben nicht als Arrow-Funktion geschrieben.
+
+### Nennung von Signalen
+
+- Signalname wird aufgrund unterschiedlicher Bedeutung bei Groß- und Kleinschreibung auch so belassen. Dies ist eine bewusste Abweichung vom Pascal-/Camel-Case. Z.B.: "signalxyY" anstatt "signalXyy".
     </br></br>
+
 
 ## Visualisierungen
 

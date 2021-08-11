@@ -12,7 +12,7 @@ export default function VectorscopeScreen() {
         <View style={{ flex: 1 }}>
             <VectorscopeView
                 signalYCRCB={signalYCRCB}
-                encodedVideoStandard={vidStdIdx}
+                encodedVidStdIdx={vidStdIdx}
                 withOverlays
             />
             <SignalGeneratorView

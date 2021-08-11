@@ -8,7 +8,7 @@ import { SignalPreviewPlot } from './subComponents/SignalPreviewPlot';
 import { cvtSignalYCRCBtoRGB, downscaleSignalYCRCB } from '../../calculations/CalcComponentSignal';
 
 
-export const SignalPreviewView = ({ signalYCRCB, withOverlays = false, encodedVideoStandard = 1 }) => {
+export const SignalPreviewView = ({ signalYCRCB, withOverlays = false, encodedVidStdIdx = 1 }) => {
 
     // appearance
     const labels = ["Keine", "RGB", "YCrCb"];
@@ -18,12 +18,12 @@ export const SignalPreviewView = ({ signalYCRCB, withOverlays = false, encodedVi
     // video standard
     const videoStandards = ["601", "709", "2020"];
 
-    const bitDepths = (encodedVideoStandard == 2 ? [10, 12] : [10, 8]);
+    const bitDepths = (encodedVidStdIdx == 2 ? [10, 12] : [10, 8]);
     const [bitDepthIdx, setBitDepthIdx] = useState(0);
 
     // YCrCb -> RGB
     const signalSmallYCRCB = downscaleSignalYCRCB(signalYCRCB, bitDepths[bitDepthIdx]);
-    const signalRGB = cvtSignalYCRCBtoRGB(signalSmallYCRCB, videoStandards[encodedVideoStandard]);
+    const signalRGB = cvtSignalYCRCBtoRGB(signalSmallYCRCB, videoStandards[encodedVidStdIdx]);
 
 
     return (

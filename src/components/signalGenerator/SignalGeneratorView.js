@@ -12,7 +12,7 @@ import { cvtSignalRGBtoYCRCB, upscaleSignalYCRCB, limiterSignalYCRCB, limiterSig
 import { offsetSignalContrast, offsetSignalBrightness, offsetSignalGamma } from '../../calculations/CalcSignalCorrector';
 
 
- export const SignalGeneratorView = ({setSignal, setEncodingVideoStandard, showHideButton = false}) => {
+ export const SignalGeneratorView = ({ setSignal, setEncodingVideoStandard, showHideButton = false }) => {
 
     // appearance
     const [hideSignalGenerator, setHideSignalGenerator] = useState(false);

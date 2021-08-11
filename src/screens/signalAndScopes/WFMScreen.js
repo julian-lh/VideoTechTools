@@ -12,7 +12,7 @@ export default function WfmScreen() {
         <View style={{ flex: 1 }}>
             <WfmView
                 signalYCRCB={signalYCRCB}
-                encodedVideoStandard={vidStdIdx}
+                encodedVidStdIdx={vidStdIdx}
                 withOverlays={true}
             />
             <SignalGeneratorView

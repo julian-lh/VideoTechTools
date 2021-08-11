@@ -1,8 +1,8 @@
-import React, {useRef, useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {  View, TouchableOpacity } from 'react-native';
 
 import { Button  } from 'react-native-elements';
-import { Canvas, useFrame, useThree } from 'react-three-fiber';
+import { Canvas } from 'react-three-fiber';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import { styles } from './WfmViewStyle';
@@ -20,7 +20,7 @@ import { cvtSignalYCRCBtoRGB, downscaleSignalYCRCB } from '../../calculations/Ca
 
 
 
-export const WfmView = ({ signalYCRCB, withOverlays = false,  encodedVideoStandard = 1 }) => {
+export const WfmView = ({ signalYCRCB, withOverlays = false,  encodedVidStdIdx = 1 }) => {
 
     // WFM mode
     const wfmReps = ["RGB", "YCrCb", "Luma"];
@@ -56,7 +56,7 @@ export const WfmView = ({ signalYCRCB, withOverlays = false,  encodedVideoStanda
 
 
           <View style={styles.VideoStandardAlertContainer}>
-            <VideoStandardAlertView signalStd={encodedVideoStandard} scopeStd={vidStdIdx} />
+            <VideoStandardAlertView signalVidStdIdx={encodedVidStdIdx} scopeVidStdIdx={vidStdIdx} />
           </View>
 
           <View style={styles.overlaysContainer}>
