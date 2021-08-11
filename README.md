@@ -34,7 +34,7 @@ VideoTechTools
 │
 └───src
 │   │
-│   └───calculation // Mathematische Funktionen/Umrechnungen
+│   └───calculations // Mathematische Funktionen/Umrechnungen
 │   │
 │   └───components  // Wiederverwendbare Komponenten
 │   │
@@ -47,7 +47,7 @@ VideoTechTools
 
 ## Abschnitte
 
-## [Berechnungen](README_subpages/Calculation.md)
+## [Berechnungen](README_subpages/Calculations.md)
 
 ## [Komponenten](README_subpages/Components.md)
 
@@ -119,27 +119,3 @@ VideoTechTools
 
 [AirBnB Styleguide](https://airbnb.io/javascript/react/#ordering)
 </br></br></br></br>
-
----
-
-## Running the build
-
-To build this module use [roboter](https://www.npmjs.com/package/roboter).
-
-> Test
-> 'code'
->
-> `code` `Test`
-
-```JavaScript
-import { CIEView } from '../../components/visualizers/cie/CIEView';
-```
-
-- [ ] Write the press release
-- [x] Update the website
-- [ ] Contact the media
-
-| Syntax    | Description |
-| --------- | ----------- |
-| Header    | Title       |
-| Paragraph | Text        |
