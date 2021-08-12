@@ -42,6 +42,7 @@ VideoTechTools
 └───...
 ```
 
+
 ### [Berechnungen](README_subpages/Calculations.md)
 
 ### [Komponenten](README_subpages/Components.md)
@@ -64,9 +65,11 @@ VideoTechTools
 
     - [VideoStandardAlertView](README_subpages/Components/SmallGeneralComponents.md#videostandardalertview)
 
+
 ### [Navigation](README_subpages/Navigation.md)
 
 ### [Seiten](README_subpages/Screens.md)
+
 
 - [CIE-Normfarbtafel](README_subpages/Screens.md#cie-normfarbtafel)
 
