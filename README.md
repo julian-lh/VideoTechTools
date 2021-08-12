@@ -1,23 +1,8 @@
 # Dokumentation VideTechTools
 
-## Table of Contents
-
-1. [Einleitung](#einleitung)
-2. [Installation](#installation)
-3. [Aufbau der Software](#aufbau_der_software)
-4. [Notation](#notation)
-
-</br>
-
 ## Einleitung
 
 _VideoTechTools_ ist eine Sammlung von Simulationen für die Videotechnik-Vorlesung. Im Folgenden soll eine Übersicht für die Weiterentwicklung der Software gegeben werden.
-
-## Installation
-
-```bash
-npm install <Add module name here>
-```
 
 
 ## Aufbau der Software
