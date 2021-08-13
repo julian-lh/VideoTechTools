@@ -55,10 +55,10 @@ export function generateRGBSignalGradient(startRGB, endRGB, width, height, direc
         	var color = [0, 0, 0];
 
             if (directionHorizontal){
-				color = blendPixel(startRGB, endRGB, (column/(width-1)))
+				color = blendColor(startRGB, endRGB, (column/(width-1)))
           	}
             else {
-				color = blendPixel(startRGB, endRGB, (row/(height-1)))
+				color = blendColor(startRGB, endRGB, (row/(height-1)))
           	}
 
         	signal[row][column] = color;
@@ -68,7 +68,7 @@ export function generateRGBSignalGradient(startRGB, endRGB, width, height, direc
 }
 
 // helper for generateRGBSignalGradient
-function blendPixel(firstRGB, secondRGB, ratio = 0.5){
+function blendColor(firstRGB, secondRGB, ratio = 0.5){
 	var result = new Array(firstRGB.length);
 	for (var x in firstRGB){
 		 result[x] = (1-ratio)*firstRGB[x] + ratio*secondRGB[x];

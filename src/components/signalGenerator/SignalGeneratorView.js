@@ -7,6 +7,8 @@ import { styles } from './SignalGeneratorViewStyle';
 import { PageBar } from './subComponents/CustomButtons';
 import { GeneratorContainer } from './subComponents/GeneratorContainer';
 import { Corrector } from './subComponents/Corrector';
+import { TapButton } from './subComponents/CustomButtons';
+
 
 import { cvtSignalRGBtoYCRCB, upscaleSignalYCRCB, limiterSignalYCRCB, limiterSignalSmallRGB} from '../../calculations/CalcComponentSignal';
 import { offsetSignalContrast, offsetSignalBrightness, offsetSignalGamma } from '../../calculations/CalcSignalCorrector';
@@ -37,7 +39,7 @@ import { offsetSignalContrast, offsetSignalBrightness, offsetSignalGamma } from 
     const [fStopOffset, setFStopOffset] = useState(0); //[0...2]
     const [contrastOffset, setContrastOffset] = useState(1); //[0...2]
     const [brightnessOffset, setBrightnessOffset] = useState(0); //[-2...2]
-    const [gammaOffset, setGammaOffset] = useState(1); //[-3...3]
+    const [gammaOffset, setGammaOffset] = useState(1); //[0,1...3]
 
     // color corrector
     const postCorrectorSignal = useMemo(() => {
@@ -87,13 +89,14 @@ import { offsetSignalContrast, offsetSignalBrightness, offsetSignalGamma } from 
                         setSignalRGB={setSignalRGB}
                         generatorIdx={generatorIdx}
                         setGeneratorIdx={setGeneratorIdx}
-                        fStopOffset={fStopOffset}
-                        setFStopOffset={setFStopOffset} />
+             />
             :
             <Corrector contrastOffset={contrastOffset} setContrastOffset={setContrastOffset}
                         gammaOffset={gammaOffset} setGammaOffset={setGammaOffset}
                         brightnessOffset={brightnessOffset} setBrightnessOffset={setBrightnessOffset}
             />}
+            
+            <TapButton label={"Blenden Offset"} currentValue={fStopOffset} setValue={setFStopOffset} stepSize={0.05}/>
 
             <Text h3 style={{paddingTop: 20, paddingBottom: 10}}>Videostandard</Text>
             <Button title={"Rec." + videoStandards[vidStdIdx]} onPress={switchVidStd}/>

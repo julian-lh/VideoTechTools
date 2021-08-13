@@ -7,15 +7,22 @@ import { generateRGBSignalGradient } from '../../../calculations/CalcSignalGener
 
 
 export const GradientGenerator = ({ setSignalRGB }) => {
+
     const [gradientColor1, setGradientColor1] = useState([1, 0, 1]);
     const [gradientColor2, setGradientColor2] = useState([0, 1, 0]);
+
     const [directionHorizontal, setDirectionHorizontal] = useState(true);
 
     var amountGradientPixelH =  (directionHorizontal ? 16 : 1);
     var amountGradientPixelV =  (directionHorizontal ? 1 : 16);
 
     useLayoutEffect(() => {
-        setSignalRGB(() => generateRGBSignalGradient(gradientColor1, gradientColor2, amountGradientPixelH, amountGradientPixelV, directionHorizontal))
+        const gradientSignal = generateRGBSignalGradient(   gradientColor1,
+                                                            gradientColor2,
+                                                            amountGradientPixelH,
+                                                            amountGradientPixelV,
+                                                            directionHorizontal);
+        setSignalRGB(gradientSignal)
      }, [gradientColor1, gradientColor2, directionHorizontal])
 
     return(

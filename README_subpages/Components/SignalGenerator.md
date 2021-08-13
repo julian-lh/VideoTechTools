@@ -48,17 +48,16 @@ export const SignalGeneratorView = ({   setSignal,
 ```JavaScript
 const GeneratorContainer = ({   setSignalRGB,
                                 generatorIdx,
-                                setGeneratorIdx,
-                                fStopOffset,
-                                setFStopOffset
+                                setGeneratorIdx
                                 }) => {...}
 ```
 
 
-**signalxyY, signalRGB:**   siehe [Signal Arrays](../SignalArrays) </br>
-**dotSize:**                Radius der Punkte im Plot
+**setSignalRGB:** Signal-Ausgang: Übergibt ein signalRGB (siehe [Signal Arrays](../SignalArrays.md)) über diesen Parameter an Eltern-Objekt. </br>
+**generatorIdx:** Index des Generators, der verwendet und angezeigt werden soll. </br>
+**setGeneratorIdx:**  Veränderund des Generator-Index beim Eltern-Objekt.</br>
 
-- Sammelt alle Generator-Typen und stellt einen Blenden-Versatz-Parameter ein.
+- Sammelt alle Generator-Typen und stellt Schaltflächen zum Wechsel des anzuzeigenden Generators bereit.
 
 ### Hinweise
 
@@ -80,7 +79,7 @@ const GeneratorContainer = ({   setSignalRGB,
 export const FullColorGenerator = ({ setSignalRGB })=> {...}
 ```
 
-**setSignalRGB:** Signal-Ausgang: Übergibt ein signalRGB (siehe [Signal Arrays](../SignalArrays)) über diesen Parameter an Eltern-Objekt. </br>
+**setSignalRGB:** Signal-Ausgang: Übergibt ein signalRGB (siehe [Signal Arrays](../SignalArrays.md)) über diesen Parameter an Eltern-Objekt. </br>
 
 - Erzeugt ein einfarbiges Vollbild als signalRGB.
 
