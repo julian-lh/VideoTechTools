@@ -11,27 +11,27 @@ export const WfmPlot = ({signalYCRCB, signalRGB, representationID, aspectRatio =
     const pixelWidth = (( 1 / amountHorizontalPixels) / amountSubdivisions) * aspectRatio ;
 
 
-    const linePositions = useMemo(() => {
-      var lineArray = [];
+    const signalWFM = useMemo(() => {
+      var tempSignalWFM = [];
       switch (representationID){
 
         case 2: //Luma
-          lineArray = lineArray.concat(signalToWfmArray(signal, 0, '#333', undefined, false, aspectRatio));
+          tempSignalWFM = tempSignalWFM.concat(signalToWfmArray(signal, 0, '#333', undefined, false, aspectRatio));
           break;
 
         case 1: //YCrCb
-          lineArray = lineArray.concat(signalToWfmArray(signal, 0, '#111', 0, false, aspectRatio));
-          lineArray = lineArray.concat(signalToWfmArray(signal, 1, '#f05', 1, true, aspectRatio));
-          lineArray = lineArray.concat(signalToWfmArray(signal, 2, '#50f', 2, true, aspectRatio));
+          tempSignalWFM = tempSignalWFM.concat(signalToWfmArray(signal, 0, '#111', 0, false, aspectRatio));
+          tempSignalWFM = tempSignalWFM.concat(signalToWfmArray(signal, 1, '#f05', 1, true, aspectRatio));
+          tempSignalWFM = tempSignalWFM.concat(signalToWfmArray(signal, 2, '#50f', 2, true, aspectRatio));
           break;
 
         default: //RGB
-          lineArray = lineArray.concat(signalToWfmArray(signal, 0, '#f00', 0, false, aspectRatio));
-          lineArray = lineArray.concat(signalToWfmArray(signal, 1, '#0b0', 1, false, aspectRatio));
-          lineArray = lineArray.concat(signalToWfmArray(signal, 2, '#00f', 2, false, aspectRatio));
+          tempSignalWFM = tempSignalWFM.concat(signalToWfmArray(signal, 0, '#f00', 0, false, aspectRatio));
+          tempSignalWFM = tempSignalWFM.concat(signalToWfmArray(signal, 1, '#0b0', 1, false, aspectRatio));
+          tempSignalWFM = tempSignalWFM.concat(signalToWfmArray(signal, 2, '#00f', 2, false, aspectRatio));
           break;
       }
-      return lineArray;
+      return tempSignalWFM;
     },[signal]);
 
     const points = [new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( pixelWidth, 0, 0 )];
@@ -39,38 +39,53 @@ export const WfmPlot = ({signalYCRCB, signalRGB, representationID, aspectRatio =
 
     return(
       <>
-          {linePositions.map((pos, idx) => {
+          {signalWFM.map((pos, idx) => {
             return (
               <line ref={meshRef} position={pos.slice(0,2)} geometry={geometry} name="lala" key={idx}>
                 <lineBasicMaterial color={pos[3]} linewidth={2}/>
-              </line>
-              )})
+              </line>)
+              })
           }
       </>
     )
 }
 
-function signalToWfmArray(signalArray, signalIdx, hexColorString = "#555", subdivisionPosition = undefined, withChromaOffset = false, aspectRatio = 1.78){
-    const horizontalSignalLength = signalArray[0].length;
-    const lineArray = [];
-    var subdivisionOffset = 0;
-    var hSubdivisionSqueezeFktr = 1;
 
-    if (subdivisionPosition !== undefined){
-        subdivisionOffset = subdivisionPosition / 3;
-        hSubdivisionSqueezeFktr = 0.3;
+function signalToWfmArray(
+    signalArray,
+    channelIdx,
+    hexColorString = "#555",
+    paradePosition = undefined,
+    withChromaOffset = false,
+    aspectRatio = 1.78
+    ){
+
+    const signalWidth = signalArray[0].length;
+    const tempSignalWFM = [];
+
+    var hoizontalOffset = 0;
+    var horizontalSqueeze = 1;
+
+    if (paradePosition !== undefined){
+        hoizontalOffset = paradePosition / 3;
+        horizontalSqueeze = 0.3;
     }
 
     for (var rowIdx = 0; rowIdx < signalArray.length; rowIdx++){
       for (var columnIdx = 0; columnIdx < signalArray[rowIdx].length; columnIdx++) {
 
-        const x = (columnIdx / horizontalSignalLength) * hSubdivisionSqueezeFktr + subdivisionOffset;
-        const y = signalArray[rowIdx][columnIdx][signalIdx];
+        const x = (columnIdx / signalWidth) * horizontalSqueeze + hoizontalOffset;
+        const y = signalArray[rowIdx][columnIdx][channelIdx];
+
         if (withChromaOffset){
             y += 0.5
         }
-        lineArray.push([(x * aspectRatio), y, 0, hexColorString]);
+
+        tempSignalWFM.push([(x * aspectRatio), y, 0, hexColorString]);
       }
     }
-    return lineArray;
+    return tempSignalWFM;
 }
+
+
+

@@ -68,18 +68,18 @@ const WfmPlot = ({  signalSmallYCRCB,
 
 ```JavaScript
 function signalToWfmArray(  signalArray,
-                            signalIdx,
+                            channelIdx,
                             hexColorString = "#555",
-                            subdivisionPosition = undefined,
+                            paradePosition = undefined,
                             withChromaOffset = false,
                             aspectRatio = 1.78)
                             {...}
 ```
 
 **signalArray:** signalSmallYCRCB oder signalRGB, siehe [Signal Arrays](../SignalArrays) </br>
-**signalIdx:** Auswahl des Signal-Kanals (0,1,2) </br>
+**channelIdx:** Auswahl des Signal-Kanals (0,1,2) </br>
 **hexColorString:** Farbe, mit der der der Kanal im WfmPlot abgebildet werden soll (hexadezimal-String)</br>
-**subdivisionPosition:** Position in der Paraden-Darstellung. Bei undefinded wird es über die volle WFM-Breite abgebildet (undefined, 0, 1, 2) </br>
+**paradePosition:** Position in der Paraden-Darstellung. Bei undefinded wird es über die volle WFM-Breite abgebildet (undefined, 0, 1, 2) </br>
 **withChromaOffset:** Vertikaler Versatz der Nullinie auf 50% für Chroma-Komponenten (true/false) </br>
 **aspectRatio:** Bildseitenverhältnis der Waveform-Darstellung, in der es abgebildet wird </br>
 
