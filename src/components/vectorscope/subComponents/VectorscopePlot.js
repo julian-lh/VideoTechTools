@@ -44,11 +44,11 @@ const SphereColorful = (props) => {
     const mesh = useRef();
 
     const color = new THREE.Color( props.RGB[0], props.RGB[1], props.RGB[2] );
-    const innergeometry = new THREE.SphereGeometry( 0.02, 5, 5 );
+    const innergeometry = new THREE.SphereGeometry( 0.03, 5, 5 );
 
     return (
       <mesh ref={mesh} position={props.position} geometry={innergeometry}>
-        <meshBasicMaterial color={color}/>
+        <meshBasicMaterial color={color} toneMapped={false}/>
       </mesh>
     )
   }

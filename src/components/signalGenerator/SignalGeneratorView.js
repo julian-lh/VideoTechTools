@@ -56,7 +56,7 @@ import { offsetSignalContrast, offsetSignalBrightness, offsetSignalGamma } from 
         return signal;
     }, [fStopOffset, contrastOffset, gammaOffset, brightnessOffset, exceedVideoLevels, bitDepthIdx, vidStdIdx, signalRGB])
 
-    // RGB -> YCrCb
+    // R'G'B' -> Y'CbCr
     const signalSmallYCRCB = cvtSignalRGBtoYCRCB(postCorrectorSignal, videoStandards[vidStdIdx]);
     var signalYCRCB = upscaleSignalYCRCB(signalSmallYCRCB, bitDepths[bitDepthIdx]);
     signalYCRCB = limiterSignalYCRCB(signalYCRCB, bitDepths[bitDepthIdx], false);
@@ -84,19 +84,22 @@ import { offsetSignalContrast, offsetSignalBrightness, offsetSignalGamma } from 
                     style={styles.scrollView}>
 
             {pageID == 0 ?
-            <GeneratorContainer
-                        rgbSignal={signalRGB}
-                        setSignalRGB={setSignalRGB}
-                        generatorIdx={generatorIdx}
-                        setGeneratorIdx={setGeneratorIdx}
-             />
+            <>
+                <GeneratorContainer
+                            rgbSignal={signalRGB}
+                            setSignalRGB={setSignalRGB}
+                            generatorIdx={generatorIdx}
+                            setGeneratorIdx={setGeneratorIdx}
+                />
+                <TapButton label={"Blenden Offset"} currentValue={fStopOffset} setValue={setFStopOffset} stepSize={0.05}/>
+            </>
             :
             <Corrector contrastOffset={contrastOffset} setContrastOffset={setContrastOffset}
                         gammaOffset={gammaOffset} setGammaOffset={setGammaOffset}
                         brightnessOffset={brightnessOffset} setBrightnessOffset={setBrightnessOffset}
             />}
-            
-            <TapButton label={"Blenden Offset"} currentValue={fStopOffset} setValue={setFStopOffset} stepSize={0.05}/>
+
+
 
             <Text h3 style={{paddingTop: 20, paddingBottom: 10}}>Videostandard</Text>
             <Button title={"Rec." + videoStandards[vidStdIdx]} onPress={switchVidStd}/>

@@ -20,7 +20,7 @@ const SphereColorful = ({RGB, xyY, dotSize}) => {
 
     return (
       <mesh ref={mesh} position={xyY} geometry={geometry}>
-        <meshBasicMaterial color={color}/>
+        <meshBasicMaterial color={color} toneMapped={false} />
       </mesh>
     )
 }

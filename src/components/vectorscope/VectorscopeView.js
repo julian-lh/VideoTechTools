@@ -34,7 +34,7 @@ export const VectorscopeView = ({ signalYCRCB, withOverlays = false, encodedVidS
   const bitDepths = (vidStdIdx == 2 ? [10, 12] : [10, 8]);
   const [bitDepthIdx, setBitDepthIdx] = useState(0);
 
-  // YCrCb -> RGB
+  // Y'CbCr -> R'G'B'
   const signalSmallYCRCB = downscaleSignalYCRCB(signalYCRCB, bitDepths[bitDepthIdx]);
   const signalRGB = cvtSignalYCRCBtoRGB(signalSmallYCRCB, videoStandards[vidStdIdx]);
 
