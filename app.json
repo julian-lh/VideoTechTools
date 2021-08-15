@@ -2,7 +2,7 @@
   "expo": {
     "name": "VideoTechTools",
     "slug": "VideoTechTools",
-    "version": "0.4.0",
+    "version": "0.4.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -18,12 +18,12 @@
     ],
     "ios": {
       "bundleIdentifier": "com.videotechnik.VideoTechTools",
-      "buildNumber": "0.4.0",
+      "buildNumber": "0.4.1",
       "supportsTablet": true
     },
     "android": {
       "package": "com.videotechnik.VideoTechTools",
-      "versionCode": 1,
+      "versionCode": 2,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"

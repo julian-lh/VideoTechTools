@@ -1,4 +1,5 @@
 import { cvtSignalRGBtoXYZ, cvtSignalXYZtoxyY } from './CalcColorSpaceTransform';
+import { offsetSignalGamma } from './CalcSignalCorrector';
 
 
 export function generateRGBSignalFullColor(valueRGB, width, height){
@@ -80,7 +81,8 @@ function blendColor(firstRGB, secondRGB, ratio = 0.5){
 // ----------------------------------------------------------------
 // ---------------------- Not in use ----------------------
 
-// corner values of 3D Gamut bodies
+// corner values of potential 3D Gamut bodies
+
 
 export function generateRGB3dCoordinates(){
     var rgbArray = [];
@@ -91,8 +93,8 @@ export function generateRGB3dCoordinates(){
             }
         }
     }
-    const rgbArraySignal = [[...rgbArray]];
-    return rgbArraySignal;
+    const signalSmallRGB = [[...rgbArray]];
+    return signalSmallRGB;
 }
 
 export function generatexyY3dCoordinates(colorSpace = "709"){
@@ -104,8 +106,9 @@ export function generatexyY3dCoordinates(colorSpace = "709"){
             }
         }
     }
-    const rgbArraySignal = [[...rgbArray]];
-    const XYZArraySignal = cvtSignalRGBtoXYZ(rgbArraySignal, colorSpace);
-    const xyYArraySignal = cvtSignalXYZtoxyY(XYZArraySignal);
-    return xyYArraySignal;
+    const signalSmallRGB = [[...rgbArray]];
+    const signalSmallRGBlinear = offsetSignalGamma(signalSmallRGB, 2.2);
+    const signalXYZ = cvtSignalRGBtoXYZ(signalSmallRGBlinear, colorSpace);
+    const signalxyY = cvtSignalXYZtoxyY(signalXYZ);
+    return signalxyY;
 }

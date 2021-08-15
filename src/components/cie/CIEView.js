@@ -19,6 +19,7 @@ import { CieBounds, COS } from './subComponents/CieLabeling';
 import { cvtSignalRGBtoXYZ, cvtSignalXYZtoxyY } from '../../calculations/CalcColorSpaceTransform';
 import { cvtSignalYCRCBtoRGB, downscaleSignalYCRCB } from '../../calculations/CalcComponentSignal';
 import { offsetSignalGamma } from '../../calculations/CalcSignalCorrector';
+
 import { limiterSignalSmallRGB } from '../../calculations/CalcComponentSignal';
 
  export const CieView = ({ signalYCRCB, withOverlays = false, encodedVidStdIdx = 1 }) => {
@@ -50,10 +51,10 @@ import { limiterSignalSmallRGB } from '../../calculations/CalcComponentSignal';
     const signalSmallYCRCB = useMemo(() => downscaleSignalYCRCB(signalYCRCB, bitDepths[bitDepthIdx]), [signalYCRCB, bitDepthIdx]);
     const signalRGB = useMemo(() => cvtSignalYCRCBtoRGB(signalSmallYCRCB, videoStandards[vidStdIdx]), [signalSmallYCRCB, vidStdIdx]);
 
-    const signalRGBLtd = limiterSignalSmallRGB(signalRGB, false)
+    const signalRGBLtd = limiterSignalSmallRGB(signalRGB)
 
     // R'G'B' -> RGB
-    const signalRGBlinear = useMemo(() =>  offsetSignalGamma(signalRGBLtd, 2.2), [signalRGBLtd, vidStdIdx]);
+    const signalRGBlinear = useMemo(() =>  offsetSignalGamma(signalRGBLtd, 2.22), [signalRGBLtd, vidStdIdx]);
 
     // RGB -> xyY
     const signalXYZ = useMemo(() => cvtSignalRGBtoXYZ(signalRGBlinear, videoStandards[vidStdIdx]), [signalRGBlinear, vidStdIdx]);
@@ -68,7 +69,7 @@ import { limiterSignalSmallRGB } from '../../calculations/CalcComponentSignal';
             <COS />
             <CieBounds />
             <GamutBounds showRec601={showGamut601} showRec709={showGamut709} showRec2020={showGamut2020}/>
-            <CiePlot signalxyY={signalxyY} signalRGB={signalRGB} dotSize={0.015}/>
+            <CiePlot signalxyY={signalxyY} signalSmallRGBlinear={signalRGBlinear} dotSize={0.015}/>
           </Canvas>
 
 
