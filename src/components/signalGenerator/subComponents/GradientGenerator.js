@@ -12,6 +12,7 @@ export const GradientGenerator = ({ setSignalRGB }) => {
     const [gradientColor2, setGradientColor2] = useState([0, 1, 0]);
 
     const [directionHorizontal, setDirectionHorizontal] = useState(true);
+    const toggleDirection = () => setDirectionHorizontal(!directionHorizontal);
 
     var amountGradientPixelH =  (directionHorizontal ? 16 : 1);
     var amountGradientPixelV =  (directionHorizontal ? 1 : 16);
@@ -27,12 +28,19 @@ export const GradientGenerator = ({ setSignalRGB }) => {
 
     return(
         <View>
-            <Button title={(directionHorizontal ? "horizontal" : "vertikal")} onPress={ () => setDirectionHorizontal(!directionHorizontal)}  titleStyle={{ color: "black"}} containerStyle={{ padding: 5 }} type={"outline"}/>
+
+            <Button title={(directionHorizontal ? "horizontal" : "vertikal")}
+                    onPress={toggleDirection}
+                    titleStyle={{ color: "black"}}
+                    containerStyle={{ padding: 5 }}
+                    type={"outline"}/>
+
             <View style={{flexDirection: "row", justifyContent: 'space-around', alignItems: "center"}}>
                 <ColorPad setColor={setGradientColor1}/>
                 <Ionicons name={"arrow-forward"} size={30} color={"gray"} />
                 <ColorPad setColor={setGradientColor2}/>
             </View>
+
         </View>
     )
 }
@@ -43,13 +51,14 @@ const ColorPad = ({ setColor }) => {
         <View style={styles.colorButtonsContainer}>
             <View>
                 <Button title={""} onPress={() => setColor([1, 0, 0])} buttonStyle={{ backgroundColor: "#f00", height: buttonSize, width: buttonSize }} />
-                <Button title={""} onPress={() => setColor([1, 1, 0])} buttonStyle={{ backgroundColor: "#ff0", height: buttonSize, width: buttonSize }} />
                 <Button title={""} onPress={() => setColor([0, 1, 0])} buttonStyle={{ backgroundColor: "#0f0", height: buttonSize, width: buttonSize }} />
+                <Button title={""} onPress={() => setColor([0, 0, 1])} buttonStyle={{ backgroundColor: "#00f", height: buttonSize, width: buttonSize }} />
+
             </View>
             <View>
-                <Button title={""} onPress={() => setColor([1, 0, 1])} buttonStyle={{ backgroundColor: "#f0f", height: buttonSize, width: buttonSize }} />
-                <Button title={""} onPress={() => setColor([0, 0, 1])} buttonStyle={{ backgroundColor: "#00f", height: buttonSize, width: buttonSize }} />
                 <Button title={""} onPress={() => setColor([0, 1, 1])} buttonStyle={{ backgroundColor: "#0ff", height: buttonSize, width: buttonSize }} />
+                <Button title={""} onPress={() => setColor([1, 0, 1])} buttonStyle={{ backgroundColor: "#f0f", height: buttonSize, width: buttonSize }} />
+                <Button title={""} onPress={() => setColor([1, 1, 0])} buttonStyle={{ backgroundColor: "#ff0", height: buttonSize, width: buttonSize }} />
             </View>
             <View>
                 <Button title={""} onPress={() => setColor([1, 1, 1])} buttonStyle={{ backgroundColor: "#fff", height: buttonSize, width: buttonSize }} />

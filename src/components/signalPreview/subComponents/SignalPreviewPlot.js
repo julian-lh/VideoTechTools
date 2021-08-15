@@ -27,19 +27,19 @@ export const SignalPreviewPlot = ({ signalRGB, signalYCRCB = undefined, labelIdx
 
     return (
         <View style={styles.outerContainer}>
-            {signalRGB.map((x, idx1) => {
+            {signalRGB.map((row, rowIdx) => {
                 return (
-                    <View style={styles.rowContainer} key={idx1}>
-                        {x.map((y, idx2) => {
+                    <View style={styles.rowContainer} key={rowIdx}>
+                        {row.map((pixelVal, columnIdx) => {
                             return (
                                 <PixelRepresentative
                                     labelIdx={labelIdx}
                                     labelSignal={labelSignal}
                                     signalDescription={desctiption}
-                                    idx1={idx1}
-                                    idx2={idx2}
-                                    rgb={y}
-                                    key={2000 + idx2}
+                                    rowIdx={rowIdx}
+                                    columnIdx={columnIdx}
+                                    rgb={pixelVal}
+                                    key={2000 + columnIdx}
                                 />
                             );
                         })}
@@ -51,7 +51,7 @@ export const SignalPreviewPlot = ({ signalRGB, signalYCRCB = undefined, labelIdx
 }
 
 
-const PixelRepresentative = ({ labelIdx, labelSignal, signalDescription, idx1, idx2, rgb }) => {
+const PixelRepresentative = ({ labelIdx, labelSignal, signalDescription, rowIdx, columnIdx, rgb }) => {
 
     const color = rgbToComplColorString(rgb);
 
@@ -62,7 +62,7 @@ const PixelRepresentative = ({ labelIdx, labelSignal, signalDescription, idx1, i
         >
             {labelIdx > 0 ? (
                 <Text style={(styles.label, { color: color })}>
-                    {labelSignal[idx1][idx2].map(
+                    {labelSignal[rowIdx][columnIdx].map(
                         (v, i) => " " + signalDescription[i] + ":" + v.toFixed(1)
                     )}
                 </Text>

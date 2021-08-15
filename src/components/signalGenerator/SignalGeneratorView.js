@@ -14,7 +14,7 @@ import { cvtSignalRGBtoYCRCB, upscaleSignalYCRCB, limiterSignalYCRCB, limiterSig
 import { offsetSignalContrast, offsetSignalBrightness, offsetSignalGamma } from '../../calculations/CalcSignalCorrector';
 
 
- export const SignalGeneratorView = ({ setSignal, setEncodingVideoStandard, showHideButton = false }) => {
+ export const SignalGeneratorView = ({ setSignal, setEncodingVideoStandard, showHideButton=false, style=undefined}) => {
 
     // appearance
     const [hideSignalGenerator, setHideSignalGenerator] = useState(false);
@@ -69,7 +69,7 @@ import { offsetSignalContrast, offsetSignalBrightness, offsetSignalGamma } from 
 
 
     return (
-      <View style={{ flex: (hideSignalGenerator ? 0 : 1), alignItems: "center"}}>
+      <View style={[{flex: (hideSignalGenerator ? 0 : 1), alignItems: "center"}, style]}>
 
         <PageBar pageID={pageID}
                 setPageID={setPageID}
