@@ -1,7 +1,7 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { Button } from 'react-native-elements';
-import { Canvas, useFrame, useThree } from 'react-three-fiber';
+import { Canvas } from 'react-three-fiber';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import { styles } from './VectorscopeViewStyle';
@@ -16,7 +16,9 @@ import { VectorscopePlot } from './subComponents/VectorscopePlot';
 import { VectorscopeBounds, PeakSignalHexagon} from './subComponents/VectorscopeLabeling';
 
 import { cvtSignalYCRCBtoRGB, downscaleSignalYCRCB } from '../../calculations/CalcComponentSignal';
+import { offsetSignalGamma } from '../../calculations/CalcSignalCorrector';
 
+import { limiterSignalSmallRGB } from '../../calculations/CalcComponentSignal';
 
 
 export const VectorscopeView = ({ signalYCRCB, withOverlays = false, encodedVidStdIdx = 1  }) => {
@@ -34,9 +36,14 @@ export const VectorscopeView = ({ signalYCRCB, withOverlays = false, encodedVidS
   const bitDepths = (vidStdIdx == 2 ? [10, 12] : [10, 8]);
   const [bitDepthIdx, setBitDepthIdx] = useState(0);
 
-  // YCrCb -> RGB
+  // Y'CbCr -> R'G'B'
   const signalSmallYCRCB = downscaleSignalYCRCB(signalYCRCB, bitDepths[bitDepthIdx]);
   const signalRGB = cvtSignalYCRCBtoRGB(signalSmallYCRCB, videoStandards[vidStdIdx]);
+
+  const signalRGBLtd = limiterSignalSmallRGB(signalRGB)
+
+  // R'G'B' -> RGB
+  const signalRGBlinear = useMemo(() =>  offsetSignalGamma(signalRGBLtd, 2.22), [signalRGBLtd, vidStdIdx]);
 
 
     return (
@@ -46,7 +53,7 @@ export const VectorscopeView = ({ signalYCRCB, withOverlays = false, encodedVidS
               <ScopesCamera position={[0, 0, 1]} initialZoomScale={2.4} />
               <VectorscopeBounds />
               <PeakSignalHexagon videoStandard={videoStandards[vidStdIdx]}/>
-              <VectorscopePlot signalSmallYCRCB={signalSmallYCRCB} signalRGB={signalRGB} useDiscreteSignalRepresentation={useDiscreteSignalRepresentation}/>
+              <VectorscopePlot signalSmallYCRCB={signalSmallYCRCB} signalSmallRGBlinear={signalRGBlinear} useDiscreteSignalRepresentation={useDiscreteSignalRepresentation}/>
           </Canvas>
 
 

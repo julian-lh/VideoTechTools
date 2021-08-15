@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "VideoTechTools(0.3)",
+    "name": "VideoTechTools",
     "slug": "VideoTechTools",
-    "version": "0.3.1",
+    "version": "0.4.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -17,9 +17,13 @@
       "**/*"
     ],
     "ios": {
+      "bundleIdentifier": "com.videotechnik.VideoTechTools",
+      "buildNumber": "0.4.1",
       "supportsTablet": true
     },
     "android": {
+      "package": "com.videotechnik.VideoTechTools",
+      "versionCode": 2,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
@@ -28,6 +32,6 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "description": "Vorabversion eines Videorechners"
+    "description": "Simulationen der Videotechnik"
   }
 }

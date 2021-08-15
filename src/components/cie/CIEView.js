@@ -18,10 +18,11 @@ import { CieBounds, COS } from './subComponents/CieLabeling';
 
 import { cvtSignalRGBtoXYZ, cvtSignalXYZtoxyY } from '../../calculations/CalcColorSpaceTransform';
 import { cvtSignalYCRCBtoRGB, downscaleSignalYCRCB } from '../../calculations/CalcComponentSignal';
-import { offsetSignalGamma } from '../../calculations/CalcSignalGenerator';
+import { offsetSignalGamma } from '../../calculations/CalcSignalCorrector';
 
+import { limiterSignalSmallRGB } from '../../calculations/CalcComponentSignal';
 
- export const CieView = ({ signalYCRCB, withOverlays = false, encodedVideoStandard = 1 }) => {
+ export const CieView = ({ signalYCRCB, withOverlays = false, encodedVidStdIdx = 1 }) => {
 
     // camera perspective
     const [camPos, setCamPos] = useState([0.5, 0.4, 1.1]);
@@ -41,19 +42,22 @@ import { offsetSignalGamma } from '../../calculations/CalcSignalGenerator';
 
     // video standard
     const videoStandards = ["601", "709", "2020"];
-    const [vidStdIdx, setVidStdIdx] = useState(encodedVideoStandard);
+    const [vidStdIdx, setVidStdIdx] = useState(encodedVidStdIdx);
 
     const bitDepths = (vidStdIdx == 2 ? [10, 12] : [10, 8]);
     const [bitDepthIdx, setBitDepthIdx] = useState(0);
 
-    // YCrCb -> RGB
+    // Y'CbCr -> R'G'B'
     const signalSmallYCRCB = useMemo(() => downscaleSignalYCRCB(signalYCRCB, bitDepths[bitDepthIdx]), [signalYCRCB, bitDepthIdx]);
     const signalRGB = useMemo(() => cvtSignalYCRCBtoRGB(signalSmallYCRCB, videoStandards[vidStdIdx]), [signalSmallYCRCB, vidStdIdx]);
 
-    //const signalRGBlinear = useMemo(() =>  offsetSignalGamma(signalRGB, 0.42), [signalRGB, vidStdIdx]);
+    const signalRGBLtd = limiterSignalSmallRGB(signalRGB)
+
+    // R'G'B' -> RGB
+    const signalRGBlinear = useMemo(() =>  offsetSignalGamma(signalRGBLtd, 2.22), [signalRGBLtd, vidStdIdx]);
 
     // RGB -> xyY
-    const signalXYZ = useMemo(() => cvtSignalRGBtoXYZ(signalRGB, videoStandards[vidStdIdx]), [signalRGB, vidStdIdx]);
+    const signalXYZ = useMemo(() => cvtSignalRGBtoXYZ(signalRGBlinear, videoStandards[vidStdIdx]), [signalRGBlinear, vidStdIdx]);
     const signalxyY = useMemo(() => cvtSignalXYZtoxyY(signalXYZ), [signalXYZ]);
 
 
@@ -65,13 +69,13 @@ import { offsetSignalGamma } from '../../calculations/CalcSignalGenerator';
             <COS />
             <CieBounds />
             <GamutBounds showRec601={showGamut601} showRec709={showGamut709} showRec2020={showGamut2020}/>
-            <CiePlot signalxyY={signalxyY} signalRGB={signalRGB} dotSize={0.015}/>
+            <CiePlot signalxyY={signalxyY} signalSmallRGBlinear={signalRGBlinear} dotSize={0.015}/>
           </Canvas>
 
 
 
           <View style={styles.VideoStandardAlertContainer}>
-            <VideoStandardAlertView signalVidStdIdx={encodedVideoStandard} scopeVidStdIdx={vidStdIdx} />
+            <VideoStandardAlertView signalVidStdIdx={encodedVidStdIdx} scopeVidStdIdx={vidStdIdx} />
           </View>
 
           <View style={styles.GamutLabelsContainer}>
@@ -91,12 +95,13 @@ import { offsetSignalGamma } from '../../calculations/CalcSignalGenerator';
                   <SignalPreviewPlot signalRGB={signalRGB}/>
                 </TouchableOpacity>
                 <Button icon={<Icon name="settings-sharp" size={25}/>} type="clear" onPress={() => setSettingsVisible(!settingsVisible)}/>
-                <Button title={"+"} onPress={() => setZoomOffset(zoomOffset + 10)} style={{paddingRight: 5}} titleStyle={{ fontWeight: 'bold'}} type="clear"/>
-                <Button title={"-"} onPress={() => setZoomOffset(zoomOffset - 10)} style={{paddingRight: 5}} titleStyle={{ fontWeight: 'bold'}} type="clear"/>
+                <Button title={"+"} onPress={() => setZoomOffset(zoomOffset + 10)} style={{paddingRight: 5, paddingTop: 5}} titleStyle={{ fontWeight: 'bold'}} type="clear"/>
+                <Button title={"-"} onPress={() => setZoomOffset(zoomOffset - 10)} style={{paddingRight: 5, paddingTop: 5}} titleStyle={{ fontWeight: 'bold'}} type="clear"/>
               </View>
 
               <View style={styles.perspectiveButtonsContainer}>
                 <Button title="xy" onPress={()=>{setCamPos([0.5, 0.4, 1.1]); setZoomOffset(0)}}/>
+                <Button title="Y" onPress={()=>{setCamPos([1.1, 0.4, 0.4]); setZoomOffset(0)}}/>
                 <Button title="xyY" onPress={()=>{setCamPos([0.5, - 0.2, 1.2]); setZoomOffset(0)}}/>
               </View>
             </> : null }

@@ -2,12 +2,11 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Button } from 'react-native-elements';
 
-import { TapButton } from './CustomButtons';
 import { BarsGenerator} from './BarsGenerator';
 import { FullColorGenerator } from './FullColorGenerator';
 import { GradientGenerator } from './GradientGenerator';
 
-export const GeneratorContainer = ({ setSignalRGB, generatorIdx, setGeneratorIdx, fStopOffset, setFStopOffset }) => {
+export const GeneratorContainer = ({ setSignalRGB, generatorIdx, setGeneratorIdx }) => {
 
     return(
         <View style={styles.generatorContainer}>
@@ -29,8 +28,6 @@ export const GeneratorContainer = ({ setSignalRGB, generatorIdx, setGeneratorIdx
             {generatorIdx === 0 ? <FullColorGenerator setSignalRGB={setSignalRGB} /> : null}
             {generatorIdx === 1 ? <GradientGenerator setSignalRGB={setSignalRGB} /> : null}
             {generatorIdx === 2 ? <BarsGenerator setSignalRGB={setSignalRGB} /> : null}
-
-            <TapButton label={"Blenden Offset"} currentValue={fStopOffset} setValue={setFStopOffset} stepSize={0.05}/>
         </View>
     )
 }

@@ -18,7 +18,6 @@ export const Corrector = ({contrastOffset, setContrastOffset, gammaOffset, setGa
             <TapButton label={"Gamma"} currentValue={gammaOffset} setValue={setGammaOffset} stepSize={0.1}/>
             <TapButton label={"Helligkeit"} currentValue={brightnessOffset} setValue={setBrightnessOffset} stepSize={0.05}/>
             <Button title={"Zurücksetzen"} onPress={reset} type="clear"/>
-
         </View>
     )
 }

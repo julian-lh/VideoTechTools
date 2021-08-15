@@ -1,11 +1,16 @@
 import React, {useRef, useMemo} from 'react';
 import * as THREE from 'three';
 
-export const VectorscopePlot = ({ signalSmallYCRCB, signalRGB, useDiscreteSignalRepresentation }) => {
+export const VectorscopePlot = ({ signalSmallYCRCB, signalSmallRGBlinear, useDiscreteSignalRepresentation }) => {
     return(
       <>
       {useDiscreteSignalRepresentation ?
-        signalSmallYCRCB.map( (x, idx1) =>  x.map( (y, idx2) => (<SphereColorful position={[y[2],y[1], 0]} RGB={signalRGB[idx1][idx2]} name={'box1'} key={(idx1 * 100) + idx2}/> ) ) )
+        signalSmallYCRCB.map( (x, idx1) =>  x.map( (y, idx2) => {
+          return(
+            <SphereColorful position={[y[2],y[1], 0]}
+                            RGBlinear={signalSmallRGBlinear[idx1][idx2]}
+                            key={(idx1 * 100) + idx2}/>)
+                            } ) )
         : <LinePlot signalSmallYCRCB={signalSmallYCRCB}/>}
       </>
     )
@@ -40,15 +45,15 @@ const LinePlot = ({ signalSmallYCRCB }) => {
     );
   }
 
-const SphereColorful = (props) => {
+const SphereColorful = ({ RGBlinear, position }) => {
     const mesh = useRef();
 
-    const color = new THREE.Color( props.RGB[0], props.RGB[1], props.RGB[2] );
-    const innergeometry = new THREE.SphereGeometry( 0.02, 5, 5 );
+    const color = new THREE.Color( RGBlinear[0], RGBlinear[1], RGBlinear[2] );
+    const innergeometry = new THREE.SphereGeometry( 0.03, 5, 5 );
 
     return (
-      <mesh ref={mesh} position={props.position} geometry={innergeometry}>
-        <meshBasicMaterial color={color}/>
+      <mesh ref={mesh} position={position} geometry={innergeometry}>
+        <meshBasicMaterial color={color} toneMapped={false}/>
       </mesh>
     )
   }

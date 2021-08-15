@@ -11,8 +11,8 @@ import { cvtSignalYCRCBtoRGB, downscaleSignalYCRCB } from '../../calculations/Ca
 export const SignalPreviewView = ({ signalYCRCB, withOverlays = false, encodedVidStdIdx = 1 }) => {
 
     // appearance
-    const labels = ["Keine", "RGB", "YCrCb"];
-    const [labelIdx, setLabelIdx] = useState(1);
+    const labels = ["Keine", "RGB", "YCbCr"];
+    const [labelIdx, setLabelIdx] = useState(0);
     const switchLabelIdx = () => {labelIdx < 2 ? setLabelIdx(labelIdx + 1) : setLabelIdx(0)};
 
     // video standard

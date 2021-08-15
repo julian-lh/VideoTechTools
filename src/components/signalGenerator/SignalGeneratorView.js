@@ -7,12 +7,14 @@ import { styles } from './SignalGeneratorViewStyle';
 import { PageBar } from './subComponents/CustomButtons';
 import { GeneratorContainer } from './subComponents/GeneratorContainer';
 import { Corrector } from './subComponents/Corrector';
+import { TapButton } from './subComponents/CustomButtons';
+
 
 import { cvtSignalRGBtoYCRCB, upscaleSignalYCRCB, limiterSignalYCRCB, limiterSignalSmallRGB} from '../../calculations/CalcComponentSignal';
 import { offsetSignalContrast, offsetSignalBrightness, offsetSignalGamma } from '../../calculations/CalcSignalCorrector';
 
 
- export const SignalGeneratorView = ({ setSignal, setEncodingVideoStandard, showHideButton = false }) => {
+ export const SignalGeneratorView = ({ setSignal, setEncodingVideoStandard, showHideButton=false, style=undefined}) => {
 
     // appearance
     const [hideSignalGenerator, setHideSignalGenerator] = useState(false);
@@ -37,7 +39,7 @@ import { offsetSignalContrast, offsetSignalBrightness, offsetSignalGamma } from 
     const [fStopOffset, setFStopOffset] = useState(0); //[0...2]
     const [contrastOffset, setContrastOffset] = useState(1); //[0...2]
     const [brightnessOffset, setBrightnessOffset] = useState(0); //[-2...2]
-    const [gammaOffset, setGammaOffset] = useState(1); //[-3...3]
+    const [gammaOffset, setGammaOffset] = useState(1); //[0,1...3]
 
     // color corrector
     const postCorrectorSignal = useMemo(() => {
@@ -54,7 +56,7 @@ import { offsetSignalContrast, offsetSignalBrightness, offsetSignalGamma } from 
         return signal;
     }, [fStopOffset, contrastOffset, gammaOffset, brightnessOffset, exceedVideoLevels, bitDepthIdx, vidStdIdx, signalRGB])
 
-    // RGB -> YCrCb
+    // R'G'B' -> Y'CbCr
     const signalSmallYCRCB = cvtSignalRGBtoYCRCB(postCorrectorSignal, videoStandards[vidStdIdx]);
     var signalYCRCB = upscaleSignalYCRCB(signalSmallYCRCB, bitDepths[bitDepthIdx]);
     signalYCRCB = limiterSignalYCRCB(signalYCRCB, bitDepths[bitDepthIdx], false);
@@ -67,7 +69,7 @@ import { offsetSignalContrast, offsetSignalBrightness, offsetSignalGamma } from 
 
 
     return (
-      <View style={{ flex: (hideSignalGenerator ? 0 : 1), alignItems: "center"}}>
+      <View style={[{flex: (hideSignalGenerator ? 0 : 1), alignItems: "center"}, style]}>
 
         <PageBar pageID={pageID}
                 setPageID={setPageID}
@@ -82,18 +84,22 @@ import { offsetSignalContrast, offsetSignalBrightness, offsetSignalGamma } from 
                     style={styles.scrollView}>
 
             {pageID == 0 ?
-            <GeneratorContainer
-                        rgbSignal={signalRGB}
-                        setSignalRGB={setSignalRGB}
-                        generatorIdx={generatorIdx}
-                        setGeneratorIdx={setGeneratorIdx}
-                        fStopOffset={fStopOffset}
-                        setFStopOffset={setFStopOffset} />
+            <>
+                <GeneratorContainer
+                            rgbSignal={signalRGB}
+                            setSignalRGB={setSignalRGB}
+                            generatorIdx={generatorIdx}
+                            setGeneratorIdx={setGeneratorIdx}
+                />
+                <TapButton label={"Blenden Offset"} currentValue={fStopOffset} setValue={setFStopOffset} stepSize={0.05}/>
+            </>
             :
             <Corrector contrastOffset={contrastOffset} setContrastOffset={setContrastOffset}
                         gammaOffset={gammaOffset} setGammaOffset={setGammaOffset}
                         brightnessOffset={brightnessOffset} setBrightnessOffset={setBrightnessOffset}
             />}
+
+
 
             <Text h3 style={{paddingTop: 20, paddingBottom: 10}}>Videostandard</Text>
             <Button title={"Rec." + videoStandards[vidStdIdx]} onPress={switchVidStd}/>

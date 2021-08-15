@@ -23,7 +23,7 @@ import { cvtSignalYCRCBtoRGB, downscaleSignalYCRCB } from '../../calculations/Ca
 export const WfmView = ({ signalYCRCB, withOverlays = false,  encodedVidStdIdx = 1 }) => {
 
     // WFM mode
-    const wfmReps = ["RGB", "YCrCb", "Luma"];
+    const wfmReps = ["RGB", "YCbCr", "Luma"];
     const [wfmRepIdx, setWfmRepIdx] = useState(0);
     const switchWfmRep = () => {wfmRepIdx < 2 ? setWfmRepIdx(wfmRepIdx + 1) : setWfmRepIdx(0)};
 
@@ -39,7 +39,7 @@ export const WfmView = ({ signalYCRCB, withOverlays = false,  encodedVidStdIdx =
     const bitDepths = (vidStdIdx == 2 ? [10, 12] : [10, 8]);
     const [bitDepthIdx, setBitDepthIdx] = useState(0);
 
-    // YCrCb -> RGB
+    // Y'CbCr -> R'G'B'
     const signalSmallYCRCB = downscaleSignalYCRCB(signalYCRCB, bitDepths[bitDepthIdx]);
     const signalRGB = cvtSignalYCRCBtoRGB(signalSmallYCRCB, videoStandards[vidStdIdx]);
 
