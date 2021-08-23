@@ -57,7 +57,9 @@ export const VectorscopeBounds = () => {
 
 export const PeakSignalHexagon = ({ videoStandard }) => {
     const mesh = useRef();
-    const maxSignalRGB = [[[1, 0, 0], [1, 1, 0], [0, 1, 0], [0, 1, 1], [0, 0, 1], [1, 0, 1], [1, 0, 0]]];
+    const maxSignalRGB = [[[1, 0, 0], [1, 1, 0],
+                            [0, 1, 0], [0, 1, 1],
+                            [0, 0, 1], [1, 0, 1], [1, 0, 0]]];
     const maxSignalYCRCB = cvtSignalRGBtoYCRCB(maxSignalRGB, videoStandard);
 
     const shape = useMemo(() => {

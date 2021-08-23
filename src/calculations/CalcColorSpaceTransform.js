@@ -48,7 +48,7 @@ export function cvtRGBtoXYZ(rgb_array, colorSpace = "709") {
 };
 
 
-export function cvtHSVtoRGB(HSV_array){
+export function cvtHSVtoRGB(HSV_array) {
     // input: h in [0,360] and s,v in [0,1] - output: r,g,b in [0,1]
     // Based on: https://stackoverflow.com/a/54024653/860099 (last access 09.08.2021)
     const [h, s, v] = HSV_array;

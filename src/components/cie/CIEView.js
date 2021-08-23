@@ -108,7 +108,7 @@ import { limiterSignalSmallRGB } from '../../calculations/CalcComponentSignal';
 
 
 
-          {(settingsVisible ?
+          {settingsVisible ?
             <SettingsPopOverContainer setSettingsVisible={setSettingsVisible}>
               <VideoStandardSelectElement
                             vidStdIdx={vidStdIdx}
@@ -136,7 +136,7 @@ import { limiterSignalSmallRGB } from '../../calculations/CalcComponentSignal';
                             onPress={()=> setLightBackground(!lightBackground)}
                 />
               </View>
-            </SettingsPopOverContainer> : null)}
+            </SettingsPopOverContainer> : null}
 
         </View>
     );
