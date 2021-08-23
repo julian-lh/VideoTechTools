@@ -16,11 +16,11 @@ import { ScopesCamera } from '../generalComponents/ScopesCamera';
 import { WfmPlot } from './subComponents/WfmPlot';
 import { WfmGrid } from './subComponents/WfmLabeling';
 
-import { cvtSignalYCRCBtoRGB, downscaleSignalYCRCB } from '../../calculations/CalcComponentSignal';
+import { cvtSignalYCBCRtoRGB, downscaleSignalYCBCR } from '../../calculations/CalcComponentSignal';
 
 
 
-export const WfmView = ({ signalYCRCB, withOverlays = false,  encodedVidStdIdx = 1 }) => {
+export const WfmView = ({ signalYCBCR, withOverlays = false,  encodedVidStdIdx = 1 }) => {
 
     // WFM mode
     const wfmReps = ["RGB", "YCbCr", "Luma"];
@@ -40,8 +40,8 @@ export const WfmView = ({ signalYCRCB, withOverlays = false,  encodedVidStdIdx =
     const [bitDepthIdx, setBitDepthIdx] = useState(0);
 
     // Y'CbCr -> R'G'B'
-    const signalSmallYCRCB = downscaleSignalYCRCB(signalYCRCB, bitDepths[bitDepthIdx]);
-    const signalRGB = cvtSignalYCRCBtoRGB(signalSmallYCRCB, videoStandards[vidStdIdx]);
+    const signalSmallYCBCR = downscaleSignalYCBCR(signalYCBCR, bitDepths[bitDepthIdx]);
+    const signalRGB = cvtSignalYCBCRtoRGB(signalSmallYCBCR, videoStandards[vidStdIdx]);
 
 
     return (
@@ -50,7 +50,7 @@ export const WfmView = ({ signalYCRCB, withOverlays = false,  encodedVidStdIdx =
           <Canvas style={styles.canvas}>
               <ScopesCamera position={[0.9, 0.3, 1]} target={[0.9, 0.3, 0]} initialZoomScale={2.3}/>
               <WfmGrid />
-              <WfmPlot signalYCRCB={signalSmallYCRCB} signalRGB={signalRGB} representationID={wfmRepIdx}/>
+              <WfmPlot signalYCBCR={signalSmallYCBCR} signalRGB={signalRGB} representationID={wfmRepIdx}/>
           </Canvas>
 
 

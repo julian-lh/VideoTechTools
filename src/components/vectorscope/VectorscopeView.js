@@ -15,13 +15,13 @@ import { ScopesCamera } from '../generalComponents/ScopesCamera';
 import { VectorscopePlot } from './subComponents/VectorscopePlot';
 import { VectorscopeBounds, PeakSignalHexagon} from './subComponents/VectorscopeLabeling';
 
-import { cvtSignalYCRCBtoRGB, downscaleSignalYCRCB } from '../../calculations/CalcComponentSignal';
+import { cvtSignalYCBCRtoRGB, downscaleSignalYCBCR } from '../../calculations/CalcComponentSignal';
 import { offsetSignalGamma } from '../../calculations/CalcSignalCorrector';
 
 import { limiterSignalSmallRGB } from '../../calculations/CalcComponentSignal';
 
 
-export const VectorscopeView = ({ signalYCRCB, withOverlays = false, encodedVidStdIdx = 1  }) => {
+export const VectorscopeView = ({ signalYCBCR, withOverlays = false, encodedVidStdIdx = 1  }) => {
 
   // appearance
   const [largePreview, setLargePreview] = useState(false);
@@ -37,8 +37,8 @@ export const VectorscopeView = ({ signalYCRCB, withOverlays = false, encodedVidS
   const [bitDepthIdx, setBitDepthIdx] = useState(0);
 
   // Y'CbCr -> R'G'B'
-  const signalSmallYCRCB = downscaleSignalYCRCB(signalYCRCB, bitDepths[bitDepthIdx]);
-  const signalRGB = cvtSignalYCRCBtoRGB(signalSmallYCRCB, videoStandards[vidStdIdx]);
+  const signalSmallYCBCR = downscaleSignalYCBCR(signalYCBCR, bitDepths[bitDepthIdx]);
+  const signalRGB = cvtSignalYCBCRtoRGB(signalSmallYCBCR, videoStandards[vidStdIdx]);
 
   const signalRGBLtd = limiterSignalSmallRGB(signalRGB)
 
@@ -53,7 +53,7 @@ export const VectorscopeView = ({ signalYCRCB, withOverlays = false, encodedVidS
               <ScopesCamera position={[0, 0, 1]} initialZoomScale={2.4} />
               <VectorscopeBounds />
               <PeakSignalHexagon videoStandard={videoStandards[vidStdIdx]}/>
-              <VectorscopePlot signalSmallYCRCB={signalSmallYCRCB} signalSmallRGBlinear={signalRGBlinear} useDiscreteSignalRepresentation={useDiscreteSignalRepresentation}/>
+              <VectorscopePlot signalSmallYCBCR={signalSmallYCBCR} signalSmallRGBlinear={signalRGBlinear} useDiscreteSignalRepresentation={useDiscreteSignalRepresentation}/>
           </Canvas>
 
 

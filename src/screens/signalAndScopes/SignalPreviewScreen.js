@@ -6,18 +6,18 @@ import { SignalGeneratorView } from '../../components/signalGenerator/SignalGene
 
 
 export default function SignalPreviewScreen() {
-    const [signalYCRCB, setSignalYCRCB] = useState([[[100, 128, 128]]]);
+    const [signalYCBCR, setSignalYCBCR] = useState([[[100, 128, 128]]]);
     const [vidStdIdx, setVidStdIdx] = useState(1);
 
     return (
       <View style={{ flex: 1}}>
         <SignalPreviewView
-            signalYCRCB={signalYCRCB}
+            signalYCBCR={signalYCBCR}
             withOverlays={true}
             encodedVidStdIdx={vidStdIdx}
         />
         <SignalGeneratorView
-            setSignal={setSignalYCRCB}
+            setSignal={setSignalYCBCR}
             setEncodingVideoStandard={setVidStdIdx}
         />
       </View>

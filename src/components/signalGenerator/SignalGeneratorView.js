@@ -10,7 +10,7 @@ import { Corrector } from './subComponents/Corrector';
 import { TapButton } from './subComponents/CustomButtons';
 
 
-import { cvtSignalRGBtoYCRCB, upscaleSignalYCRCB, limiterSignalYCRCB, limiterSignalSmallRGB} from '../../calculations/CalcComponentSignal';
+import { cvtSignalRGBtoYCBCR, upscaleSignalYCBCR, limiterSignalYCBCR, limiterSignalSmallRGB} from '../../calculations/CalcComponentSignal';
 import { offsetSignalContrast, offsetSignalBrightness, offsetSignalGamma } from '../../calculations/CalcSignalCorrector';
 
 
@@ -57,13 +57,13 @@ import { offsetSignalContrast, offsetSignalBrightness, offsetSignalGamma } from 
     }, [fStopOffset, contrastOffset, gammaOffset, brightnessOffset, exceedVideoLevels, bitDepthIdx, vidStdIdx, signalRGB])
 
     // R'G'B' -> Y'CbCr
-    const signalSmallYCRCB = cvtSignalRGBtoYCRCB(postCorrectorSignal, videoStandards[vidStdIdx]);
-    var signalYCRCB = upscaleSignalYCRCB(signalSmallYCRCB, bitDepths[bitDepthIdx]);
-    signalYCRCB = limiterSignalYCRCB(signalYCRCB, bitDepths[bitDepthIdx], false);
+    const signalSmallYCBCR = cvtSignalRGBtoYCBCR(postCorrectorSignal, videoStandards[vidStdIdx]);
+    var signalYCBCR = upscaleSignalYCBCR(signalSmallYCBCR, bitDepths[bitDepthIdx]);
+    signalYCBCR = limiterSignalYCBCR(signalYCBCR, bitDepths[bitDepthIdx], false);
 
     // signal refresh
     useLayoutEffect(() => {
-        setSignal(signalYCRCB);
+        setSignal(signalYCBCR);
         setEncodingVideoStandard(vidStdIdx);
     },[signalRGB, fStopOffset, contrastOffset, gammaOffset, brightnessOffset, exceedVideoLevels, bitDepthIdx, vidStdIdx]);
 

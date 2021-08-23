@@ -7,7 +7,7 @@ import { styles } from './SignalPreviewPlotStyle';
 import { rgbToString, rgbToComplColorString } from '../../../calculations/CalcHelpers'
 
 
-export const SignalPreviewPlot = ({ signalRGB, signalYCRCB = undefined, labelIdx = 0 }) => {
+export const SignalPreviewPlot = ({ signalRGB, signalYCBCR = undefined, labelIdx = 0 }) => {
 
     var labelSignal = [];
     var desctiption = [];
@@ -17,8 +17,8 @@ export const SignalPreviewPlot = ({ signalRGB, signalYCRCB = undefined, labelIdx
         desctiption = ["R", "G", "B"];
         break;
       case 2:
-        labelSignal = signalYCRCB;
-        desctiption = ["Y", "Cr", "Cb"];
+        labelSignal = signalYCBCR;
+        desctiption = ["Y", "Cb", "Cr"];
         break;
       default:
         labelSignal = [];

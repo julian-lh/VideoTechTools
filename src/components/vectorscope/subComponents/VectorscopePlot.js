@@ -1,38 +1,38 @@
 import React, {useRef, useMemo} from 'react';
 import * as THREE from 'three';
 
-export const VectorscopePlot = ({ signalSmallYCRCB, signalSmallRGBlinear, useDiscreteSignalRepresentation }) => {
+export const VectorscopePlot = ({ signalSmallYCBCR, signalSmallRGBlinear, useDiscreteSignalRepresentation }) => {
     return(
       <>
       {useDiscreteSignalRepresentation ?
-        signalSmallYCRCB.map( (x, idx1) =>  x.map( (y, idx2) => {
+        signalSmallYCBCR.map( (x, idx1) =>  x.map( (y, idx2) => {
           return(
-            <SphereColorful position={[y[2],y[1], 0]}
+            <SphereColorful position={[y[1],y[2], 0]}
                             RGBlinear={signalSmallRGBlinear[idx1][idx2]}
                             key={(idx1 * 100) + idx2}/>)
                             } ) )
-        : <LinePlot signalSmallYCRCB={signalSmallYCRCB}/>}
+        : <LinePlot signalSmallYCBCR={signalSmallYCBCR}/>}
       </>
     )
   }
 
 
-const LinePlot = ({ signalSmallYCRCB }) => {
+const LinePlot = ({ signalSmallYCBCR }) => {
     const mesh = useRef();
     const shape = useMemo(() => {
         const s = new THREE.Shape();
-        s.moveTo(signalSmallYCRCB[0][0][2], signalSmallYCRCB[0][0][1]);
-        if (signalSmallYCRCB.length > 1 || signalSmallYCRCB[0].length > 1){
-          for(let row of signalSmallYCRCB) {
+        s.moveTo(signalSmallYCBCR[0][0][1], signalSmallYCBCR[0][0][2]);
+        if (signalSmallYCBCR.length > 1 || signalSmallYCBCR[0].length > 1){
+          for(let row of signalSmallYCBCR) {
             for(let pixel of row) {
-              s.lineTo(pixel[2],pixel[1]);
+              s.lineTo(pixel[1],pixel[2]);
             }
           }
         }else{
-          s.absarc( signalSmallYCRCB[0][0][2], signalSmallYCRCB[0][0][1], 0.01, 0, Math.PI * 2, false );
+          s.absarc( signalSmallYCBCR[0][0][1], signalSmallYCBCR[0][0][2], 0.01, 0, Math.PI * 2, false );
         }
         return s;
-      }, [signalSmallYCRCB])
+      }, [signalSmallYCBCR])
 
 
       const points = shape.getPoints();

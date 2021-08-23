@@ -32,7 +32,7 @@ signalXXX [rowIdx] [columnIdx] [subPixelIdx]
 </br>
 </br>
 
-## signalYCRCB
+## signalYCBCR
 
 - Haupt-Kommunikations-Array zwischen App-Komponenten der Signalerzeugung oder -Messung.
 
@@ -64,12 +64,12 @@ signalXXX [rowIdx] [columnIdx] [subPixelIdx]
 </br>
 </br>
 
-## signalSmallYCRCB
+## signalSmallYCBCR
 
-- Wie *signalYCRCB*, aber Subpixel sind unabhängig von Quantisierungs-Grad normiert (legaler Videobereich).
+- Wie *signalYCBCR*, aber Subpixel sind unabhängig von Quantisierungs-Grad normiert (legaler Videobereich).
 
 - Entsteht als Zwischenschritt der Signalumrechnung: </br>
-    signalRGB -> signalSmallYCRCB -> signalYCRCB
+    signalSmallRGB -> signalSmallYCBCR -> signalYCBCR
 
 - Findet zur Darstellung in Messinstrumenten Anwendung
 
@@ -85,7 +85,7 @@ signalXXX [rowIdx] [columnIdx] [subPixelIdx]
 </br>
 </br>
 
-## signalRGB
+## signalSmallRGB
 
 - Subpixel: R, G, B
 

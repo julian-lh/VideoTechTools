@@ -17,12 +17,12 @@ import { GamutBounds, GamutLabels } from './subComponents/GamutBounds';
 import { CieBounds, COS } from './subComponents/CieLabeling';
 
 import { cvtSignalRGBtoXYZ, cvtSignalXYZtoxyY } from '../../calculations/CalcColorSpaceTransform';
-import { cvtSignalYCRCBtoRGB, downscaleSignalYCRCB } from '../../calculations/CalcComponentSignal';
+import { cvtSignalYCBCRtoRGB, downscaleSignalYCBCR } from '../../calculations/CalcComponentSignal';
 import { offsetSignalGamma } from '../../calculations/CalcSignalCorrector';
 
 import { limiterSignalSmallRGB } from '../../calculations/CalcComponentSignal';
 
- export const CieView = ({ signalYCRCB, withOverlays = false, encodedVidStdIdx = 1 }) => {
+ export const CieView = ({ signalYCBCR, withOverlays = false, encodedVidStdIdx = 1 }) => {
 
     // camera perspective
     const [camPos, setCamPos] = useState([0.5, 0.4, 1.1]);
@@ -48,8 +48,8 @@ import { limiterSignalSmallRGB } from '../../calculations/CalcComponentSignal';
     const [bitDepthIdx, setBitDepthIdx] = useState(0);
 
     // Y'CbCr -> R'G'B'
-    const signalSmallYCRCB = useMemo(() => downscaleSignalYCRCB(signalYCRCB, bitDepths[bitDepthIdx]), [signalYCRCB, bitDepthIdx]);
-    const signalRGB = useMemo(() => cvtSignalYCRCBtoRGB(signalSmallYCRCB, videoStandards[vidStdIdx]), [signalSmallYCRCB, vidStdIdx]);
+    const signalSmallYCBCR = useMemo(() => downscaleSignalYCBCR(signalYCBCR, bitDepths[bitDepthIdx]), [signalYCBCR, bitDepthIdx]);
+    const signalRGB = useMemo(() => cvtSignalYCBCRtoRGB(signalSmallYCBCR, videoStandards[vidStdIdx]), [signalSmallYCBCR, vidStdIdx]);
 
     const signalRGBLtd = limiterSignalSmallRGB(signalRGB)
 

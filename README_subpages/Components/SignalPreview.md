@@ -4,15 +4,15 @@
 ## SignalPreviewView
 
 ```JavaScript
-export const SignalPreviewView = ({ signalYCRCB,
+export const SignalPreviewView = ({ signalYCBCR,
                                     withOverlays = false,
                                     encodedVideoStandard = 1
                                     }) => {...}
 ```
 
-**signalYCRCB:**   siehe [Signal Arrays](../SignalArrays) </br>
+**signalYCBCR:**   siehe [Signal Arrays](../SignalArrays) </br>
 **withOverlays:**  Buttons und Labels anzeigen (true/false) </br>
-**encodedVideoStandard:**  Videostandard, dem signalYCRCB entspricht ([0..2] für Rec.601, 709 oder 2020) </br>
+**encodedVideoStandard:**  Videostandard, dem signalYCBCR entspricht ([0..2] für Rec.601, 709 oder 2020) </br>
 
 </br>
 
@@ -41,17 +41,17 @@ export const SignalPreviewView = ({ signalYCRCB,
 
 ```JavaScript
 const SignalPreviewPlot = ({    signalRGB,
-                                signalYCRCB = undefined
+                                signalYCBCR = undefined
                                 labelIdx = 0
                                 }) => {...}
 ```
 
-**signalRGB, signalYCRCB:**   siehe [Signal Arrays](../SignalArrays) </br>
-**labelIdx:**  Auswahl welche Beschriftung auf Bildpunkt-Gruppe eingeblendet werden soll: keins, signalRGB oder signalYCRCB (0, 1, 2)
+**signalRGB, signalYCBCR:**   siehe [Signal Arrays](../SignalArrays) </br>
+**labelIdx:**  Auswahl welche Beschriftung auf Bildpunkt-Gruppe eingeblendet werden soll: keins, signalRGB oder signalYCBCR (0, 1, 2)
 
 - Erzeugt eine Vorschau des signalRGB, indem die Bildpunkt-Werte auf ein Vollbild gestreckt werden.
 
-- Blendet optional die Signalwerte von signalRGB oder signalYCRCB ein.
+- Blendet optional die Signalwerte von signalRGB oder signalYCBCR ein.
 
 ### Hinweise
 

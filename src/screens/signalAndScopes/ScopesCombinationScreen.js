@@ -11,7 +11,7 @@ import { SignalGeneratorView } from '../../components/signalGenerator/SignalGene
 export default function ScopesCombinationScreen() {
 
     const [vidStdIdx, setVidStdIdx] = useState(1);
-    const [signalYCRCB, setSignalYCRCB] = useState( [[[ 64, 512, 512 ]]] );
+    const [signalYCBCR, setSignalYCBCR] = useState( [[[ 64, 512, 512 ]]] );
     const [labelIdx, setLabelIdx] = useState(1);
 
 
@@ -19,18 +19,18 @@ export default function ScopesCombinationScreen() {
       <View style={{ flex: 1}}>
 
         <View style={{ flex: 1, flexDirection: "row" }}>
-          <CieView signalYCRCB={signalYCRCB}/>
-          <WfmView signalYCRCB={signalYCRCB}/>
+          <CieView signalYCBCR={signalYCBCR}/>
+          <WfmView signalYCBCR={signalYCBCR}/>
         </View>
 
         <View style={{ flex: 1, flexDirection: "row"}}>
-          <VectorscopeView signalYCRCB={signalYCRCB}/>
-          <SignalPreviewView signalYCRCB={signalYCRCB} labelIndex={labelIdx}/>
+          <VectorscopeView signalYCBCR={signalYCBCR}/>
+          <SignalPreviewView signalYCBCR={signalYCBCR} labelIndex={labelIdx}/>
         </View>
 
         <SignalGeneratorView
             style={{flex: 1.8}}
-            setSignal={setSignalYCRCB}
+            setSignal={setSignalYCBCR}
             setEncodingVideoStandard={setVidStdIdx}
             showHideButton={true}
             />

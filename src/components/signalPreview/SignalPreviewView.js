@@ -5,10 +5,10 @@ import { Button  } from 'react-native-elements';
 import { styles } from './SignalPreviewViewStyle';
 
 import { SignalPreviewPlot } from './subComponents/SignalPreviewPlot';
-import { cvtSignalYCRCBtoRGB, downscaleSignalYCRCB } from '../../calculations/CalcComponentSignal';
+import { cvtSignalYCBCRtoRGB, downscaleSignalYCBCR } from '../../calculations/CalcComponentSignal';
 
 
-export const SignalPreviewView = ({ signalYCRCB, withOverlays = false, encodedVidStdIdx = 1 }) => {
+export const SignalPreviewView = ({ signalYCBCR, withOverlays = false, encodedVidStdIdx = 1 }) => {
 
     // appearance
     const labels = ["Keine", "RGB", "YCbCr"];
@@ -21,9 +21,9 @@ export const SignalPreviewView = ({ signalYCRCB, withOverlays = false, encodedVi
     const bitDepths = (encodedVidStdIdx == 2 ? [10, 12] : [10, 8]);
     const [bitDepthIdx, setBitDepthIdx] = useState(0);
 
-    // YCrCb -> RGB
-    const signalSmallYCRCB = downscaleSignalYCRCB(signalYCRCB, bitDepths[bitDepthIdx]);
-    const signalRGB = cvtSignalYCRCBtoRGB(signalSmallYCRCB, videoStandards[encodedVidStdIdx]);
+    // YCbCr -> RGB
+    const signalSmallYCBCR = downscaleSignalYCBCR(signalYCBCR, bitDepths[bitDepthIdx]);
+    const signalRGB = cvtSignalYCBCRtoRGB(signalSmallYCBCR, videoStandards[encodedVidStdIdx]);
 
 
     return (
@@ -31,7 +31,7 @@ export const SignalPreviewView = ({ signalYCRCB, withOverlays = false, encodedVi
             <View style={styles.canvas}>
                 <SignalPreviewPlot
                         signalRGB={signalRGB}
-                        signalYCRCB={signalYCRCB}
+                        signalYCBCR={signalYCBCR}
                         labelIdx={labelIdx}
                 />
             </View>
