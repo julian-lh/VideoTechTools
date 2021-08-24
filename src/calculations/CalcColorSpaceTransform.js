@@ -7,12 +7,6 @@ export function cvtRGBtoXYZ(rgb_array, colorSpace = "709") {
     var mtx = new Array(9).fill(1);
 
     switch (colorSpace) {
-        /*case "sRGB":
-            mtx =  [[0.4124564, 0.3575761, 0.1804375],
-                    [0.2126729, 0.7151522, 0.0721750],
-                    [0.0193339, 0.1191920, 0.9503041]]
-            //https://www.image-engineering.de/library/technotes/958-how-to-convert-between-srgb-and-ciexyz
-            break;*/
         case "601":
             mtx =   [[0.43061903350970027, 0.34154191225749564, 0.1783090542328042],
                     [0.2220379391534392, 0.7066384391534393, 0.07132362169312167],
