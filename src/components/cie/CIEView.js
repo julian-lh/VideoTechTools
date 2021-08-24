@@ -22,7 +22,7 @@ import { offsetSignalGamma } from '../../calculations/CalcSignalCorrector';
 
 import { limiterSignalSmallRGB } from '../../calculations/CalcComponentSignal';
 
- export const CieView = ({ signalYCBCR, withOverlays = false, encodedVidStdIdx = 1 }) => {
+ export const CieView = ({ signalYCBCR, withOverlays = false, encodedVidStdIdx = 1, encodedBitDepthIdx = 0 }) => {
 
     // camera perspective
     const [camPos, setCamPos] = useState([0.5, 0.4, 1.1]);
@@ -45,7 +45,7 @@ import { limiterSignalSmallRGB } from '../../calculations/CalcComponentSignal';
     const [vidStdIdx, setVidStdIdx] = useState(encodedVidStdIdx);
 
     const bitDepths = (vidStdIdx == 2 ? [10, 12] : [10, 8]);
-    const [bitDepthIdx, setBitDepthIdx] = useState(0);
+    const [bitDepthIdx, setBitDepthIdx] = useState(encodedBitDepthIdx);
 
     // Y'CbCr -> R'G'B'
     const signalSmallYCBCR = useMemo(() => downscaleSignalYCBCR(signalYCBCR, bitDepths[bitDepthIdx]), [signalYCBCR, bitDepthIdx]);
@@ -75,7 +75,12 @@ import { limiterSignalSmallRGB } from '../../calculations/CalcComponentSignal';
 
 
           <View style={styles.VideoStandardAlertContainer}>
-            <VideoStandardAlertView signalVidStdIdx={encodedVidStdIdx} scopeVidStdIdx={vidStdIdx} />
+              <VideoStandardAlertView
+                        signalVidStdIdx={encodedVidStdIdx}
+                        scopeVidStdIdx={vidStdIdx}
+                        signalBitDepthIdx={encodedBitDepthIdx}
+                        scopeBitDepthIdx={bitDepthIdx}
+                        />
           </View>
 
           <View style={styles.GamutLabelsContainer}>
@@ -101,7 +106,6 @@ import { limiterSignalSmallRGB } from '../../calculations/CalcComponentSignal';
 
               <View style={styles.perspectiveButtonsContainer}>
                 <Button title="xy" onPress={()=>{setCamPos([0.5, 0.4, 1.1]); setZoomOffset(0)}}/>
-                <Button title="Y" onPress={()=>{setCamPos([1.1, 0.4, 0.4]); setZoomOffset(0)}}/>
                 <Button title="xyY" onPress={()=>{setCamPos([0.5, - 0.2, 1.2]); setZoomOffset(0)}}/>
               </View>
             </> : null }

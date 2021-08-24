@@ -6,9 +6,10 @@ import { styles } from './SignalPreviewViewStyle';
 
 import { SignalPreviewPlot } from './subComponents/SignalPreviewPlot';
 import { cvtSignalYCBCRtoRGB, downscaleSignalYCBCR } from '../../calculations/CalcComponentSignal';
+import { upscaleSignalRGB } from '../../calculations/CalcRGBSignal';
 
 
-export const SignalPreviewView = ({ signalYCBCR, withOverlays = false, encodedVidStdIdx = 1 }) => {
+export const SignalPreviewView = ({ signalYCBCR, withOverlays = false, encodedVidStdIdx = 1, encodedBitDepthIdx = 0  }) => {
 
     // appearance
     const labels = ["Keine", "RGB", "YCbCr"];
@@ -19,22 +20,26 @@ export const SignalPreviewView = ({ signalYCBCR, withOverlays = false, encodedVi
     const videoStandards = ["601", "709", "2020"];
 
     const bitDepths = (encodedVidStdIdx == 2 ? [10, 12] : [10, 8]);
-    const [bitDepthIdx, setBitDepthIdx] = useState(0);
+    let bitDepthIdx = encodedBitDepthIdx;
 
     // YCbCr -> RGB
     const signalSmallYCBCR = downscaleSignalYCBCR(signalYCBCR, bitDepths[bitDepthIdx]);
-    const signalRGB = cvtSignalYCBCRtoRGB(signalSmallYCBCR, videoStandards[encodedVidStdIdx]);
+    const signalSmallRGB = cvtSignalYCBCRtoRGB(signalSmallYCBCR, videoStandards[encodedVidStdIdx]);
 
+    const signalRGB = upscaleSignalRGB(signalSmallRGB, bitDepths[bitDepthIdx]);
 
     return (
         <View style={{flex: 1}}>
+
             <View style={styles.canvas}>
                 <SignalPreviewPlot
+                        signalSmallRGB={signalSmallRGB}
                         signalRGB={signalRGB}
                         signalYCBCR={signalYCBCR}
                         labelIdx={labelIdx}
                 />
             </View>
+
             <View style={styles.overlaysContainer}>
               <Button
                     title={labels[labelIdx]}

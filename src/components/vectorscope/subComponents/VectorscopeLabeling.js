@@ -57,10 +57,10 @@ export const VectorscopeBounds = () => {
 
 export const PeakSignalHexagon = ({ videoStandard }) => {
     const mesh = useRef();
-    const maxSignalRGB = [[[1, 0, 0], [1, 1, 0],
+    const maxSignalSmallRGB = [[[1, 0, 0], [1, 1, 0],
                             [0, 1, 0], [0, 1, 1],
                             [0, 0, 1], [1, 0, 1], [1, 0, 0]]];
-    const maxSignalYCBCR = cvtSignalRGBtoYCBCR(maxSignalRGB, videoStandard);
+    const maxSignalYCBCR = cvtSignalRGBtoYCBCR(maxSignalSmallRGB, videoStandard);
 
     const shape = useMemo(() => {
         const s = new THREE.Shape();

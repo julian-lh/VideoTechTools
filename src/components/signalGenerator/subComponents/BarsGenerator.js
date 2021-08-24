@@ -3,13 +3,13 @@ import { Button } from 'react-native-elements';
 
 import { generateRGBSignalBars } from '../../../calculations/CalcSignalGenerator';
 
-export const BarsGenerator = ({ setSignalRGB }) => {
+export const BarsGenerator = ({ setSignalSmallRGB }) => {
 
     const [useBars100, setUseBars100] = useState(true);
 
     useLayoutEffect(() => {
         const signalSmallRGB = generateRGBSignalBars(8, 1, useBars100);
-        setSignalRGB(signalSmallRGB);
+        setSignalSmallRGB(signalSmallRGB);
      }, [useBars100])
 
     return(

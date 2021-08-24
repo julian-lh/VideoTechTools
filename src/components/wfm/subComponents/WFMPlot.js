@@ -2,10 +2,10 @@ import React, {useRef, useMemo} from 'react';
 import * as THREE from 'three';
 
 
-export const WfmPlot = ({signalYCBCR, signalRGB, representationID, aspectRatio = 1.78}) => {
+export const WfmPlot = ({signalYCBCR, signalSmallRGB, representationID, aspectRatio = 1.78}) => {
     const meshRef = useRef();
     const amountSubdivisions = (representationID == 2 ? 1 : 3);
-    const signal = (representationID == 0 ? signalRGB : signalYCBCR);
+    const signal = (representationID == 0 ? signalSmallRGB : signalYCBCR);
 
     const amountHorizontalPixels = signalYCBCR[0].length;
     const pixelWidth = (( 1 / amountHorizontalPixels) / amountSubdivisions) * aspectRatio ;

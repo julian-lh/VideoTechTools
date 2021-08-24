@@ -20,7 +20,7 @@ import { cvtSignalYCBCRtoRGB, downscaleSignalYCBCR } from '../../calculations/Ca
 
 
 
-export const WfmView = ({ signalYCBCR, withOverlays = false,  encodedVidStdIdx = 1 }) => {
+export const WfmView = ({ signalYCBCR, withOverlays = false,  encodedVidStdIdx = 1, encodedBitDepthIdx = 0  }) => {
 
     // WFM mode
     const wfmReps = ["RGB", "YCbCr", "Luma"];
@@ -37,11 +37,11 @@ export const WfmView = ({ signalYCBCR, withOverlays = false,  encodedVidStdIdx =
     const [vidStdIdx, setVidStdIdx] = useState(1);
 
     const bitDepths = (vidStdIdx == 2 ? [10, 12] : [10, 8]);
-    const [bitDepthIdx, setBitDepthIdx] = useState(0);
+    const [bitDepthIdx, setBitDepthIdx] = useState(encodedBitDepthIdx);
 
     // Y'CbCr -> R'G'B'
     const signalSmallYCBCR = downscaleSignalYCBCR(signalYCBCR, bitDepths[bitDepthIdx]);
-    const signalRGB = cvtSignalYCBCRtoRGB(signalSmallYCBCR, videoStandards[vidStdIdx]);
+    const signalSmallRGB = cvtSignalYCBCRtoRGB(signalSmallYCBCR, videoStandards[vidStdIdx]);
 
 
     return (
@@ -50,13 +50,18 @@ export const WfmView = ({ signalYCBCR, withOverlays = false,  encodedVidStdIdx =
           <Canvas style={styles.canvas}>
               <ScopesCamera position={[0.9, 0.3, 1]} target={[0.9, 0.3, 0]} initialZoomScale={2.3}/>
               <WfmGrid />
-              <WfmPlot signalYCBCR={signalSmallYCBCR} signalRGB={signalRGB} representationID={wfmRepIdx}/>
+              <WfmPlot signalYCBCR={signalSmallYCBCR} signalSmallRGB={signalSmallRGB} representationID={wfmRepIdx}/>
           </Canvas>
 
 
 
           <View style={styles.VideoStandardAlertContainer}>
-            <VideoStandardAlertView signalVidStdIdx={encodedVidStdIdx} scopeVidStdIdx={vidStdIdx} />
+            <VideoStandardAlertView
+                    signalVidStdIdx={encodedVidStdIdx}
+                    scopeVidStdIdx={vidStdIdx}
+                    signalBitDepthIdx={encodedBitDepthIdx}
+                    scopeBitDepthIdx={bitDepthIdx}
+                    />
           </View>
 
           <View style={styles.overlaysContainer}>
@@ -72,7 +77,7 @@ export const WfmView = ({ signalYCBCR, withOverlays = false,  encodedVidStdIdx =
           <View style={{ position: 'absolute', zIndex: 1, bottom: 10, right:20, left: 20, minHeight: (largePreview ? 110 : 30), justifyContent: "flex-start", alignItems: 'center'}}>
               <TouchableOpacity style={{ height: '100%', aspectRatio: (largePreview ? 1.78 : undefined), width: (largePreview ? undefined : '100%')}}
                                 onPress={togglePreviewSize}>
-                  <SignalPreviewPlot signalRGB={signalRGB}/>
+                  <SignalPreviewPlot signalSmallRGB={signalSmallRGB}/>
               </TouchableOpacity>
           </View> : null }
 

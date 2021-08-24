@@ -9,7 +9,7 @@ import { clamp } from '../../../calculations/CalcHelpers';
 import { TapButton } from './CustomButtons';
 
 
-export const FullColorGenerator = ({ setSignalRGB }) => {
+export const FullColorGenerator = ({ setSignalSmallRGB }) => {
 
     const [hue, setHueDirectly] = useState(0);
     const setHue = (value)  => setHueDirectly((value % 360 < 0) ? (360 - Math.abs(value) % 360) : value % 360);
@@ -29,7 +29,7 @@ export const FullColorGenerator = ({ setSignalRGB }) => {
     const [showingRgbControls, setShowingRgbControls] = useState(true);
 
     useLayoutEffect(() => {
-        setSignalRGB(generateRGBSignalFullColor([red, green, blue], 1, 1));
+        setSignalSmallRGB(generateRGBSignalFullColor([red, green, blue], 1, 1));
 
         if (showingRgbControls){
             const [h, s, v] = cvtRGBtoHSV([red, green, blue]);
