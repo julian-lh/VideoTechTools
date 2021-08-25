@@ -5,10 +5,11 @@ import { Button  } from 'react-native-elements';
 import { styles } from './SignalPreviewViewStyle';
 
 import { SignalPreviewPlot } from './subComponents/SignalPreviewPlot';
-import { cvtSignalYCRCBtoRGB, downscaleSignalYCRCB } from '../../calculations/CalcComponentSignal';
+import { cvtSignalYCBCRtoRGB, downscaleSignalYCBCR } from '../../calculations/CalcComponentSignal';
+import { upscaleSignalRGB } from '../../calculations/CalcRGBSignal';
 
 
-export const SignalPreviewView = ({ signalYCRCB, withOverlays = false, encodedVidStdIdx = 1 }) => {
+export const SignalPreviewView = ({ signalYCBCR, withOverlays = false, encodedVidStdIdx = 1, encodedBitDepthIdx = 0  }) => {
 
     // appearance
     const labels = ["Keine", "RGB", "YCbCr"];
@@ -19,22 +20,26 @@ export const SignalPreviewView = ({ signalYCRCB, withOverlays = false, encodedVi
     const videoStandards = ["601", "709", "2020"];
 
     const bitDepths = (encodedVidStdIdx == 2 ? [10, 12] : [10, 8]);
-    const [bitDepthIdx, setBitDepthIdx] = useState(0);
+    let bitDepthIdx = encodedBitDepthIdx;
 
-    // YCrCb -> RGB
-    const signalSmallYCRCB = downscaleSignalYCRCB(signalYCRCB, bitDepths[bitDepthIdx]);
-    const signalRGB = cvtSignalYCRCBtoRGB(signalSmallYCRCB, videoStandards[encodedVidStdIdx]);
+    // YCbCr -> RGB
+    const signalSmallYCBCR = downscaleSignalYCBCR(signalYCBCR, bitDepths[bitDepthIdx]);
+    const signalSmallRGB = cvtSignalYCBCRtoRGB(signalSmallYCBCR, videoStandards[encodedVidStdIdx]);
 
+    const signalRGB = upscaleSignalRGB(signalSmallRGB, bitDepths[bitDepthIdx]);
 
     return (
         <View style={{flex: 1}}>
+
             <View style={styles.canvas}>
                 <SignalPreviewPlot
+                        signalSmallRGB={signalSmallRGB}
                         signalRGB={signalRGB}
-                        signalYCRCB={signalYCRCB}
+                        signalYCBCR={signalYCBCR}
                         labelIdx={labelIdx}
                 />
             </View>
+
             <View style={styles.overlaysContainer}>
               <Button
                     title={labels[labelIdx]}

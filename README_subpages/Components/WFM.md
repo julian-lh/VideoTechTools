@@ -3,14 +3,14 @@
 
 ## WfmView
 ```JavaScript
-export const WfmView = ({   signalYCRCB,
+export const WfmView = ({   signalYCBCR,
                             withOverlays = false,
                             encodedVidStdIdx = 1
                             }) => {...}
 ```
-**signalYCRCB:**   siehe [Signal Arrays](../SignalArrays) </br>
+**signalYCBCR:**   siehe [Signal Arrays](../SignalArrays) </br>
 **withOverlays:**  Buttons und Labels anzeigen (true/false) </br>
-**encodedVidStdIdx:**  Index des Videostandards, dem signalYCRCB entspricht ([0..2] für Rec.601, 709 oder 2020) </br>
+**encodedVidStdIdx:**  Index des Videostandards, dem signalYCBCR entspricht ([0..2] für Rec.601, 709 oder 2020) </br>
 
 </br>
 
@@ -36,7 +36,7 @@ export const WfmView = ({   signalYCRCB,
 ## WfmPlot
 
 ```JavaScript
-const WfmPlot = ({  signalSmallYCRCB,
+const WfmPlot = ({  signalSmallYCBCR,
                     signalRGB,
                     representationID,
                     aspectRatio = 1.78
@@ -44,11 +44,11 @@ const WfmPlot = ({  signalSmallYCRCB,
 ```
 
 
-**signalSmallYCRCB, signalRGB:**   siehe [Signal Arrays](../SignalArrays) </br>
-**representationID:**  Wechsel zwischen RGB-, YCrCb-, Luma-Darstellung (0, 1, 2) </br>
+**signalSmallYCBCR, signalRGB:**   siehe [Signal Arrays](../SignalArrays) </br>
+**representationID:**  Wechsel zwischen RGB-, YCBCR-, Luma-Darstellung (0, 1, 2) </br>
 **aspectRatio:**  Seitenverhältnis des Plots </br>
 
-- Bildet Bildpunkte des signalSmallYCRCB  mit den entsprechenden Farben aus dem signalRGB als Waveformdarstellung ab. Dabei werden die Bildpunkte horizontal auf die Breite eines Vollbilds gestreckt.
+- Bildet Bildpunkte des signalSmallYCBCR  mit den entsprechenden Farben aus dem signalRGB als Waveformdarstellung ab. Dabei werden die Bildpunkte horizontal auf die Breite eines Vollbilds gestreckt.
 
 ### Hinweise
 
@@ -76,7 +76,7 @@ function signalToWfmArray(  signalArray,
                             {...}
 ```
 
-**signalArray:** signalSmallYCRCB oder signalRGB, siehe [Signal Arrays](../SignalArrays) </br>
+**signalArray:** signalSmallYCBCR oder signalRGB, siehe [Signal Arrays](../SignalArrays) </br>
 **channelIdx:** Auswahl des Signal-Kanals (0,1,2) </br>
 **hexColorString:** Farbe, mit der der der Kanal im WfmPlot abgebildet werden soll (hexadezimal-String)</br>
 **paradePosition:** Position in der Paraden-Darstellung. Bei undefinded wird es über die volle WFM-Breite abgebildet (undefined, 0, 1, 2) </br>

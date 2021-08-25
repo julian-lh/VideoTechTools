@@ -3,14 +3,14 @@
 
 ## VectorscopeView
 ```JavaScript
-export const VectorscopeView = ({   signalYCRCB,
+export const VectorscopeView = ({   signalYCBCR,
                                     withOverlays = false,
                                     encodedVideoStandard = 1
                                     }) => {...}
 ```
-**signalYCRCB:**   siehe [Signal Arrays](../SignalArrays) </br>
+**signalYCBCR:**   siehe [Signal Arrays](../SignalArrays) </br>
 **withOverlays:**  Buttons und Labels anzeigen (true/false) </br>
-**encodedVideoStandard:**  Videostandard, dem signalYCRCB entspricht ([0..2] für Rec.601, 709 oder 2020) </br>
+**encodedVideoStandard:**  Videostandard, dem signalYCBCR entspricht ([0..2] für Rec.601, 709 oder 2020) </br>
 
 </br>
 
@@ -36,17 +36,17 @@ export const VectorscopeView = ({   signalYCRCB,
 ## VectorscopePlot
 
 ```JavaScript
-const VectorscopePlot = ({  signalSmallYCRCB,
+const VectorscopePlot = ({  signalSmallYCBCR,
                             signalRGB,
                             useDiscreteSignalRepresentation
                             }) => {...}
 ```
 
 
-**signalSmallYCRCB, signalRGB:**   siehe [Signal Arrays](../SignalArrays) </br>
+**signalSmallYCBCR, signalRGB:**   siehe [Signal Arrays](../SignalArrays) </br>
 **useDiscreteSignalRepresentation:**  Signal als diskrete Punkte oder als Linienzug darstellen (true/false)
 
-- Bildet Bildpunkte des signalSmallYCRCB mit den entsprechenden Farben aus dem signalRGB im Vektorskop ab.
+- Bildet Bildpunkte des signalSmallYCBCR mit den entsprechenden Farben aus dem signalRGB im Vektorskop ab.
 
 ### Hinweise
 
@@ -65,10 +65,10 @@ const VectorscopePlot = ({  signalSmallYCRCB,
 ## LinePlot
 
 ```JavaScript
-export const LinePlot = ({ signalSmallYCRCB }) => {...}
+export const LinePlot = ({ signalSmallYCBCR }) => {...}
 ```
 
-**signalSmallYCRCB:** siehe [Signal Arrays](../SignalArrays)
+**signalSmallYCBCR:** siehe [Signal Arrays](../SignalArrays)
 
 - Zeichnet die Bildpunkte wie ein analoges Vektorskop als Linienzug über die Bildzeilen ein.
 

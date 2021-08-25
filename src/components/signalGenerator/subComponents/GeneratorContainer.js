@@ -6,7 +6,7 @@ import { BarsGenerator} from './BarsGenerator';
 import { FullColorGenerator } from './FullColorGenerator';
 import { GradientGenerator } from './GradientGenerator';
 
-export const GeneratorContainer = ({ setSignalRGB, generatorIdx, setGeneratorIdx }) => {
+export const GeneratorContainer = ({ setSignalSmallRGB, generatorIdx, setGeneratorIdx }) => {
 
     return(
         <View style={styles.generatorContainer}>
@@ -25,9 +25,9 @@ export const GeneratorContainer = ({ setSignalRGB, generatorIdx, setGeneratorIdx
                         type="clear"/>
             </View>
 
-            {generatorIdx === 0 ? <FullColorGenerator setSignalRGB={setSignalRGB} /> : null}
-            {generatorIdx === 1 ? <GradientGenerator setSignalRGB={setSignalRGB} /> : null}
-            {generatorIdx === 2 ? <BarsGenerator setSignalRGB={setSignalRGB} /> : null}
+            {generatorIdx === 0 ? <FullColorGenerator setSignalSmallRGB={setSignalSmallRGB} /> : null}
+            {generatorIdx === 1 ? <GradientGenerator setSignalSmallRGB={setSignalSmallRGB} /> : null}
+            {generatorIdx === 2 ? <BarsGenerator setSignalSmallRGB={setSignalSmallRGB} /> : null}
         </View>
     )
 }

@@ -42,25 +42,25 @@ export function cvtSignalXYZtoxyY(signalXYZ) {...}
 **Für einzelne Tripel:**
 
 ```JavaScript
-export function cvtRGBtoYCRCB(RGB, standard = "709") {...}
-export function cvtYCRCBtoRGB(YCRCB, standard = "709") {...}
+export function cvtRGBtoYCBCR(RGB, standard = "709") {...}
+export function cvtYCBCRtoRGB(YCBCR, standard = "709") {...}
 
-export function upscaleYCRCB(YCRCB, bitDepth = 10) {...}
-export function downscaleYCRCB(YCRCB, bitDepth = 10) {...}
+export function upscaleYCBCR(YCBCR, bitDepth = 10) {...}
+export function downscaleYCBCR(YCBCR, bitDepth = 10) {...}
 
-export function limiterYCRCB(YCRCB, bitDepth, fullVideoData = false) {...}
+export function limiterYCBCR(YCBCR, bitDepth, fullVideoData = false) {...}
 ```
 
 **Für Singal-Arrays:**
 
 ```JavaScript
-export function cvtSignalRGBtoYCRCB(signalRGB, videoStandard = "709" ) {...}
-export function cvtSignalYCRCBtoRGB(signalYCRCB, videoStandard = "709" ) {...}
+export function cvtSignalRGBtoYCBCR(signalRGB, videoStandard = "709" ) {...}
+export function cvtSignalYCBCRtoRGB(signalYCBCR, videoStandard = "709" ) {...}
 
-export function upscaleSignalYCRCB(signalSmallYCRCB, bitDepth = 10 ) {...}
-export function downscaleSignalYCRCB(signalYCRCB, bitDepth = 10 ) {...}
+export function upscaleSignalYCBCR(signalSmallYCBCR, bitDepth = 10 ) {...}
+export function downscaleSignalYCBCR(signalYCBCR, bitDepth = 10 ) {...}
 
-export function limiterSignalYCRCB(signalYCRCB, bitDepth, fullVideoData = false) {...}
+export function limiterSignalYCBCR(signalYCBCR, bitDepth, fullVideoData = false) {...}
 export function limiterSignalSmallRGB(signalSmallRGB, fullVideoData = false) {...}
 ```
 

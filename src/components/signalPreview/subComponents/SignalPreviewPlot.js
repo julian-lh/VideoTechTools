@@ -7,18 +7,15 @@ import { styles } from './SignalPreviewPlotStyle';
 import { rgbToString, rgbToComplColorString } from '../../../calculations/CalcHelpers'
 
 
-export const SignalPreviewPlot = ({ signalRGB, signalYCRCB = undefined, labelIdx = 0 }) => {
+export const SignalPreviewPlot = ({ signalSmallRGB, signalRGB = undefined, signalYCBCR = undefined, labelIdx = 0 }) => {
 
     var labelSignal = [];
-    var desctiption = [];
     switch (labelIdx){
       case 1:
         labelSignal = signalRGB;
-        desctiption = ["R", "G", "B"];
         break;
       case 2:
-        labelSignal = signalYCRCB;
-        desctiption = ["Y", "Cr", "Cb"];
+        labelSignal = signalYCBCR;
         break;
       default:
         labelSignal = [];
@@ -27,7 +24,7 @@ export const SignalPreviewPlot = ({ signalRGB, signalYCRCB = undefined, labelIdx
 
     return (
         <View style={styles.outerContainer}>
-            {signalRGB.map((row, rowIdx) => {
+            {signalSmallRGB.map((row, rowIdx) => {
                 return (
                     <View style={styles.rowContainer} key={rowIdx}>
                         {row.map((pixelVal, columnIdx) => {
@@ -35,7 +32,6 @@ export const SignalPreviewPlot = ({ signalRGB, signalYCRCB = undefined, labelIdx
                                 <PixelRepresentative
                                     labelIdx={labelIdx}
                                     labelSignal={labelSignal}
-                                    signalDescription={desctiption}
                                     rowIdx={rowIdx}
                                     columnIdx={columnIdx}
                                     rgb={pixelVal}
@@ -51,7 +47,7 @@ export const SignalPreviewPlot = ({ signalRGB, signalYCRCB = undefined, labelIdx
 }
 
 
-const PixelRepresentative = ({ labelIdx, labelSignal, signalDescription, rowIdx, columnIdx, rgb }) => {
+const PixelRepresentative = ({ labelIdx, labelSignal, rowIdx, columnIdx, rgb }) => {
 
     const color = rgbToComplColorString(rgb);
 
@@ -63,13 +59,12 @@ const PixelRepresentative = ({ labelIdx, labelSignal, signalDescription, rowIdx,
             {labelIdx > 0 ? (
                 <Text style={(styles.label, { color: color })}>
                     {labelSignal[rowIdx][columnIdx].map(
-                        (v, i) => " " + signalDescription[i] + ":" + v.toFixed(1)
+                        (v, i) => Math.abs( v.toFixed(0) ) + ( i < 2 ? " | " : "")
                     )}
                 </Text>
             ) : null}
         </View>
     );
   }
-
 
 

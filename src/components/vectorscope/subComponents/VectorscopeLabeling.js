@@ -1,7 +1,7 @@
 import React, { useRef, useMemo } from 'react';
 import * as THREE from 'three';
 
-import { cvtSignalRGBtoYCRCB } from '../../../calculations/CalcComponentSignal';
+import { cvtSignalRGBtoYCBCR } from '../../../calculations/CalcComponentSignal';
 
 
 
@@ -57,15 +57,17 @@ export const VectorscopeBounds = () => {
 
 export const PeakSignalHexagon = ({ videoStandard }) => {
     const mesh = useRef();
-    const maxSignalRGB = [[[1, 0, 0], [1, 1, 0], [0, 1, 0], [0, 1, 1], [0, 0, 1], [1, 0, 1], [1, 0, 0]]];
-    const maxSignalYCRCB = cvtSignalRGBtoYCRCB(maxSignalRGB, videoStandard);
+    const maxSignalSmallRGB = [[[1, 0, 0], [1, 1, 0],
+                            [0, 1, 0], [0, 1, 1],
+                            [0, 0, 1], [1, 0, 1], [1, 0, 0]]];
+    const maxSignalYCBCR = cvtSignalRGBtoYCBCR(maxSignalSmallRGB, videoStandard);
 
     const shape = useMemo(() => {
         const s = new THREE.Shape();
-        s.moveTo(maxSignalYCRCB[0][0][2], maxSignalYCRCB[0][0][1]);
-          for(let row of maxSignalYCRCB) {
+        s.moveTo(maxSignalYCBCR[0][0][1], maxSignalYCBCR[0][0][2]);
+          for(let row of maxSignalYCBCR) {
             for(let pixel of row) {
-              s.lineTo(pixel[2],pixel[1]);
+              s.lineTo(pixel[1],pixel[2]);
             }
           }
         return s;

@@ -17,12 +17,12 @@ import { GamutBounds, GamutLabels } from './subComponents/GamutBounds';
 import { CieBounds, COS } from './subComponents/CieLabeling';
 
 import { cvtSignalRGBtoXYZ, cvtSignalXYZtoxyY } from '../../calculations/CalcColorSpaceTransform';
-import { cvtSignalYCRCBtoRGB, downscaleSignalYCRCB } from '../../calculations/CalcComponentSignal';
+import { cvtSignalYCBCRtoRGB, downscaleSignalYCBCR } from '../../calculations/CalcComponentSignal';
 import { offsetSignalGamma } from '../../calculations/CalcSignalCorrector';
 
 import { limiterSignalSmallRGB } from '../../calculations/CalcComponentSignal';
 
- export const CieView = ({ signalYCRCB, withOverlays = false, encodedVidStdIdx = 1 }) => {
+ export const CieView = ({ signalYCBCR, withOverlays = false, encodedVidStdIdx = 1, encodedBitDepthIdx = 0 }) => {
 
     // camera perspective
     const [camPos, setCamPos] = useState([0.5, 0.4, 1.1]);
@@ -45,19 +45,19 @@ import { limiterSignalSmallRGB } from '../../calculations/CalcComponentSignal';
     const [vidStdIdx, setVidStdIdx] = useState(encodedVidStdIdx);
 
     const bitDepths = (vidStdIdx == 2 ? [10, 12] : [10, 8]);
-    const [bitDepthIdx, setBitDepthIdx] = useState(0);
+    const [bitDepthIdx, setBitDepthIdx] = useState(encodedBitDepthIdx);
 
     // Y'CbCr -> R'G'B'
-    const signalSmallYCRCB = useMemo(() => downscaleSignalYCRCB(signalYCRCB, bitDepths[bitDepthIdx]), [signalYCRCB, bitDepthIdx]);
-    const signalRGB = useMemo(() => cvtSignalYCRCBtoRGB(signalSmallYCRCB, videoStandards[vidStdIdx]), [signalSmallYCRCB, vidStdIdx]);
+    const signalSmallYCBCR = useMemo(() => downscaleSignalYCBCR(signalYCBCR, bitDepths[bitDepthIdx]), [signalYCBCR, bitDepthIdx]);
+    const signalSmallRGB = useMemo(() => cvtSignalYCBCRtoRGB(signalSmallYCBCR, videoStandards[vidStdIdx]), [signalSmallYCBCR, vidStdIdx]);
 
-    const signalRGBLtd = limiterSignalSmallRGB(signalRGB)
+    const signalSmallRGBLtd = limiterSignalSmallRGB(signalSmallRGB)
 
     // R'G'B' -> RGB
-    const signalRGBlinear = useMemo(() =>  offsetSignalGamma(signalRGBLtd, 2.22), [signalRGBLtd, vidStdIdx]);
+    const signalSmallRGBlinear = useMemo(() =>  offsetSignalGamma(signalSmallRGBLtd, 2.22), [signalSmallRGBLtd, vidStdIdx]);
 
     // RGB -> xyY
-    const signalXYZ = useMemo(() => cvtSignalRGBtoXYZ(signalRGBlinear, videoStandards[vidStdIdx]), [signalRGBlinear, vidStdIdx]);
+    const signalXYZ = useMemo(() => cvtSignalRGBtoXYZ(signalSmallRGBlinear, videoStandards[vidStdIdx]), [signalSmallRGBlinear, vidStdIdx]);
     const signalxyY = useMemo(() => cvtSignalXYZtoxyY(signalXYZ), [signalXYZ]);
 
 
@@ -69,13 +69,18 @@ import { limiterSignalSmallRGB } from '../../calculations/CalcComponentSignal';
             <COS />
             <CieBounds />
             <GamutBounds showRec601={showGamut601} showRec709={showGamut709} showRec2020={showGamut2020}/>
-            <CiePlot signalxyY={signalxyY} signalSmallRGBlinear={signalRGBlinear} dotSize={0.015}/>
+            <CiePlot signalxyY={signalxyY} signalSmallRGBlinear={signalSmallRGBlinear} dotSize={0.015}/>
           </Canvas>
 
 
 
           <View style={styles.VideoStandardAlertContainer}>
-            <VideoStandardAlertView signalVidStdIdx={encodedVidStdIdx} scopeVidStdIdx={vidStdIdx} />
+              <VideoStandardAlertView
+                        signalVidStdIdx={encodedVidStdIdx}
+                        scopeVidStdIdx={vidStdIdx}
+                        signalBitDepthIdx={encodedBitDepthIdx}
+                        scopeBitDepthIdx={bitDepthIdx}
+                        />
           </View>
 
           <View style={styles.GamutLabelsContainer}>
@@ -92,7 +97,7 @@ import { limiterSignalSmallRGB } from '../../calculations/CalcComponentSignal';
               <View style={styles.overlaysContainer}>
                 <TouchableOpacity style={{ aspectRatio: 1.78, minWidth: 20,  minHeight:(largePreview ? 110 : 45), width: (largePreview ? "60%" : "20%")}}
                                   onPress={togglePreviewSize}>
-                  <SignalPreviewPlot signalRGB={signalRGB}/>
+                  <SignalPreviewPlot signalSmallRGB={signalSmallRGB}/>
                 </TouchableOpacity>
                 <Button icon={<Icon name="settings-sharp" size={25}/>} type="clear" onPress={() => setSettingsVisible(!settingsVisible)}/>
                 <Button title={"+"} onPress={() => setZoomOffset(zoomOffset + 10)} style={{paddingRight: 5, paddingTop: 5}} titleStyle={{ fontWeight: 'bold'}} type="clear"/>
@@ -101,14 +106,13 @@ import { limiterSignalSmallRGB } from '../../calculations/CalcComponentSignal';
 
               <View style={styles.perspectiveButtonsContainer}>
                 <Button title="xy" onPress={()=>{setCamPos([0.5, 0.4, 1.1]); setZoomOffset(0)}}/>
-                <Button title="Y" onPress={()=>{setCamPos([1.1, 0.4, 0.4]); setZoomOffset(0)}}/>
                 <Button title="xyY" onPress={()=>{setCamPos([0.5, - 0.2, 1.2]); setZoomOffset(0)}}/>
               </View>
             </> : null }
 
 
 
-          {(settingsVisible ?
+          {settingsVisible ?
             <SettingsPopOverContainer setSettingsVisible={setSettingsVisible}>
               <VideoStandardSelectElement
                             vidStdIdx={vidStdIdx}
@@ -136,7 +140,7 @@ import { limiterSignalSmallRGB } from '../../calculations/CalcComponentSignal';
                             onPress={()=> setLightBackground(!lightBackground)}
                 />
               </View>
-            </SettingsPopOverContainer> : null)}
+            </SettingsPopOverContainer> : null}
 
         </View>
     );

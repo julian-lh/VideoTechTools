@@ -9,13 +9,13 @@ export const SignalGeneratorView = ({   setSignal,
                                         }) => {...}
 ```
 
-**setSignal:**  Signal-Ausgang: Übergibt ein signalYCRCB siehe [Signal Arrays](../SignalArrays) über diesen Parameter an Eltern-Objekt. </br>
-**setEncodingVideoStandard:**  Index des Videostandards, dem signalYCRCB entspricht ([0..2] für Rec.601, 709 oder 2020) </br>
+**setSignal:**  Signal-Ausgang: Übergibt ein signalYCBCR siehe [Signal Arrays](../SignalArrays) über diesen Parameter an Eltern-Objekt. </br>
+**setEncodingVideoStandard:**  Index des Videostandards, dem signalYCBCR entspricht ([0..2] für Rec.601, 709 oder 2020) </br>
 **showHideButton:**  Button zum Ausblenden des Generators einblenden (true/false) </br>
 
-- Errechnet ein signalYCRCB aus einem signalRGB.
+- Errechnet ein signalYCBCR aus einem signalRGB.
 
-- Buttons zum Wechsel des Videostandards und Quantisierung des signalYCRCB
+- Buttons zum Wechsel des Videostandards und Quantisierung des signalYCBCR
 
 - Beinhaltet einen GeneratorContainer um das signalRGB zu beschreiben.
 
@@ -28,7 +28,7 @@ export const SignalGeneratorView = ({   setSignal,
 
 - Wenn ScrollView weg ist und Performance optimiert wurde können Slider zum Einstellen der entsprechenden Parameter verwendet werden.
 
-- Zur Vereinheitlichung den Parameter "setSignal" in "setSignalYCRCB" und "setEncodingVideoStandard" in "setEncodingVidStdIdx" umbenennen (und entsprechende Parameter inden Screens). Aus unerklärlichen Gründen führt dies zu dem Fehler "setSignalYCRCB is not a function.".
+- Zur Vereinheitlichung den Parameter "setSignal" in "setSignalYCBCR" und "setEncodingVideoStandard" in "setEncodingVidStdIdx" umbenennen (und entsprechende Parameter inden Screens). Aus unerklärlichen Gründen führt dies zu dem Fehler "setSignalYCBCR is not a function.".
 
 </br>
 

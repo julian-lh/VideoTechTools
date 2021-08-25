@@ -2,12 +2,12 @@ import React, {useRef, useMemo} from 'react';
 import * as THREE from 'three';
 
 
-export const WfmPlot = ({signalYCRCB, signalRGB, representationID, aspectRatio = 1.78}) => {
+export const WfmPlot = ({signalYCBCR, signalSmallRGB, representationID, aspectRatio = 1.78}) => {
     const meshRef = useRef();
     const amountSubdivisions = (representationID == 2 ? 1 : 3);
-    const signal = (representationID == 0 ? signalRGB : signalYCRCB);
+    const signal = (representationID == 0 ? signalSmallRGB : signalYCBCR);
 
-    const amountHorizontalPixels = signalYCRCB[0].length;
+    const amountHorizontalPixels = signalYCBCR[0].length;
     const pixelWidth = (( 1 / amountHorizontalPixels) / amountSubdivisions) * aspectRatio ;
 
 
@@ -19,10 +19,10 @@ export const WfmPlot = ({signalYCRCB, signalRGB, representationID, aspectRatio =
           tempSignalWFM = tempSignalWFM.concat(signalToWfmArray(signal, 0, '#333', undefined, false, aspectRatio));
           break;
 
-        case 1: //YCrCb
+        case 1: //YCbCr
           tempSignalWFM = tempSignalWFM.concat(signalToWfmArray(signal, 0, '#111', 0, false, aspectRatio));
-          tempSignalWFM = tempSignalWFM.concat(signalToWfmArray(signal, 1, '#f05', 1, true, aspectRatio));
-          tempSignalWFM = tempSignalWFM.concat(signalToWfmArray(signal, 2, '#50f', 2, true, aspectRatio));
+          tempSignalWFM = tempSignalWFM.concat(signalToWfmArray(signal, 1, '#50f', 1, true, aspectRatio));
+          tempSignalWFM = tempSignalWFM.concat(signalToWfmArray(signal, 2, '#f05', 2, true, aspectRatio));
           break;
 
         default: //RGB

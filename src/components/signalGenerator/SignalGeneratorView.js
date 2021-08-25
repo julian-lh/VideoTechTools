@@ -10,11 +10,11 @@ import { Corrector } from './subComponents/Corrector';
 import { TapButton } from './subComponents/CustomButtons';
 
 
-import { cvtSignalRGBtoYCRCB, upscaleSignalYCRCB, limiterSignalYCRCB, limiterSignalSmallRGB} from '../../calculations/CalcComponentSignal';
+import { cvtSignalRGBtoYCBCR, upscaleSignalYCBCR, limiterSignalYCBCR, limiterSignalSmallRGB} from '../../calculations/CalcComponentSignal';
 import { offsetSignalContrast, offsetSignalBrightness, offsetSignalGamma } from '../../calculations/CalcSignalCorrector';
 
 
- export const SignalGeneratorView = ({ setSignal, setEncodingVideoStandard, showHideButton=false, style=undefined}) => {
+ export const SignalGeneratorView = ({ setSignal, setEncodingVideoStandard, setEncodingBitDepthIdx, showHideButton=false, style=undefined}) => {
 
     // appearance
     const [hideSignalGenerator, setHideSignalGenerator] = useState(false);
@@ -34,7 +34,7 @@ import { offsetSignalContrast, offsetSignalBrightness, offsetSignalGamma } from 
     const [exceedVideoLevels, setExceedVideoLevels] = useState(false);
 
     // signal parameters
-    const [signalRGB, setSignalRGB] = useState( [[[0, 0, 0]]] );
+    const [signalSmallRGB, setSignalSmallRGB] = useState( [[[0, 0, 0]]] );
 
     const [fStopOffset, setFStopOffset] = useState(0); //[0...2]
     const [contrastOffset, setContrastOffset] = useState(1); //[0...2]
@@ -43,7 +43,7 @@ import { offsetSignalContrast, offsetSignalBrightness, offsetSignalGamma } from 
 
     // color corrector
     const postCorrectorSignal = useMemo(() => {
-        var signal = signalRGB;
+        var signal = signalSmallRGB;
 
         signal = (gammaOffset != 1 ? offsetSignalGamma(signal, gammaOffset) : signal);
 
@@ -54,18 +54,19 @@ import { offsetSignalContrast, offsetSignalBrightness, offsetSignalGamma } from 
 
         signal = limiterSignalSmallRGB(signal, exceedVideoLevels);
         return signal;
-    }, [fStopOffset, contrastOffset, gammaOffset, brightnessOffset, exceedVideoLevels, bitDepthIdx, vidStdIdx, signalRGB])
+    }, [fStopOffset, contrastOffset, gammaOffset, brightnessOffset, exceedVideoLevels, bitDepthIdx, vidStdIdx, signalSmallRGB])
 
     // R'G'B' -> Y'CbCr
-    const signalSmallYCRCB = cvtSignalRGBtoYCRCB(postCorrectorSignal, videoStandards[vidStdIdx]);
-    var signalYCRCB = upscaleSignalYCRCB(signalSmallYCRCB, bitDepths[bitDepthIdx]);
-    signalYCRCB = limiterSignalYCRCB(signalYCRCB, bitDepths[bitDepthIdx], false);
+    const signalSmallYCBCR = cvtSignalRGBtoYCBCR(postCorrectorSignal, videoStandards[vidStdIdx]);
+    var signalYCBCR = upscaleSignalYCBCR(signalSmallYCBCR, bitDepths[bitDepthIdx]);
+    signalYCBCR = limiterSignalYCBCR(signalYCBCR, bitDepths[bitDepthIdx], false);
 
     // signal refresh
     useLayoutEffect(() => {
-        setSignal(signalYCRCB);
+        setSignal(signalYCBCR);
         setEncodingVideoStandard(vidStdIdx);
-    },[signalRGB, fStopOffset, contrastOffset, gammaOffset, brightnessOffset, exceedVideoLevels, bitDepthIdx, vidStdIdx]);
+        setEncodingBitDepthIdx(bitDepthIdx);
+    },[signalSmallRGB, fStopOffset, contrastOffset, gammaOffset, brightnessOffset, exceedVideoLevels, bitDepthIdx, vidStdIdx]);
 
 
     return (
@@ -86,8 +87,8 @@ import { offsetSignalContrast, offsetSignalBrightness, offsetSignalGamma } from 
             {pageID == 0 ?
             <>
                 <GeneratorContainer
-                            rgbSignal={signalRGB}
-                            setSignalRGB={setSignalRGB}
+                            rgbSignal={signalSmallRGB}
+                            setSignalSmallRGB={setSignalSmallRGB}
                             generatorIdx={generatorIdx}
                             setGeneratorIdx={setGeneratorIdx}
                 />

@@ -15,13 +15,13 @@ import { ScopesCamera } from '../generalComponents/ScopesCamera';
 import { VectorscopePlot } from './subComponents/VectorscopePlot';
 import { VectorscopeBounds, PeakSignalHexagon} from './subComponents/VectorscopeLabeling';
 
-import { cvtSignalYCRCBtoRGB, downscaleSignalYCRCB } from '../../calculations/CalcComponentSignal';
+import { cvtSignalYCBCRtoRGB, downscaleSignalYCBCR } from '../../calculations/CalcComponentSignal';
 import { offsetSignalGamma } from '../../calculations/CalcSignalCorrector';
 
 import { limiterSignalSmallRGB } from '../../calculations/CalcComponentSignal';
 
 
-export const VectorscopeView = ({ signalYCRCB, withOverlays = false, encodedVidStdIdx = 1  }) => {
+export const VectorscopeView = ({ signalYCBCR, withOverlays = false, encodedVidStdIdx = 1, encodedBitDepthIdx = 0   }) => {
 
   // appearance
   const [largePreview, setLargePreview] = useState(false);
@@ -34,16 +34,16 @@ export const VectorscopeView = ({ signalYCRCB, withOverlays = false, encodedVidS
   const [vidStdIdx, setVidStdIdx] = useState(1);
 
   const bitDepths = (vidStdIdx == 2 ? [10, 12] : [10, 8]);
-  const [bitDepthIdx, setBitDepthIdx] = useState(0);
+  const [bitDepthIdx, setBitDepthIdx] = useState(encodedBitDepthIdx);
 
   // Y'CbCr -> R'G'B'
-  const signalSmallYCRCB = downscaleSignalYCRCB(signalYCRCB, bitDepths[bitDepthIdx]);
-  const signalRGB = cvtSignalYCRCBtoRGB(signalSmallYCRCB, videoStandards[vidStdIdx]);
+  const signalSmallYCBCR = downscaleSignalYCBCR(signalYCBCR, bitDepths[bitDepthIdx]);
+  const signalSmallRGB = cvtSignalYCBCRtoRGB(signalSmallYCBCR, videoStandards[vidStdIdx]);
 
-  const signalRGBLtd = limiterSignalSmallRGB(signalRGB)
+  const signalSmallRGBLtd = limiterSignalSmallRGB(signalSmallRGB)
 
   // R'G'B' -> RGB
-  const signalRGBlinear = useMemo(() =>  offsetSignalGamma(signalRGBLtd, 2.22), [signalRGBLtd, vidStdIdx]);
+  const signalSmallRGBlinear = useMemo(() =>  offsetSignalGamma(signalSmallRGBLtd, 2.22), [signalSmallRGBLtd, vidStdIdx]);
 
 
     return (
@@ -53,12 +53,17 @@ export const VectorscopeView = ({ signalYCRCB, withOverlays = false, encodedVidS
               <ScopesCamera position={[0, 0, 1]} initialZoomScale={2.4} />
               <VectorscopeBounds />
               <PeakSignalHexagon videoStandard={videoStandards[vidStdIdx]}/>
-              <VectorscopePlot signalSmallYCRCB={signalSmallYCRCB} signalSmallRGBlinear={signalRGBlinear} useDiscreteSignalRepresentation={useDiscreteSignalRepresentation}/>
+              <VectorscopePlot signalSmallYCBCR={signalSmallYCBCR} signalSmallRGBlinear={signalSmallRGBlinear} useDiscreteSignalRepresentation={useDiscreteSignalRepresentation}/>
           </Canvas>
 
 
           <View style={styles.VideoStandardAlertContainer}>
-            <VideoStandardAlertView signalVidStdIdx={encodedVidStdIdx} scopeVidStdIdx={vidStdIdx} />
+              <VideoStandardAlertView
+                        signalVidStdIdx={encodedVidStdIdx}
+                        scopeVidStdIdx={vidStdIdx}
+                        signalBitDepthIdx={encodedBitDepthIdx}
+                        scopeBitDepthIdx={bitDepthIdx}
+                        />
           </View>
 
 
@@ -66,7 +71,7 @@ export const VectorscopeView = ({ signalYCRCB, withOverlays = false, encodedVidS
             <View style={styles.overlaysContainer}>
               <TouchableOpacity style={{ minWidth: 20, minHeight:(largePreview ? 110 : 45), width: (largePreview ? "60%" : "20%"), aspectRatio: 1.78}}
                                 onPress={togglePreviewSize}>
-                <SignalPreviewPlot signalRGB={signalRGB}/>
+                <SignalPreviewPlot signalSmallRGB={signalSmallRGB}/>
               </TouchableOpacity>
               <Button icon={<Icon name="settings-sharp" size={25}/>} title="" type="clear" onPress={() => setSettingsVisible(!settingsVisible)}/>
             </View> : null }

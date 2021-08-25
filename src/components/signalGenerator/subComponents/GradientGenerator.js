@@ -6,7 +6,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { generateRGBSignalGradient } from '../../../calculations/CalcSignalGenerator';
 
 
-export const GradientGenerator = ({ setSignalRGB }) => {
+export const GradientGenerator = ({ setSignalSmallRGB }) => {
 
     const [gradientColor1, setGradientColor1] = useState([1, 0, 1]);
     const [gradientColor2, setGradientColor2] = useState([0, 1, 0]);
@@ -23,7 +23,7 @@ export const GradientGenerator = ({ setSignalRGB }) => {
                                                             amountGradientPixelH,
                                                             amountGradientPixelV,
                                                             directionHorizontal);
-        setSignalRGB(gradientSignal)
+        setSignalSmallRGB(gradientSignal)
      }, [gradientColor1, gradientColor2, directionHorizontal])
 
     return(

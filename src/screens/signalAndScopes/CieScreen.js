@@ -1,23 +1,27 @@
 import React, { useState } from "react";
 import { View } from "react-native";
 
-import { WfmView } from "../../components/wfm/WfmView";
+import { CieView } from "../../components/cie/CieView";
 import { SignalGeneratorView } from "../../components/signalGenerator/SignalGeneratorView";
 
-export default function WfmScreen() {
-    const [signalYCRCB, setSignalYCRCB] = useState([[[100, 128, 128]]]);
+export default function CieScreen() {
+    const [signalYCBCR, setSignalYCBCR] = useState([[[100, 128, 128]]]);
     const [vidStdIdx, setVidStdIdx] = useState(1);
+    const [bitDepthIdx, setBitDepthIdx] = useState(0);
 
     return (
         <View style={{ flex: 1 }}>
-            <WfmView
-                signalYCRCB={signalYCRCB}
+            <CieView
+                signalYCBCR={signalYCBCR}
                 encodedVidStdIdx={vidStdIdx}
+                encodedBitDepthIdx={bitDepthIdx}
                 withOverlays={true}
             />
             <SignalGeneratorView
-                setSignal={setSignalYCRCB}
+                setSignal={setSignalYCBCR}
                 setEncodingVideoStandard={setVidStdIdx}
+                setEncodingBitDepthIdx={setBitDepthIdx}
+                showHideButton={true}
             />
         </View>
     );

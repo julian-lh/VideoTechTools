@@ -3,14 +3,14 @@
 
 ## CieView
 ```JavaScript
-export const CieView = ({   signalYCRCB,
+export const CieView = ({   signalYCBCR,
                             withOverlays = false,
                             encodedVideoStandard = 1
                             }) => {...}
 ```
-**signalYCRCB:**   siehe [Signal Arrays](../SignalArrays) </br>
+**signalYCBCR:**   siehe [Signal Arrays](../SignalArrays) </br>
 **withOverlays:**  Buttons und Labels anzeigen (true/false) </br>
-**encodedVidStdIdx:**  Index des Videostandards, dem signalYCRCB entspricht ([0..2] für Rec.601, 709 oder 2020) </br>
+**encodedVidStdIdx:**  Index des Videostandards, dem signalYCBCR entspricht ([0..2] für Rec.601, 709 oder 2020) </br>
 
 - Rechnet Signal für Visualisierung um
 
