@@ -12,12 +12,12 @@ export function cvtRGBtoXYZ(rgb_array, colorSpace = "709") {
                     [0.2220379391534392, 0.7066384391534393, 0.07132362169312167],
                     [0.02018526719576718, 0.12955038051146386, 0.9390943522927688]]
             break;
-        case ("709"|| "sRGB"): //Wilkens
+        case ("709"|| "sRGB"):
             mtx =   [[0.412391, 0.357584, 0.180481],
                     [0.212639, 0.715169, 0.072192],
                     [0.019331, 0.119195, 0.950532]]
             break;
-        case "2020":    //Wilkens
+        case "2020":
             mtx =   [[0.636958, 0.144617, 0.168881],
                     [0.2627, 0.677998, 0.059302],
                     [0.0 , 0.028073, 1.060985]]
@@ -54,14 +54,12 @@ export function cvtRGBtoHSV(RGB_array) {
 export function cvtXYZtoxy(XYZ_array = [0, 0, 1]) {
     const x = XYZ_array[0] / (XYZ_array[0] + XYZ_array[1] + XYZ_array[2]);
     const y = XYZ_array[1] / (XYZ_array[0] + XYZ_array[1] + XYZ_array[2]);
-    //const z = XYZ_array[2] / (XYZ_array[0] + XYZ_array[1] + XYZ_array[2]);
     return [x, y];
 };
 
 export function cvtXYZtoxyY(XYZ_array = [0, 0, 1]) {
     const x = XYZ_array[0] / (XYZ_array[0] + XYZ_array[1] + XYZ_array[2]);
     const y = XYZ_array[1] / (XYZ_array[0] + XYZ_array[1] + XYZ_array[2]);
-    //const z = XYZ_array[2] / (XYZ_array[0] + XYZ_array[1] + XYZ_array[2]);
     return [x, y, XYZ_array[1]];
 };
 

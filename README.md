@@ -11,12 +11,19 @@
 
 ## Einleitung
 
-_VideoTechTools_ ist eine Sammlung von Simulationen für die Videotechnik-Vorlesung. Im Folgenden soll eine Übersicht für die Weiterentwicklung der Software gegeben werden.
+_VideoTechTools_ ist eine Sammlung von Simulationen für die Videotechnik-Vorlesung.
 
 ## Installation
 
+Zur Entwicklung der App wirdzunächst die Anwendung Expo-CLI benötigt:
+
 ```bash
-npm install <Add module name here>
+yarn add expo-cli
+```
+
+Daraufhin müssen im VideoTechTools-Verzeichnis mit folgender Anweisung alle verwendeten Bibliotheken installiert werden:
+```bash
+yarn install
 ```
 
 

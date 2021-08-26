@@ -2,9 +2,6 @@
   "folders": [
     {
       "path": "."
-    },
-    {
-      "path": "../../Programmieren/recipes-app-react-native"
     }
   ],
   "settings": {}
