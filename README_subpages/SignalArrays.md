@@ -85,14 +85,36 @@ signalXXX [rowIdx] [columnIdx] [subPixelIdx]
 </br>
 </br>
 
+## signalRGB
+
+- Repräsentiert RGB-Signal in 8-, 10- oder 12-Bit nach Rec.601, Rec.709 oder Rec.2020.
+
+- Der verwendete Videostandard und Quantisierungsgrad müssen separat mitgeteilt werden
+
+- Subpixel: R, G, B
+
+
+|Subpixel-Werte | 8-Bit    | 10-Bit   | 12-Bit      |
+|-              |--        |--        |--           |
+| R,G,B Peak        | 235      | 940      | 3760        |
+| R,G,B Schwarz     | 16       | 64       | 256         |
+
+(Siehe ITU-R BT.601, ITU-R BT.709 und ITU-R BT.2020)
+
+
+</br>
+</br>
+
 ## signalSmallRGB
+
+- Wie *signalRGB*, aber Subpixel sind unabhängig von Quantisierungs-Grad normiert (legaler Videobereich).
 
 - Subpixel: R, G, B
 
 |               | |
 |-              |--      |
-| R/G/B Peak    | 1      |
-| R/G/B Schwarz | 0    |
+| R,G,B Peak    | 1      |
+| R,G,B Schwarz | 0    |
 
 
 ### Beispiel Schwarz-Weiß-Muster:

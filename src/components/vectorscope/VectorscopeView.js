@@ -21,7 +21,7 @@ import { offsetSignalGamma } from '../../calculations/CalcSignalCorrector';
 import { limiterSignalSmallRGB } from '../../calculations/CalcComponentSignal';
 
 
-export const VectorscopeView = ({ signalYCBCR, withOverlays = false, encodedVidStdIdx = 1, encodedBitDepthIdx = 0   }) => {
+export const VectorscopeView = ({ signalYCBCR, withOverlays = false, encodedVidStdIdx = 1, encodedBitDepthIdx = 0 }) => {
 
   // appearance
   const [largePreview, setLargePreview] = useState(false);

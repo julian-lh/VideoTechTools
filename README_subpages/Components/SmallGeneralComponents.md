@@ -39,14 +39,18 @@ export const ScopesCamera = ({  position,
 
 ```JavaScript
 export const VideoStandardAlertView = ({    signalVidStdIdx,
-                                            scopeVidStdIdx
+                                            scopeVidStdIdx,
+                                            signalBitDepthIdx = 0,
+                                            scopeBitDepthIdx = 0
                                             }) => {...}
 ```
 
 **signalVidStdIdx:**    Videostandard des erhaltenen Videosignals (Rec.601, 709, 2020 als Index 0...2)</br>
 **scopeVidStdIdx:**     Videostandard, die in der Messansicht eingestellt ist (Rec.601, 709, 2020 als Index 0...2) </br>
+**signalBitDepthIdx:**  Quantisierungsgrad, des erhaltenen Videosignals  ([0..2] für 8-, 10- oder 12-Bit) </br>
+**scopeBitDepthIdx:**     Quantisierungsgrad, die in der Messansicht eingestellt ist ([0..2] für 8-, 10- oder 12-Bit) </br>
 
-- Blendet einen Hinweis ein wenn die Messansicht einen anderen Videostandard erwartet als für das Signal verwendet wurde.
+- Blendet einen Hinweis ein wenn die Messansicht einen anderen Videostandard bzw. Quantisierungsstufe erwartet als für das Signal verwendet wurde.
 
 ### Hinweise
 
@@ -54,7 +58,7 @@ export const VideoStandardAlertView = ({    signalVidStdIdx,
 
 ### Optimierungen
 
-- Quantisierungsgrade mit einbeziehen.
+--
 
 </br>
 </br>

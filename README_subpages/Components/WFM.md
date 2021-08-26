@@ -5,12 +5,14 @@
 ```JavaScript
 export const WfmView = ({   signalYCBCR,
                             withOverlays = false,
-                            encodedVidStdIdx = 1
+                            encodedVidStdIdx = 1,
+                            encodedBitDepthIdx = 0 
                             }) => {...}
 ```
 **signalYCBCR:**   siehe [Signal Arrays](../SignalArrays) </br>
 **withOverlays:**  Buttons und Labels anzeigen (true/false) </br>
 **encodedVidStdIdx:**  Index des Videostandards, dem signalYCBCR entspricht ([0..2] für Rec.601, 709 oder 2020) </br>
+**encodedBitDepthIdx:** Quantisierungsgrad, in dem signalYCBCR vorliegt ([0..2] für 8-, 10- oder 12-Bit) </br>
 
 </br>
 
