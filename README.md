@@ -1,8 +1,21 @@
 # Dokumentation VideTechTools
 
-## Einleitung
+_VideoTechTools_ ist eine Sammlung von Simulationen für die Videotechnik-Vorlesung.
 
-_VideoTechTools_ ist eine Sammlung von Simulationen für die Videotechnik-Vorlesung. Im Folgenden soll eine Übersicht für die Weiterentwicklung der Software gegeben werden.
+## Installation
+
+Zur Entwicklung der App wird zunächst die Anwendung Expo-CLI benötigt:
+
+```bash
+yarn add expo-cli
+```
+
+Daraufhin müssen im Haupt-Verzeichnis von VideoTechTools mit folgender Anweisung alle verwendeten Bibliotheken installiert werden:
+```bash
+yarn install
+```
+
+Falls Node.JS nicht automatisch mitinstalliert wird, kann dies hierüber erfolgen: [Node.JS](https://nodejs.org/de/)
 
 
 ## Aufbau der Software
@@ -69,34 +82,31 @@ VideoTechTools
 
 ### [Vorkommende Signal-Arrays](README_subpages/SignalArrays.md)
 
-</br>
 
-## Notation
-
-### Benennung von Funktionen
-
-- Funktionsnamen wird aufgrund unterschiedlicher Bedeutung bei Groß- und Kleinschreibung von Farbräumen beim Original belassen. Dies ist eine bewusste Abweichung vom Pascal-/Camel-Case
-
-- (Arrow-)Funktionen, die eine React-, React Native-, oder React-Three-Fiber-Komponente zurückgeben müssen mit einem Großbuchstaben beginnen.
-
-- Zur besseren Unterscheidung werden Funktionen, die keine React-, React Native-, oder React-Three-Fiber-Komponente zurückgeben nicht als Arrow-Funktion geschrieben.
-
-### Nennung von Signalen
-
-- Signalname wird aufgrund unterschiedlicher Bedeutung bei Groß- und Kleinschreibung auch so belassen. Dies ist eine bewusste Abweichung vom Pascal-/Camel-Case. Z.B.: "signalxyY" anstatt "signalXyy".
-    </br></br>
+</br></br>
 
 
-## Durchreichen von Daten
+## Nützliche Tutorials
 
-- Eltern nach Kind: Mittels props an child view.
-- Kind nach Eltern: Mittels nach unten durchgereichter set()-Funktion
-    (<https://www.pluralsight.com/guides/how-to-pass-data-between-react-components>)
+[React](https://reactjs.org/tutorial/tutorial.html)
+[React Native](https://reactnative.dev/docs/tutorial)
+
+[Three.JS](https://threejs.org/docs/index.html#manual/en/introduction/Creating-a-scene)
+[React-Three-Fiber](https://docs.pmnd.rs/react-three-fiber/getting-started/your-first-scene)
+
+[Expo](https://docs.expo.dev/introduction/walkthrough/)
+
+[Durchreichen von Daten](<https://www.pluralsight.com/guides/how-to-pass-data-between-react-components>)
+
+## Dokumentationen der verwendeten Bibliotheken
 
 
-## Nützliche Links
+[React](https://reactjs.org/docs/getting-started.html)
+[React Native ](https://reactnative.dev/docs/getting-started)
 
-[Medium: Mit EsLint + Prettier Code Formatieren](https://edusutil.medium.com/eslint-with-prettier-settings-for-react-native-ce13d2aaf500)
+[Three.JS](https://threejs.org/docs/index.html#manual/en/introduction/Creating-a-scene)
+[React-Three-Fiber](https://docs.pmnd.rs/react-three-fiber/getting-started/introduction)
 
-[AirBnB Styleguide](https://airbnb.io/javascript/react/#ordering)
+[Expo](https://docs.expo.dev/guides/)
+
 </br></br></br></br>

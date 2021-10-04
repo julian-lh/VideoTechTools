@@ -33,7 +33,7 @@ export function cvtSignalXYZtoxyY(signalXYZ) {...}
 
 </br>
 
-## CalcColorSpaceTransform
+## CalcComponentSignal
 
 - Funktionen zum Rechnen mit Komponentensignalen.
 
@@ -71,7 +71,29 @@ export function limiterSignalSmallRGB(signalSmallRGB, fullVideoData = false) {..
 
 </br>
 
-## CalcSignalCorrector
+## CalcHelpers
+
+- Sonstige Hilfs-Funktionen.
+
+</br>
+
+
+```JavaScript
+export function rgbToString(rgbArray){...}
+
+export function rgbToComplColorString(rgbArray){...}
+
+export function clamp(value, min = 0, max = 1) {...}
+
+```
+
+</br>
+</br>
+
+---
+</br>
+
+## CalcRGBSignal
 
 - Funktionen des Correctors.
 
@@ -80,17 +102,15 @@ export function limiterSignalSmallRGB(signalSmallRGB, fullVideoData = false) {..
 **Für einzelne Tripel:**
 
 ```JavaScript
-function offsetContrast(pixelValue = [0, 0, 0], m = 1) {...}
-function offsetBrightness(pixelValue = [0, 0, 0], b = 0) {...}
-function offsetGamma(pixelValue = [0, 0, 0], gamma = 1, maxValue = 1) {...}
+export function upscaleRGB(RGB, bitDepth = 10) {...}
+export function downscaleRGB(RGB, bitDepth = 10) {...}
 ```
 
 **Für Singal-Arrays:**
 
 ```JavaScript
-export function offsetSignalContrast(signalRGB, m = 1) {...}
-export function offsetSignalBrightness(signalRGB, b = 0) {...}
-export function offsetSignalGamma(signalRGB, gamma = 1, maxValue = 1) {...}
+export function upscaleSignalRGB(signalSmallRGB, bitDepth = 10 ) {...}
+export function downscaleSignalRGB(signalRGB, bitDepth = 10 ) {...}
 ```
 
 </br>
@@ -137,11 +157,11 @@ export function offsetSignalGamma(signalRGB, gamma = 1, maxValue = 1) {...}
 
 
 ```JavaScript
-export function generateRGBSignalFullColor(valueRGB, width, height){
-export function generateRGBSignalBars(width = 8, height = 1, type100 = true){
-export function generateRGBSignalGradient(startRGB, endRGB, width, height, directionHorizontal=true){
+export function generateRGBSignalFullColor(valueRGB, width, height){...}
+export function generateRGBSignalBars(width = 8, height = 1, type100 = true){...}
+export function generateRGBSignalGradient(startRGB, endRGB, width, height, directionHorizontal=true){...}
 
-function blendPixel(firstRGB, secondRGB, ratio = 0.5){
+function blendColor(firstRGB, secondRGB, ratio = 0.5){...}
 ```
 
 </br>

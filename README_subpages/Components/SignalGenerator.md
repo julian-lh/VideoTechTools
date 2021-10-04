@@ -5,21 +5,25 @@
 ```JavaScript
 export const SignalGeneratorView = ({   setSignal,
                                         setEncodingVideoStandard,
-                                        showHideButton = false
+                                        setEncodingBitDepthIdx,
+                                        showHideButton = false,
+                                        style=undefined
                                         }) => {...}
 ```
 
 **setSignal:**  Signal-Ausgang: Übergibt ein signalYCBCR siehe [Signal Arrays](../SignalArrays) über diesen Parameter an Eltern-Objekt. </br>
 **setEncodingVideoStandard:**  Index des Videostandards, dem signalYCBCR entspricht ([0..2] für Rec.601, 709 oder 2020) </br>
+**setEncodingBitDepthIdx:**  Index des Quantisierungsgrads, dem signalYCBCR entspricht ([0..2] für 8-, 10- oder 12-Bit) </br>
 **showHideButton:**  Button zum Ausblenden des Generators einblenden (true/false) </br>
+**style:**  Zum annehmen von Style-Parametern </br>
 
-- Errechnet ein signalYCBCR aus einem signalRGB.
+- Errechnet ein signalYCBCR aus einem signalSmallRGB.
 
 - Buttons zum Wechsel des Videostandards und Quantisierung des signalYCBCR
 
-- Beinhaltet einen GeneratorContainer um das signalRGB zu beschreiben.
+- Beinhaltet einen GeneratorContainer um das signalSmallRGB zu beschreiben.
 
-- Beinhaltet Corrector um das signalRGB zu verändern.
+- Beinhaltet Corrector um das signalSmallRGB zu verändern.
 
 
 ### Optimierungen
@@ -46,14 +50,14 @@ export const SignalGeneratorView = ({   setSignal,
 ## GeneratorContainer
 
 ```JavaScript
-const GeneratorContainer = ({   setSignalRGB,
+const GeneratorContainer = ({   setSignalSmallRGB,
                                 generatorIdx,
                                 setGeneratorIdx
                                 }) => {...}
 ```
 
 
-**setSignalRGB:** Signal-Ausgang: Übergibt ein signalRGB (siehe [Signal Arrays](../SignalArrays.md)) über diesen Parameter an Eltern-Objekt. </br>
+**setSignalSmallRGB:** Signal-Ausgang: Übergibt ein signalSmallRGB (siehe [Signal Arrays](../SignalArrays.md)) über diesen Parameter an Eltern-Objekt. </br>
 **generatorIdx:** Index des Generators, der verwendet und angezeigt werden soll. </br>
 **setGeneratorIdx:**  Veränderund des Generator-Index beim Eltern-Objekt.</br>
 
@@ -76,12 +80,12 @@ const GeneratorContainer = ({   setSignalRGB,
 ## FullColorGenerator
 
 ```JavaScript
-export const FullColorGenerator = ({ setSignalRGB })=> {...}
+export const FullColorGenerator = ({ setSignalSmallRGB })=> {...}
 ```
 
-**setSignalRGB:** Signal-Ausgang: Übergibt ein signalRGB (siehe [Signal Arrays](../SignalArrays.md)) über diesen Parameter an Eltern-Objekt. </br>
+**setSignalSmallRGB:** Signal-Ausgang: Übergibt ein signalSmallRGB (siehe [Signal Arrays](../SignalArrays.md)) über diesen Parameter an Eltern-Objekt. </br>
 
-- Erzeugt ein einfarbiges Vollbild als signalRGB.
+- Erzeugt ein einfarbiges Vollbild als signalSmallRGB.
 
 - Benutzeroberfläche mit RGB- und HSV-Modus.
 
@@ -104,12 +108,12 @@ export const FullColorGenerator = ({ setSignalRGB })=> {...}
 ## GradientGenerator
 
 ```JavaScript
-export const GradientGenerator = ({ setSignalRGB })=> {...}
+export const GradientGenerator = ({ setSignalSmallRGB })=> {...}
 ```
 
-**setSignalRGB:** Signal-Ausgang: Übergibt ein signalRGB siehe [Signal Arrays](../SignalArrays) über diesen Parameter an Eltern-Objekt. </br>
+**setSignalSmallRGB:** Signal-Ausgang: Übergibt ein signalSmallRGB siehe [Signal Arrays](../SignalArrays) über diesen Parameter an Eltern-Objekt. </br>
 
-- Erzeugt ein Farbverlauf als signalRGB.
+- Erzeugt ein Farbverlauf als signalSmallRGB.
 
 - Wechsel von horizontalen und vertikalen Verlauf
 
@@ -132,12 +136,12 @@ export const GradientGenerator = ({ setSignalRGB })=> {...}
 ## BarsGenerator
 
 ```JavaScript
-export const BarsGenerator = ({ setSignalRGB })=> {...}
+export const BarsGenerator = ({ setSignalSmallRGB })=> {...}
 ```
 
-**setSignalRGB:** Signal-Ausgang: Übergibt ein signalRGB siehe [Signal Arrays](../SignalArrays) über diesen Parameter an Eltern-Objekt. </br>
+**setSignalSmallRGB:** Signal-Ausgang: Übergibt ein signalSmallRGB siehe [Signal Arrays](../SignalArrays) über diesen Parameter an Eltern-Objekt. </br>
 
-- Erzeugt EBU-Farbbalken als signalRGB.
+- Erzeugt EBU-Farbbalken als signalSmallRGB.
 
 - Benutzeroberfläche mit Wechsel zwischen 100/100 und 100/75
 
