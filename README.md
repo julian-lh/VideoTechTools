@@ -1,8 +1,5 @@
 # Dokumentation VideTechTools
 
-
-
-
 _VideoTechTools_ ist eine Sammlung von Simulationen für die Videotechnik-Vorlesung.
 
 ## Installation
@@ -19,6 +16,7 @@ yarn install
 ```
 
 Falls Node.JS nicht automatisch mitinstalliert wird, kann dies hierüber erfolgen: [Node.JS](https://nodejs.org/de/)
+
 
 ## Aufbau der Software
 
