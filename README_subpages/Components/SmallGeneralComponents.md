@@ -3,11 +3,13 @@
 ## ScopesCamera
 
 ```JavaScript
-export const ScopesCamera = ({  position,
-                                target = [0, 0, 0],
-                                initialZoomScale = 1,
-                                zoomOffset = 0
-                                }) => {...}
+export const ScopesCamera = (
+    {
+    position,
+    target = [0, 0, 0],
+    initialZoomScale = 1,
+    zoomOffset = 0
+    }) => {...}
 ```
 
 **position:**           3D Position der Kamera (Array: [ x, y, z])</br>
@@ -38,11 +40,13 @@ export const ScopesCamera = ({  position,
 ## VideoStandardAlertView
 
 ```JavaScript
-export const VideoStandardAlertView = ({    signalVidStdIdx,
-                                            scopeVidStdIdx,
-                                            signalBitDepthIdx = 0,
-                                            scopeBitDepthIdx = 0
-                                            }) => {...}
+export const VideoStandardAlertView = (
+    {
+    signalVidStdIdx,
+    scopeVidStdIdx,
+    signalBitDepthIdx = 0,
+    scopeBitDepthIdx = 0
+    }) => {...}
 ```
 
 **signalVidStdIdx:**    Videostandard des erhaltenen Videosignals (Rec.601, 709, 2020 als Index 0...2)</br>

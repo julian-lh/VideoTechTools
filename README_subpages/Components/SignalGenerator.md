@@ -3,12 +3,14 @@
 
 ## SignalGeneratorView
 ```JavaScript
-export const SignalGeneratorView = ({   setSignal,
-                                        setEncodingVideoStandard,
-                                        setEncodingBitDepthIdx,
-                                        showHideButton = false,
-                                        style=undefined
-                                        }) => {...}
+export const SignalGeneratorView = (
+    {
+    setSignal,
+    setEncodingVideoStandard,
+    setEncodingBitDepthIdx,
+    showHideButton = false,
+    style=undefined
+    }) => {...}
 ```
 
 **setSignal:**  Signal-Ausgang: Übergibt ein signalYCBCR siehe [Signal Arrays](../SignalArrays) über diesen Parameter an Eltern-Objekt. </br>
@@ -50,10 +52,12 @@ export const SignalGeneratorView = ({   setSignal,
 ## GeneratorContainer
 
 ```JavaScript
-const GeneratorContainer = ({   setSignalSmallRGB,
-                                generatorIdx,
-                                setGeneratorIdx
-                                }) => {...}
+const GeneratorContainer = (
+    {
+    setSignalSmallRGB,
+    generatorIdx,
+    setGeneratorIdx
+    }) => {...}
 ```
 
 
@@ -162,13 +166,15 @@ export const BarsGenerator = ({ setSignalSmallRGB })=> {...}
 ## Corrector
 
 ```JavaScript
-export const Corrector = ({ contrastOffset,
-                            setContrastOffset,
-                            gammaOffset,
-                            setGammaOffset,
-                            brightnessOffset,
-                            setBrightnessOffset
-                            }) => {
+export const Corrector = (
+    {
+    contrastOffset,
+    setContrastOffset,
+    gammaOffset,
+    setGammaOffset,
+    brightnessOffset,
+    setBrightnessOffset
+    }) => {
 ```
 
 **contrastOffset:**     Aktueller Wert des Kontrast-Versatz-Parameters des Eltern-Objekts.</br>

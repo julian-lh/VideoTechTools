@@ -3,11 +3,13 @@
 
 ## CieView
 ```JavaScript
-export const CieView = ({   signalYCBCR,
-                            withOverlays = false,
-                            encodedVideoStandard = 1,
-                            encodedBitDepthIdx = 0
-                            }) => {...}
+export const CieView = (
+    {
+    signalYCBCR,
+    withOverlays = false,
+    encodedVideoStandard = 1,
+    encodedBitDepthIdx = 0
+    }) => {...}
 ```
 **signalYCBCR:**   siehe [Signal Arrays](../SignalArrays) </br>
 **withOverlays:**  Buttons und Labels anzeigen (true/false) </br>
@@ -27,8 +29,8 @@ export const CieView = ({   signalYCBCR,
 </br>
 
 ### Verwendete GeneralComponents:
-[ScopesCamera],
-[VideoStandardAlertView],
+[ScopesCamera](./SmallGeneralComponents.md#ScopesCamera),
+[VideoStandardAlertView](./SmallGeneralComponents.md#VideoStandardAlertView),
 [SettingsPopOverContainer](./Settings.md)
 
 ---
@@ -42,10 +44,12 @@ export const CieView = ({   signalYCBCR,
 ## CiePlot
 
 ```JavaScript
-const CiePlot = ({  signalxyY,
-                    signalRGB,
-                    dotSize = 0.01
-                    }) => {...}
+const CiePlot = (
+    {
+    signalxyY,
+    signalRGB,
+    dotSize = 0.01
+    }) => {...}
 ```
 
 
@@ -123,10 +127,12 @@ export const CieBounds = () => {
 ## GamutBounds
 
 ```JavaScript
-export const GamutBounds = ({   showRec601,
-                                showRec709,
-                                showRec2020
-                                }) => {...}
+export const GamutBounds = (
+    {
+    showRec601,
+    showRec709,
+    showRec2020
+    }) => {...}
 ```
 
 **showRec601:**     Farbraum-Grenzen für Rec.601 einblenden (true/false) </br>
@@ -152,10 +158,12 @@ export const GamutBounds = ({   showRec601,
 ## GamutLabels
 
 ```JavaScript
-export const GamutLabels = ({   showRec601,
-                                showRec709,
-                                showRec2020
-                                }) => {...}
+export const GamutLabels = (
+    {
+    showRec601,
+    showRec709,
+    showRec2020
+    }) => {...}
 ```
 
 **showRec601:**     Farbraum-Beschriftung für Rec.601 einblenden (true/false) </br>

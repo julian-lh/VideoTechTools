@@ -4,11 +4,13 @@
 ## SignalPreviewView
 
 ```JavaScript
-export const SignalPreviewView = ({ signalYCBCR,
-                                    withOverlays = false,
-                                    encodedVideoStandard = 1,
-                                    encodedBitDepthIdx = 0
-                                    }) => {...}
+export const SignalPreviewView = (
+    {
+    signalYCBCR,
+    withOverlays = false,
+    encodedVideoStandard = 1,
+    encodedBitDepthIdx = 0
+    }) => {...}
 ```
 
 **signalYCBCR:**   siehe [Signal Arrays](../SignalArrays) </br>
@@ -42,11 +44,13 @@ export const SignalPreviewView = ({ signalYCBCR,
 ## SignalPreviewPlot
 
 ```JavaScript
-const SignalPreviewPlot = ({    signalSmallRGB,
-                                signalRGB = undefined,
-                                signalYCBCR = undefined
-                                labelIdx = 0
-                                }) => {...}
+const SignalPreviewPlot = (
+    {
+    signalSmallRGB,
+    signalRGB = undefined,
+    signalYCBCR = undefined
+    labelIdx = 0
+    }) => {...}
 ```
 
 **signalSmallRGB, signalRGB, signalYCBCR:**   siehe [Signal Arrays](../SignalArrays) </br>

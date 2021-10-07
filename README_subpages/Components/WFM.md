@@ -3,11 +3,13 @@
 
 ## WfmView
 ```JavaScript
-export const WfmView = ({   signalYCBCR,
-                            withOverlays = false,
-                            encodedVidStdIdx = 1,
-                            encodedBitDepthIdx = 0 
-                            }) => {...}
+export const WfmView = (
+    {
+    signalYCBCR,
+    withOverlays = false,
+    encodedVidStdIdx = 1,
+    encodedBitDepthIdx = 0
+    }) => {...}
 ```
 **signalYCBCR:**   siehe [Signal Arrays](../SignalArrays) </br>
 **withOverlays:**  Buttons und Labels anzeigen (true/false) </br>
@@ -23,9 +25,9 @@ export const WfmView = ({   signalYCBCR,
 </br>
 
 ### Verwendete GeneralComponents:
-[ScopesCamera],
-[VideoStandardAlertView],
-[SettingsPopOver]
+[ScopesCamera](./SmallGeneralComponents.md#ScopesCamera),
+[VideoStandardAlertView](./SmallGeneralComponents.md#VideoStandardAlertView),
+[SettingsPopOverContainer](./Settings.md)
 
 ---
 
@@ -38,11 +40,13 @@ export const WfmView = ({   signalYCBCR,
 ## WfmPlot
 
 ```JavaScript
-const WfmPlot = ({  signalSmallYCBCR,
-                    signalRGB,
-                    representationID,
-                    aspectRatio = 1.78
-                    }) => {...}
+const WfmPlot = (
+    {
+    signalSmallYCBCR,
+    signalRGB,
+    representationID,
+    aspectRatio = 1.78
+    }) => {...}
 ```
 
 
@@ -69,13 +73,14 @@ const WfmPlot = ({  signalSmallYCBCR,
 ## signalToWfmArray
 
 ```JavaScript
-function signalToWfmArray(  signalArray,
-                            channelIdx,
-                            hexColorString = "#555",
-                            paradePosition = undefined,
-                            withChromaOffset = false,
-                            aspectRatio = 1.78)
-                            {...}
+function signalToWfmArray(
+    signalArray,
+    channelIdx,
+    hexColorString = "#555",
+    paradePosition = undefined,
+    withChromaOffset = false,
+    aspectRatio = 1.78
+    ){...}
 ```
 
 **signalArray:** signalSmallYCBCR oder signalRGB, siehe [Signal Arrays](../SignalArrays) </br>
