@@ -30,10 +30,12 @@ export const SettingsPopOverContainer = (props) => {...}
 ## ToggleElement
 
 ```JavaScript
-const ToggleElement = ({    elementTitle,
-                            title,
-                            onPress,
-                            }) => {...}
+const ToggleElement = (
+    {
+    elementTitle,
+    title,
+    onPress,
+    }) => {...}
 ```
 
 **elementTitle:**   Titel des Elements </br>
@@ -59,13 +61,15 @@ const ToggleElement = ({    elementTitle,
 ## GamutSelectElement
 
 ```JavaScript
-export const GamutSelectElement = ({    showRec601,
-                                        toggleRec601,
-                                        showRec709,
-                                        toggleRec709,
-                                        showRec2020,
-                                        toggleRec2020
-                                        }) => {...}
+export const GamutSelectElement = (
+    {
+    showRec601,
+    toggleRec601,
+    showRec709,
+    toggleRec709,
+    showRec2020,
+    toggleRec2020
+    }) => {...}
 ```
 
 **showRec601:** Sichtbarkeit der Rec.601-Gamuts-Grenzen im Elternobjekt des SettingsPopOverContainers (true/false)</br>
@@ -95,11 +99,13 @@ export const GamutSelectElement = ({    showRec601,
 ## VideoStandardSelectElement
 
 ```JavaScript
-export const VideoStandardSelectElement = ({    vidStdIdx,
-                                                setVidStdIdx,
-                                                bitDepthIdx,
-                                                setBitDepthIdx
-                                                }) => {
+export const VideoStandardSelectElement = (
+    {
+    vidStdIdx,
+    setVidStdIdx,
+    bitDepthIdx,
+    setBitDepthIdx
+    }) => {
 ```
 
 **aspectRatio:** Bildseitenverhältnis der Waveform-Darstellung, in der es abgebildet wird </br>

@@ -3,11 +3,13 @@
 
 ## VectorscopeView
 ```JavaScript
-export const VectorscopeView = ({   signalYCBCR,
-                                    withOverlays = false,
-                                    encodedVideoStandard = 1,
-                                    encodedBitDepthIdx = 0
-                                    }) => {...}
+export const VectorscopeView = (
+    {
+    signalYCBCR,
+    withOverlays = false,
+    encodedVideoStandard = 1,
+    encodedBitDepthIdx = 0
+    }) => {...}
 ```
 **signalYCBCR:**   siehe [Signal Arrays](../SignalArrays) </br>
 **withOverlays:**  Buttons und Labels anzeigen (true/false) </br>
@@ -23,9 +25,9 @@ export const VectorscopeView = ({   signalYCBCR,
 </br>
 
 ### Verwendete GeneralComponents:
-[ScopesCamera],
-[VideoStandardAlertView],
-[SettingsPopOver]
+[ScopesCamera](./SmallGeneralComponents.md#ScopesCamera),
+[VideoStandardAlertView](./SmallGeneralComponents.md#VideoStandardAlertView),
+[SettingsPopOverContainer](./Settings.md)
 
 ---
 
@@ -38,10 +40,12 @@ export const VectorscopeView = ({   signalYCBCR,
 ## VectorscopePlot
 
 ```JavaScript
-const VectorscopePlot = ({  signalSmallYCBCR,
-                            signalRGB,
-                            useDiscreteSignalRepresentation
-                            }) => {...}
+const VectorscopePlot = (
+    {
+    signalSmallYCBCR,
+    signalRGB,
+    useDiscreteSignalRepresentation
+    }) => {...}
 ```
 
 
